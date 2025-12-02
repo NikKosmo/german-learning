@@ -1,0 +1,75 @@
+# German Learning Project - Git Ignore
+
+# =============================================================================
+# Generated Anki Decks (can be regenerated from markdown)
+# =============================================================================
+*.apkg
+
+# =============================================================================
+# Audio Files (large binary files - 141MB total)
+# =============================================================================
+# Option 1: Exclude all audio (recommended for public repo)
+# Users can generate their own audio or download from sources
+audio/words_from_duolinguo/
+audio/generated_audio/*.mp3
+audio/generated_audio/*.wav
+
+# Keep audio generation scripts and config
+!audio/generated_audio/scripts/
+
+# =============================================================================
+# Log Files
+# =============================================================================
+*.log
+flashcards/scripts/deck_generation_*.log
+
+# =============================================================================
+# Temporary Files
+# =============================================================================
+temp/
+*.tmp
+*.bak
+*~
+
+# =============================================================================
+# Python
+# =============================================================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv
+*.egg-info/
+dist/
+build/
+
+# =============================================================================
+# IDE / Editor
+# =============================================================================
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# =============================================================================
+# Personal / Local
+# =============================================================================
+# Keep this for any local notes or files you don't want to commit
+.local/
+notes.txt
+scratch.md
+
+# User-specific study plan
+study-plan/
+
+# =============================================================================
+# Pending Cards (workflow file - may want to exclude if contains WIP)
+# =============================================================================
+# Uncomment if you want to exclude pending cards from commits:
+# flashcards/scripts/pending_cards.json

@@ -1,0 +1,49 @@
+Text,Extra
+
+"Ei{{c1::n}} jung{{c2::er}} Vater kauft Milch im Laden.","Nominativ мужской род - ein + окончание -er (сильное)"
+"Ei{{c1::n}} älter{{c2::er}} Bruder hilft seiner Familie.","Nominativ мужской род - ein + окончание -er (сильное)"
+"Ei{{c1::n}} freundlich{{c2::er}} Onkel besucht uns morgen.","Nominativ мужской род - ein + окончание -er (сильное)"
+
+"Ei{{c1::ne}} nett{{c2::e}} Mutter bäckt Kuchen.","Nominativ женский род - eine + окончание -e"
+"Ei{{c1::ne}} klein{{c2::e}} Schwester spielt draußen.","Nominativ женский род - eine + окончание -e"
+"Ei{{c1::ne}} lieb{{c2::e}} Tante schenkt Süßigkeiten.","Nominativ женский род - eine + окончание -e"
+
+"Ei{{c1::n}} blau{{c2::es}} Meer liegt vor uns.","Nominativ средний род - ein + окончание -es (сильное)"
+"Ei{{c1::n}} alt{{c2::es}} Foto zeigt die Familie.","Nominativ средний род - ein + окончание -es (сильное)"
+"Ei{{c1::n}} neu{{c2::es}} Kino öffnet nächste Woche.","Nominativ средний род - ein + окончание -es (сильное)"
+
+"Ich treffe ei{{c1::nen}} müd{{c2::en}} Vater im Park.","Akkusativ мужской род - einen + окончание -en"
+"Sie ruft ei{{c1::nen}} groß{{c2::en}} Bruder zum Abendessen.","Akkusativ мужской род - einen + окончание -en"
+"Wir besuchen ei{{c1::nen}} krank{{c2::en}} Onkel im Krankenhaus.","Akkusativ мужской род - einen + окончание -en"
+
+"Das Kind umarmt ei{{c1::ne}} lieb{{c2::e}} Mutter.","Akkusativ женский род - eine + окончание -e"
+"Er vermisst ei{{c1::ne}} jung{{c2::e}} Schwester.","Akkusativ женский род - eine + окончание -e"
+"Ich besuche ei{{c1::ne}} nett{{c2::e}} Tante heute.","Akkusativ женский род - eine + окончание -e"
+
+"Sie sehen ei{{c1::n}} ruhig{{c2::es}} Meer vom Balkon.","Akkusativ средний род - ein + окончание -es (сильное)"
+"Er betrachtet ei{{c1::n}} interessant{{c2::es}} Foto genau.","Akkusativ средний род - ein + окончание -es (сильное)"
+"Wir besuchen ei{{c1::n}} modern{{c2::es}} Kino am Wochenende.","Akkusativ средний род - ein + окончание -es (сильное)"
+
+"Ich spreche mit ei{{c1::nem}} erfahren{{c2::en}} Vater über Politik.","Dativ мужской род - einem + окончание -en"
+"Das Geschenk ist von ei{{c1::nem}} jünger{{c2::en}} Bruder.","Dativ мужской род - einem + окончание -en"
+"Sie hilft ei{{c1::nem}} alt{{c2::en}} Onkel beim Kochen.","Dativ мужской род - einem + окончание -en"
+
+"Er schreibt ei{{c1::ner}} fleißig{{c2::en}} Mutter einen Brief.","Dativ женский род - einer + окончание -en"
+"Das Buch gehört ei{{c1::ner}} intelligent{{c2::en}} Schwester.","Dativ женский род - einer + окончание -en"
+"Wir danken ei{{c1::ner}} hilfsbereit{{c2::en}} Tante für alles.","Dativ женский род - einer + окончание -en"
+
+"Der Segler segelt auf ei{{c1::nem}} still{{c2::en}} Meer.","Dativ средний род - einem + окончание -en"
+"Die Signatur steht unter ei{{c1::nem}} wichtig{{c2::en}} Foto.","Dativ средний род - einem + окончание -en"
+"Sie wartet vor ei{{c1::nem}} voll{{c2::en}} Kino.","Dativ средний род - einem + окончание -en"
+
+"Das Auto ei{{c1::nes}} erfolgreic{{c2::en}} Vaters parkt hier.","Genitiv мужской род - eines + окончание -en"
+"Die Freundin ei{{c1::nes}} sportlich{{c2::en}} Bruders ist nett.","Genitiv мужской род - eines + окончание -en"
+"Das Haus ei{{c1::nes}} reich{{c2::en}} Onkels steht am See.","Genitiv мужской род - eines + окончание -en"
+
+"Die Tasche ei{{c1::ner}} elegant{{c2::en}} Mutter ist elegant.","Genitiv женский род - einer + окончание -en"
+"Das Zimmer ei{{c1::ner}} ordentlich{{c2::en}} Schwester glänzt.","Genitiv женский род - einer + окончание -en"
+"Der Garten ei{{c1::ner}} freundlich{{c2::en}} Tante duftet schön.","Genitiv женский род - einer + окончание -en"
+
+"Die Wellen ei{{c1::nes}} dunkel{{c2::en}} Meeres rauschen laut.","Genitiv средний род - eines + окончание -en"
+"Der Rahmen ei{{c1::nes}} wertvoll{{c2::en}} Fotos ist aus Gold.","Genitiv средний род - eines + окончание -en"
+"Die Leinwand ei{{c1::nes}} groß{{c2::en}} Kinos ist sehr breit.","Genitiv средний род - eines + окончание -en"

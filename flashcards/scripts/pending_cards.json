@@ -1,0 +1,70 @@
+{
+  "cards": [
+    {
+      "card_type": "Reverse",
+      "word_type": "Verb (Konjunktiv II)",
+      "russian": "имел бы (ты)",
+      "german": "hättest",
+      "extra": "Konjunktiv II von \"haben\" (du-Form)",
+      "example_de": "Du hättest das wissen sollen.",
+      "example_ru": "Ты должен был бы это знать.",
+      "notes": "Konjunktiv II • Форма \"du\" от haben • Используется для выражения нереального условия или сожаления в прошлом • hätte + Partizip II = плюсквамперфект конъюнктива",
+      "audio": "Hättest.wav"
+    },
+    {
+      "card_type": "Reverse",
+      "word_type": "Verb (Modal, Konjunktiv II)",
+      "russian": "должен бы (ты), следовало бы (тебе)",
+      "german": "solltest",
+      "extra": "Konjunktiv II von \"sollen\" (du-Form)",
+      "example_de": "Du solltest mehr Deutsch üben.",
+      "example_ru": "Тебе следовало бы больше практиковать немецкий.",
+      "notes": "Konjunktiv II • Форма \"du\" от sollen • Используется для вежливых советов и рекомендаций • Совпадает с Präteritum формой",
+      "audio": "Solltest.wav"
+    },
+    {
+      "card_type": "Reverse",
+      "word_type": "Verb (Modal, Konjunktiv II)",
+      "russian": "бы (ты)",
+      "german": "würdest",
+      "extra": "Konjunktiv II von \"werden\" (du-Form)",
+      "example_de": "Was würdest du an meiner Stelle tun?",
+      "example_ru": "Что бы ты сделал на моём месте?",
+      "notes": "Konjunktiv II • Форма \"du\" от werden • Основная форма для образования Konjunktiv II: würde + Infinitiv • Используется для вежливых вопросов и гипотетических ситуаций",
+      "audio": "Würdest.wav"
+    },
+    {
+      "card_type": "Reverse",
+      "word_type": "Adverb",
+      "russian": "поэтому, потому",
+      "german": "deshalb",
+      "extra": "Konnektor (Adverb)",
+      "example_de": "Es regnet, deshalb bleiben wir zu Hause.",
+      "example_ru": "Идёт дождь, поэтому мы остаёмся дома.",
+      "notes": "Соединительное наречие • Указывает на причину/следствие • Позиция 1, глагол на позиции 2 • Синонимы: daher, deswegen, darum",
+      "audio": "Deshalb.wav"
+    },
+    {
+      "card_type": "Reverse",
+      "word_type": "Adverb",
+      "russian": "несмотря на это, тем не менее",
+      "german": "trotzdem",
+      "extra": "Konnektor (Adverb)",
+      "example_de": "Es war kalt, trotzdem sind wir spazieren gegangen.",
+      "example_ru": "Было холодно, тем не менее мы пошли на прогулку.",
+      "notes": "Соединительное наречие • Выражает контраст/противоречие • Позиция 1, глагол на позиции 2 • Синоним: dennoch",
+      "audio": "Trotzdem.wav"
+    },
+    {
+      "card_type": "Reverse",
+      "word_type": "Verb",
+      "russian": "покидать, оставлять",
+      "german": "verlassen",
+      "extra": "Starkes Verb • Perfekt: hat verlassen",
+      "example_de": "Er hat gestern die Stadt verlassen.",
+      "example_ru": "Он вчера покинул город.",
+      "notes": "Сильный глагол • Perfekt: hat verlassen • Partizip II не изменяется (verlassen) • Требует винительный падеж (Akkusativ) • Также значение: полагаться на (sich verlassen auf + Akk.)",
+      "audio": "Verlassen.wav"
+    }
+  ]
+}

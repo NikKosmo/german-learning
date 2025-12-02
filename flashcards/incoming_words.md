@@ -1,0 +1,4 @@
+- aufmachen
+- Anfangen
+- Guthaben
+- mutig
