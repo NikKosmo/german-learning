@@ -14,6 +14,9 @@ audio/words_from_duolinguo/
 audio/generated_audio/*.mp3
 audio/generated_audio/*.wav
 
+# Large model files (108MB - exceeds GitHub limit)
+audio/generated_audio/scripts/*.onnx
+
 # Keep audio generation scripts and config
 !audio/generated_audio/scripts/
 
