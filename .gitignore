@@ -21,10 +21,12 @@ audio/generated_audio/scripts/*.onnx
 !audio/generated_audio/scripts/
 
 # =============================================================================
-# Log Files
+# Log Files and Session Tracking
 # =============================================================================
 *.log
 flashcards/scripts/deck_generation_*.log
+SESSION_LOG.md
+TODO.md
 
 # =============================================================================
 # Temporary Files
