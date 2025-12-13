@@ -1,0 +1,118 @@
+name: Check for Gitignored Files
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  check-gitignored-files:
+    name: Detect Gitignored Files
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Full history needed for comparison
+
+      - name: Check for files that should be gitignored
+        run: |
+          echo "🔍 Checking for files that match .gitignore patterns..."
+
+          # Get list of files changed in this PR
+          CHANGED_FILES=$(git diff --name-only --diff-filter=ACMRT origin/${{ github.base_ref }}...HEAD)
+
+          if [ -z "$CHANGED_FILES" ]; then
+            echo "✅ No files changed in this PR"
+            exit 0
+          fi
+
+          echo "Files changed in this PR:"
+          echo "$CHANGED_FILES"
+          echo ""
+
+          # Check each file against gitignore
+          VIOLATIONS=""
+
+          while IFS= read -r file; do
+            # Skip if file doesn't exist (was deleted)
+            [ -f "$file" ] || continue
+
+            # Check if file would be ignored by git
+            # git check-ignore returns 0 if file IS ignored, 1 if not
+            if git check-ignore -q "$file" 2>/dev/null; then
+              VIOLATIONS="${VIOLATIONS}${file}"$'\n'
+            fi
+          done <<< "$CHANGED_FILES"
+
+          if [ -n "$VIOLATIONS" ]; then
+            echo "❌ ERROR: The following files match .gitignore patterns and should not be committed:"
+            echo ""
+            echo "$VIOLATIONS"
+            echo ""
+            echo "Please remove these files from your PR:"
+            echo "  1. Add them to .gitignore if not already present"
+            echo "  2. Remove from git tracking: git rm --cached <file>"
+            echo "  3. Commit and push the changes"
+            exit 1
+          fi
+
+          echo "✅ No gitignored files detected in this PR"
+
+      - name: Additional check for common sensitive patterns
+        run: |
+          echo "🔐 Checking for common sensitive file patterns..."
+
+          CHANGED_FILES=$(git diff --name-only --diff-filter=ACMRT origin/${{ github.base_ref }}...HEAD)
+
+          # Common sensitive patterns that should never be committed
+          SENSITIVE_PATTERNS=(
+            "\.env$"
+            "\.env\."
+            "\.pem$"
+            "\.key$"
+            "\.p12$"
+            "\.pfx$"
+            "id_rsa"
+            "id_dsa"
+            "id_ecdsa"
+            "id_ed25519"
+            "\.keystore$"
+            "credentials\.json$"
+            "service.account\.json$"
+            "\.secrets$"
+            "secret.*\.ya?ml$"
+            "\.tfvars$"
+            "\.tfstate$"
+            "node_modules/"
+            "vendor/"
+            "__pycache__/"
+            "\.pyc$"
+            "\.DS_Store$"
+            "Thumbs\.db$"
+            "\.log$"
+            "npm-debug\.log"
+            "yarn-error\.log"
+          )
+
+          VIOLATIONS=""
+
+          for pattern in "${SENSITIVE_PATTERNS[@]}"; do
+            matches=$(echo "$CHANGED_FILES" | grep -E "$pattern" || true)
+            if [ -n "$matches" ]; then
+              VIOLATIONS="${VIOLATIONS}${matches}"$'\n'
+            fi
+          done
+
+          if [ -n "$VIOLATIONS" ]; then
+            echo "⚠️  WARNING: Potentially sensitive files detected:"
+            echo ""
+            echo "$VIOLATIONS" | sort -u
+            echo ""
+            echo "Please review these files carefully before merging."
+            echo "If these are intentional, ensure they don't contain secrets."
+            # This is a warning, not a failure - uncomment next line to make it strict
+            # exit 1
+          else
+            echo "✅ No common sensitive file patterns detected"
+          fi
