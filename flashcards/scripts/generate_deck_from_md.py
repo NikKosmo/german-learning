@@ -21,6 +21,7 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
 import paths
+from flashcards.scripts.word_types import WordType, get_model_category
 
 # Configuration
 LANGUAGE_PREFIX = "de"  # Language prefix for audio files (avoids collisions with other language decks)
@@ -592,29 +593,33 @@ def parse_md_table(md_file):
     return cards
 
 def get_model_key(card_type, word_type):
-    """Determine which note model to use based on card type and word type"""
+    """Determine which note model to use based on card type and word type.
 
-    # Extract base word type (Noun, Verb, etc.)
-    if 'Noun' in word_type:
-        base_type = 'noun'
-    elif 'Verb' in word_type:
-        base_type = 'verb'
-    elif 'Adjective' in word_type:
-        base_type = 'adj'
-    elif 'Preposition' in word_type:
-        base_type = 'prep'
-    elif 'Adverb' in word_type:
-        base_type = 'adv'
-    elif 'Article' in word_type or 'Conjunction' in word_type or 'Particle' in word_type:
-        base_type = 'adv'  # Use adverb model for simple words
-    elif 'Pronoun' in word_type or 'Possessive' in word_type or 'Question' in word_type:
-        base_type = 'adv'  # Use adverb model for pronouns and question words
-    else:
-        return None
+    Uses WordType enum helpers as the single source of truth.
+    """
 
     # Handle cloze separately
     if card_type == 'Cloze':
         return 'noun_cloze'
+
+    # Validate and categorize word type using enum utilities
+    WordType.validate_strict(word_type, context="(in get_model_key)")
+    category = get_model_category(word_type)
+
+    # Map category to model base key used by this script
+    if category == 'noun':
+        base_type = 'noun'
+    elif category == 'verb':
+        base_type = 'verb'
+    elif category == 'adjective':
+        base_type = 'adj'
+    elif category == 'preposition':
+        base_type = 'prep'
+    elif category in {'adverb', 'basic', 'pronoun'}:
+        # Historically mapped to the adverb model for simple/pronoun words
+        base_type = 'adv'
+    else:
+        return None
 
     # Determine direction
     if 'RU→DE' in card_type:
@@ -657,12 +662,14 @@ def create_note_from_card(card, models):
             article = german_parts[0] if len(german_parts) > 1 else ''
             noun = german_parts[1] if len(german_parts) > 1 else card['German']
 
-            # Extract gender from Word_Type
-            gender = 'm'
-            if '(f)' in card['Word_Type']:
+            # Extract gender from article (der/die/das)
+            gender = 'm'  # default
+            if article.lower() == 'die':
                 gender = 'f'
-            elif '(n)' in card['Word_Type']:
+            elif article.lower() == 'das':
                 gender = 'n'
+            elif article.lower() == 'der':
+                gender = 'm'
 
             fields = [
                 card['ID'],
