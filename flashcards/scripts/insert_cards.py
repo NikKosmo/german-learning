@@ -22,7 +22,6 @@ import paths
 
 # File paths
 PENDING_CARDS = paths.FLASHCARDS_SCRIPTS / 'pending_cards.json'
-DECK_FILE = paths.DECK_FILE
 
 # Required fields for each card (id will be generated, not required in JSON)
 REQUIRED_FIELDS = [
@@ -117,6 +116,7 @@ def card_to_markdown_row(card):
 
 def insert_cards_into_deck(cards):
     """Append card rows to end of german_vocabulary_b1.md"""
+    DECK_FILE = paths.DECK_FILE
     print(f"\nReading {DECK_FILE}...")
 
     try:
@@ -152,6 +152,7 @@ def update_deck_metadata(card_count):
     """Update deck info (total cards, generation date)"""
     print(f"\nUpdating deck metadata...")
 
+    DECK_FILE = paths.DECK_FILE
     with open(DECK_FILE, 'r', encoding='utf-8') as f:
         content = f.read()
 
@@ -205,7 +206,7 @@ def main():
     print("INSERTION COMPLETE")
     print("=" * 60)
     print(f"Inserted: {card_count} cards")
-    print(f"Updated: {DECK_FILE}")
+    print(f"Updated: {paths.DECK_FILE}")
     print()
     print("Next steps:")
     print("1. Review the inserted cards in german_vocabulary_b1.md")

@@ -18,11 +18,12 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
 import paths
-from audio_checker import check_audio as get_audio_filename
+from flashcards.scripts.audio_checker import check_audio as get_audio_filename
 
-# Paths
-WORD_TRACKING = paths.WORD_TRACKING_FILE
-DECK_FILE = paths.DECK_FILE
+"""
+NOTE: Do not cache paths.DECK_FILE/WORD_TRACKING_FILE at import time because
+tests may monkeypatch these values. Always resolve them at call time.
+"""
 
 def check_audio(word):
     """Check if audio exists for word using audio_checker.py"""
@@ -40,8 +41,9 @@ def read_words_in_deck():
     words_set = set()
     words_with_types = {}
 
+    deck_file = paths.DECK_FILE
     try:
-        with open(DECK_FILE, 'r', encoding='utf-8') as f:
+        with open(deck_file, 'r', encoding='utf-8') as f:
             content = f.read()
             # Extract German words and word types from table
             for line in content.split('\n'):
@@ -50,10 +52,9 @@ def read_words_in_deck():
                     if len(parts) >= 6:
                         word_type = parts[3].strip()  # Word Type column
                         german = parts[5]              # German column
-                        # Extract base word (remove articles, cloze markers)
-                        german = german.replace('der ', '').replace('die ', '').replace('das ', '')
-                        german = german.replace('{{c1::', '').replace('}}', '')
-                        german = german.split()[0] if german else ''  # First word
+                        # Extract base word (remove cloze markers, take last word)
+                        german = german.replace('{{c1::', '').replace('{{c2::', '').replace('}}', '')
+                        german = german.split()[-1] if german else ''  # Last word (the actual vocabulary word)
                         if german:
                             word_lower = german.lower()
                             # Add to word-only set
@@ -64,7 +65,7 @@ def read_words_in_deck():
                                     words_with_types[word_lower] = set()
                                 words_with_types[word_lower].add(word_type)
     except FileNotFoundError:
-        print(f"WARNING: {DECK_FILE} not found")
+        print(f"WARNING: {deck_file} not found")
 
     return words_set, words_with_types
 
@@ -74,7 +75,8 @@ def update_tracking_file():
     print("Reading current word tracking...")
 
     # Read existing tracking file
-    with open(WORD_TRACKING, 'r', encoding='utf-8') as f:
+    tracking_file = paths.WORD_TRACKING_FILE
+    with open(tracking_file, 'r', encoding='utf-8') as f:
         lines = f.readlines()
 
     # Find table start
@@ -183,7 +185,7 @@ def update_tracking_file():
     # Write file
     print(f"\nWriting updated tracking file...")
 
-    with open(WORD_TRACKING, 'w', encoding='utf-8') as f:
+    with open(tracking_file, 'w', encoding='utf-8') as f:
         # Write header section (everything before table)
         for line in lines[:table_start]:
             f.write(line)
