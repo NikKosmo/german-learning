@@ -47,11 +47,18 @@ def strip_allowed_contexts(text: str) -> str:
     the static scan only flags business-logic misuse. Allowed contexts include:
     - genanki Model field definitions (fields=[ {... 'name': 'Noun'} ... ])
     - Dict entries like {'name': 'Noun'} used for UI/field naming
+    - Dictionary key access (fields['Noun'], fields.get('Article'), 'Preposition' in fields)
+      These are Anki field names, not word type comparisons
     """
     # Remove entire fields=[ ... ] blocks (non-greedy, dot matches newlines)
     text = re.sub(r"fields\s*=\s*\[(?:.|\n)*?\]", "", text, flags=re.IGNORECASE)
     # Neutralize simple dict name entries
     text = re.sub(r"\{\s*(['\"])name\1\s*:\s*(['\"]).*?\2\s*\}", "{}", text)
+    # Neutralize dictionary key access patterns (Anki field names)
+    # Examples: fields['Noun'], fields.get('Article'), 'Preposition' in fields, 'Article' not in fields
+    text = re.sub(r"fields\s*\[\s*(['\"]).*?\1\s*\]", "fields[]", text)
+    text = re.sub(r"fields\.get\s*\(\s*(['\"]).*?\1.*?\)", "fields.get()", text)
+    text = re.sub(r"(['\"]).*?\1\s+(?:not\s+)?in\s+fields", "'' in fields", text)
     return text
 
 
