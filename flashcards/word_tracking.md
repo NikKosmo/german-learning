@@ -12,11 +12,11 @@ Konjunktiv# Word Tracking
 
 | Word | Status | Audio | IPA | Word Type | Date Added | Notes |
 |------|--------|-------|-----|-----------|------------|-------|
-| der | pending | ✅ Der.mp3 | — | Article (m) | 2025-11-13 | — |
-| die | pending | ✅ Die.mp3 | — | Article (f/pl) | 2025-11-13 | — |
-| das | pending | ✅ Das.mp3 | — | Article (n) | 2025-11-13 | — |
-| ein | pending | ✅ Ein.mp3 | — | Article (m/n) | 2025-11-13 | — |
-| eine | pending | ✅ Eine.mp3 | — | Article (f) | 2025-11-13 | — |
+| der | in_deck | ✅ Der.mp3 | — | Article | 2025-11-13 | — |
+| die | in_deck | ✅ Die.mp3 | — | Article | 2025-11-13 | — |
+| das | in_deck | ✅ Das.mp3 | — | Article | 2025-11-13 | — |
+| ein | in_deck | ✅ Ein.mp3 | — | Article | 2025-11-13 | — |
+| eine | in_deck | ✅ Eine.mp3 | — | Article | 2025-11-13 | — |
 | und | in_deck | ✅ Und.mp3 | — | Conjunction | 2025-11-13 | — |
 | ja | in_deck | ✅ Ja.mp3 | — | Particle | 2025-11-13 | — |
 | nein | in_deck | ✅ Nein.mp3 | — | Particle | 2025-11-13 | — |
@@ -32,15 +32,15 @@ Konjunktiv# Word Tracking
 | sein | in_deck | ✅ Sein.mp3 | — | — | 2025-11-08 | — |
 | unser | in_deck | ✅ Unser.mp3 | — | — | 2025-11-08 | — |
 | euer | in_deck | ✅ Euer.mp3 | — | — | 2025-11-08 | — |
-| sich | pending | ✅ Sich.wav | — | Pronoun | 2025-11-13 | — |
-| man | pending | ✅ Man.wav | — | Pronoun | 2025-11-13 | — |
+| sich | in_deck | ✅ Sich.wav | — | Pronoun | 2025-11-13 | — |
+| man | in_deck | ✅ Man.wav | — | Pronoun | 2025-11-13 | — |
 | wer | in_deck | ✅ Wer.mp3 | — | — | 2025-11-08 | — |
 | was | in_deck | ✅ Was.mp3 | — | — | 2025-11-08 | — |
 | wo | in_deck | ✅ Wo.mp3 | — | — | 2025-11-08 | — |
 | wann | in_deck | ✅ Wann.mp3 | — | — | 2025-11-08 | — |
 | warum | in_deck | ✅ Warum.mp3 | — | — | 2025-11-08 | — |
 | wie | in_deck | ✅ Wie.mp3 | — | — | 2025-11-08 | — |
-| weil | pending | ✅ Weil.wav | — | Conjunction | 2025-11-13 | — |
+| weil | in_deck | ✅ Weil.wav | — | Conjunction | 2025-11-13 | — |
 | oder | in_deck | ✅ Oder.mp3 | — | — | 2025-11-08 | — |
 | aber | in_deck | ✅ Aber.mp3 | — | — | 2025-11-08 | — |
 | noch | in_deck | ✅ Noch.mp3 | — | — | 2025-11-08 | — |
@@ -49,15 +49,15 @@ Konjunktiv# Word Tracking
 | nur | in_deck | ✅ Nur.mp3 | — | — | 2025-11-08 | — |
 | auch | in_deck | ✅ Auch.mp3 | — | — | 2025-11-08 | — |
 | so | in_deck | ✅ So.mp3 | — | Adverb | 2025-11-13 | — |
-| dann | pending | ✅ Dann.mp3 | — | Adverb | 2025-11-13 | — |
-| da | pending | ✅ Da.mp3 | — | Adverb | 2025-11-13 | — |
-| hier | pending | ✅ Hier.mp3 | — | Adverb | 2025-11-13 | — |
-| jetzt | pending | ✅ Jetzt.mp3 | — | Adverb | 2025-11-13 | — |
-| immer | pending | ✅ Immer.mp3 | — | Adverb | 2025-11-13 | — |
-| wieder | pending | ✅ Wieder.mp3 | — | Adverb | 2025-11-13 | — |
-| mehr | pending | ✅ Mehr.mp3 | — | Adverb | 2025-11-13 | — |
-| weniger | pending | ✅ Weniger.mp3 | — | Adverb | 2025-11-13 | — |
-| sehr | pending | ✅ Sehr.mp3 | — | Adverb | 2025-11-13 | — |
+| dann | in_deck | ✅ Dann.mp3 | — | Adverb | 2025-11-13 | — |
+| da | in_deck | ✅ Da.mp3 | — | Adverb | 2025-11-13 | — |
+| hier | in_deck | ✅ Hier.mp3 | — | Adverb | 2025-11-13 | — |
+| jetzt | in_deck | ✅ Jetzt.mp3 | — | Adverb | 2025-11-13 | — |
+| immer | in_deck | ✅ Immer.mp3 | — | Adverb | 2025-11-13 | — |
+| wieder | in_deck | ✅ Wieder.mp3 | — | Adverb | 2025-11-13 | — |
+| mehr | in_deck | ✅ Mehr.mp3 | — | Adverb | 2025-11-13 | — |
+| weniger | in_deck | ✅ Weniger.mp3 | — | Adverb | 2025-11-13 | — |
+| sehr | in_deck | ✅ Sehr.mp3 | — | Adverb | 2025-11-13 | — |
 | schön | in_deck | ✅ Schön.mp3 | — | Adjective | 2025-11-13 | — |
 | gut | in_deck | ✅ Gut.mp3 | — | Adjective | 2025-11-13 | — |
 | neu | in_deck | ✅ Neu.mp3 | — | Adjective | 2025-11-13 | — |
@@ -66,17 +66,17 @@ Konjunktiv# Word Tracking
 | klein | in_deck | ✅ Klein.mp3 | — | Adjective | 2025-11-13 | — |
 | lange | in_deck | ✅ Lange.wav | — | Adjective | 2025-11-13 | — |
 | kurz | in_deck | ✅ Kurz.mp3 | — | Adjective | 2025-11-13 | — |
-| erst | pending | ✅ Erst.wav | — | Adverb/Adj | 2025-11-13 | — |
+| erst | in_deck | ✅ Erst.wav | — | Adjective/Adverb | 2025-11-13 | — |
 | letzte | in_deck | ✅ Letzte.mp3 | — | Adjective | 2025-11-14 | — |
-| gleich | pending | ✅ Gleich.mp3 | — | Adj/Adverb | 2025-11-14 | — |
+| gleich | in_deck | ✅ Gleich.mp3 | — | Adjective/Adverb | 2025-11-14 | — |
 | möglich | in_deck | ✅ Möglich.mp3 | — | Adjective | 2025-11-14 | — |
 | eigen | in_deck | ✅ Eigen.wav | — | Adjective | 2025-11-14 | — |
 | richtig | in_deck | ✅ Richtig.mp3 | — | Adjective | 2025-11-14 | — |
 | verschieden | in_deck | ✅ Verschieden.wav | — | Adjective | 2025-11-14 | — |
-| geben | pending | ✅ Geben.mp3 | — | Verb | 2025-11-14 | — |
-| sagen | pending | ✅ Sagen.wav | — | Verb | 2025-11-14 | — |
-| kommen | pending | ✅ Kommen.mp3 | — | Verb | 2025-11-14 | — |
-| wollen | in_deck | ✅ Wollen.mp3 | — | Modal Verb | 2025-11-14 | — |
+| geben | in_deck | ✅ Geben.mp3 | — | Verb | 2025-11-14 | — |
+| sagen | in_deck | ✅ Sagen.wav | — | Verb | 2025-11-14 | — |
+| kommen | in_deck | ✅ Kommen.mp3 | — | Verb | 2025-11-14 | — |
+| wollen | in_deck | ✅ Wollen.mp3 | — | Verb | 2025-11-14 | — |
 | lassen | in_deck | ✅ Lassen.wav | — | — | 2025-11-17 | — |
 | wissen | in_deck | ✅ Wissen.wav | — | — | 2025-11-17 | — |
 | gehen | in_deck | ✅ Gehen.mp3 | — | — | 2025-11-17 | — |
@@ -101,7 +101,7 @@ Konjunktiv# Word Tracking
 | nehmen | in_deck | ✅ Nehmen.mp3 | — | — | 2025-11-26 | — |
 | tun | in_deck | ✅ Tun.wav | — | — | 2025-11-26 | — |
 | dürfen | in_deck | ✅ Dürfen.wav | — | — | 2025-11-15 | — |
-| mögen | in_deck | ✅ Mögen.wav | — | Modal Verb | 2025-11-15 | — |
+| mögen | in_deck | ✅ Mögen.wav | — | Verb | 2025-11-15 | — |
 | Zeit | in_deck | ✅ Zeit.mp3 | — | — | 2025-11-15 | — |
 | Jahr | in_deck | ✅ Jahr.wav | — | — | 2025-11-15 | — |
 | Tag | in_deck | ✅ Tag.mp3 | — | — | 2025-11-26 | — |
@@ -448,7 +448,7 @@ Konjunktiv# Word Tracking
 | Tod | pending | ✅ Tod.wav | — | — | — | — |
 | Ort | pending | ✅ Ort.wav | — | — | — | — |
 | Chance | pending | ✅ Chance.wav | — | — | — | — |
-| bedeutet | pending | ✅ Bedeutet.wav | — | — | — | — |
+| bedeuten | in_deck | ✅ Bedeuten.wav | — | Verb | 2025-12-18 | — |
 | War | missing_audio | ❌ missing | — | — | — | — |
 | sagst | pending | ✅ Sagst.wav | — | — | — | — |
 | letzten | pending | ✅ Letzten.wav | — | — | — | — |
@@ -817,19 +817,19 @@ Konjunktiv# Word Tracking
 | Anspruch | pending | ✅ Anspruch.wav | — | — | — | — |
 | Kontinent | in_deck | ✅ Kontinent.wav | — | — | 2025-11-29 | — |
 | aufmachen | in_deck | ✅ Aufmachen.wav | — | Verb | 2025-11-18 | — |
-| Guthaben | in_deck | ✅ Guthaben.wav | — | Noun (n) | 2025-11-18 | — |
+| Guthaben | in_deck | ✅ Guthaben.wav | — | Noun | 2025-11-18 | — |
 | mutig | in_deck | ✅ Mutig.wav | — | Adjective | 2025-11-18 | — |
-| Arm | in_deck | ✅ Arm.wav | — | Noun (m) | 2025-11-30 | — |
+| Arm | in_deck | ✅ Arm.wav | — | Noun | 2025-11-30 | — |
 | Lieb | pending | ✅ Lieb.mp3 | — | Adjective | — | — |
 | Hinaus | pending | ✅ Hinaus.wav | — | Adverb | — | — |
-| Kraut | in_deck | ✅ Kraut.wav | — | Noun (n) | 2025-11-30 | — |
+| Kraut | in_deck | ✅ Kraut.wav | — | Noun | 2025-11-30 | — |
 
 ---
 
 ## Statistics
 
 - **Total words:** 811
-- **In deck:** 118
-- **Pending (with audio):** 676
+- **In deck:** 140
+- **Pending (with audio):** 654
 - **Missing audio:** 17
-- **Ready to process:** 676
+- **Ready to process:** 654

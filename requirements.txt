@@ -3,5 +3,8 @@
 # Anki deck generation
 genanki>=0.13.0
 
+# Deck unpacking (Anki 2.1.50+ uses Zstandard compression)
+zstandard>=0.18.0
+
 # Testing framework
 pytest>=7.0
