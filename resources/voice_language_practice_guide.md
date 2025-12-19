@@ -250,6 +250,23 @@ docker restart openedai-speech
 5. Select **thorsten** from the TTS Voice dropdown
 6. Click **Save**
 
+### Step 6: Adjust Speech Speed (Optional)
+
+> ⚠️ **Note:** Open WebUI doesn't pass the speed parameter to OpenAI-compatible TTS servers. This is a known limitation. The workaround is to edit the voice config directly.
+
+To change speech speed, modify `length_scale` in the voice config:
+- `1.0` = normal speed
+- `0.85` = slightly faster
+- `0.75` = faster
+- `1.2` = slower
+
+```bash
+# Set speed to 0.85 (faster)
+docker exec openedai-speech sed -i 's/"length_scale": [0-9.]*/"length_scale": 0.85/' /app/voices/de_DE-thorsten-high.onnx.json
+```
+
+No restart needed — changes apply immediately.
+
 ---
 
 # Part 4: Create a Language Tutor
