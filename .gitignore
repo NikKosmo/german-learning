@@ -76,7 +76,7 @@ notes.txt
 scratch.md
 
 # User-specific study plan
-study-plan/
+study_plan/
 
 # =============================================================================
 # Pending Cards (workflow file - may want to exclude if contains WIP)
