@@ -10,7 +10,7 @@
 # =============================================================================
 # Option 1: Exclude all audio (recommended for public repo)
 # Users can generate their own audio or download from sources
-audio/words_from_duolinguo/
+audio/words_from_duolingo/
 audio/generated_audio/*.mp3
 audio/generated_audio/*.wav
 
