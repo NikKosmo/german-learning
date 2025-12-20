@@ -1,6 +1,6 @@
 # Flashcard Generation Workflow
 
-**Purpose:** Complete end-to-end workflow for generating German-Russian flashcards using Claude + Gemini validation
+**Purpose:** Complete end-to-end workflow for generating German-Russian flashcards using LLM generation + validation
 
 **Version:** 1.2
 **Last Updated:** 2025-12-20
@@ -76,10 +76,10 @@
 
 ## Overview
 
-This workflow uses **Claude to generate card data** (translations, examples, notes) and **Gemini to validate** quality. No LLM script needed - Claude works directly with the data files.
+This workflow uses an **LLM to generate card data** (translations, examples, notes) and a **Validation LLM to validate** quality before insertion.
 
 ### Key Principle
-**Claude generates, Gemini validates, scripts automate the insertion.**
+**LLM generates, Validation LLM validates, scripts automate the insertion.**
 
 ---
 
@@ -102,7 +102,7 @@ python3 update_word_tracking.py
 
 ---
 
-### Step 2: Claude Reads Pending Words
+### Step 2: Read Pending Words
 
 **File:** `flashcards/word_tracking.md`
 **Task:** Identify N words with status `pending` and audio `✅`
@@ -111,9 +111,9 @@ python3 update_word_tracking.py
 
 ---
 
-### Step 3: Claude Generates & Validates Card Data (Per-Word)
+### Step 3: Generate & Validate Card Data (Per-Word)
 
-**IMPORTANT: Gemini validation is REQUIRED for every word. Do not skip this step.**
+**IMPORTANT: Validation is REQUIRED for every word. Do not skip this step.**
 
 For each word:
 
@@ -200,7 +200,7 @@ Or if invalid:
 
 ---
 
-### Step 4: Claude Writes `pending_cards.json`
+### Step 4: Write `pending_cards.json`
 
 **File:** `flashcards/scripts/pending_cards.json`
 **Format:**
@@ -333,17 +333,6 @@ After completing the workflow, verify:
 - [ ] Russian translations are in Cyrillic
 - [ ] Example sentences are natural German (A2-B1 level)
 
-### Gemini Validation (Mandatory)
-- [ ] ALL words validated by Gemini before insertion
-- [ ] No validation failures ignored
-- [ ] All issues from Gemini addressed
-
-**If validation fails:**
-1. Report which check failed
-2. Review the specific error in `pending_cards.json`
-3. Fix data in `pending_cards.json` ONLY (do not modify other files - they are managed by scripts)
-4. Re-validate before proceeding to Step 5
-
 ---
 
 ## Error Handling
@@ -366,6 +355,22 @@ After completing the workflow, verify:
 ---
 
 ## Card Data Standards
+
+### Terminology
+
+**Understanding JSON entries vs cards:**
+- **JSON entry** = One object in `pending_cards.json` with a `card_type` field
+- **Card** = Final flashcard visible in Anki deck (appears as row in `german_vocabulary_b1.md` table)
+- **Auto-expansion:** One "Reverse" JSON entry → two cards (Reverse RU→DE and Reverse DE→RU)
+
+**Example for nouns:**
+- You create **2 JSON entries**: one with `"card_type": "Reverse"`, one with `"card_type": "Cloze"`
+- Scripts expand this into **3 cards** in the final deck:
+  1. Reverse RU→DE (Russian → German)
+  2. Reverse DE→RU (German → Russian)
+  3. Cloze (article/gender test)
+
+---
 
 ### General Rules (All Word Types)
 
@@ -405,12 +410,16 @@ After completing the workflow, verify:
 - `notes` - Gender explanation, plural pattern in Russian
 - `audio` - Filename.mp3
 
-**Card types created:**
-1. `card_type: "Reverse RU→DE"` (Russian → German)
-2. `card_type: "Reverse DE→RU"` (German → Russian)
-3. `card_type: "Cloze"` ({{c1::der/die/das}} Noun) - tests article/gender
+**JSON entries to create:**
+1. One entry with `"card_type": "Reverse"` (expands to 2 cards: RU→DE and DE→RU)
+2. One entry with `"card_type": "Cloze"` (becomes 1 card testing article/gender)
 
-**IMPORTANT:** Use `"Cloze"` exactly, NOT `"Cloze (Gender)"` or other variations
+**Final cards in deck:** 3 total
+- Reverse RU→DE (Russian → German)
+- Reverse DE→RU (German → Russian)
+- Cloze ({{c1::der/die/das}} Noun)
+
+**IMPORTANT:** Use `"Cloze"` exactly in JSON, NOT `"Cloze (Gender)"` or other variations
 
 **Example:**
 ```json
@@ -440,9 +449,9 @@ After completing the workflow, verify:
 - `notes` - Verb type (regular/irregular), Perfekt auxiliary in Russian
 - `audio` - Filename.mp3
 
-**Card types created:**
-1. Reverse RU→DE
-2. Reverse DE→RU
+**JSON entries to create:** 1 entry with `"card_type": "Reverse"`
+
+**Final cards in deck:** 2 total (Reverse RU→DE, Reverse DE→RU)
 
 **Example:**
 ```json
@@ -472,9 +481,9 @@ After completing the workflow, verify:
 - `notes` - Note umlaut changes, irregularities in Russian
 - `audio` - Filename.mp3
 
-**Card types created:**
-1. Reverse RU→DE
-2. Reverse DE→RU
+**JSON entries to create:** 1 entry with `"card_type": "Reverse"`
+
+**Final cards in deck:** 2 total (Reverse RU→DE, Reverse DE→RU)
 
 **Example:**
 ```json
@@ -504,9 +513,9 @@ After completing the workflow, verify:
 - `notes` - Case requirements, special uses in Russian
 - `audio` - Filename.mp3
 
-**Card types created:**
-1. Reverse RU→DE
-2. Reverse DE→RU
+**JSON entries to create:** 1 entry with `"card_type": "Reverse"`
+
+**Final cards in deck:** 2 total (Reverse RU→DE, Reverse DE→RU)
 
 **Example:**
 ```json
@@ -536,9 +545,9 @@ After completing the workflow, verify:
 - `notes` - Function/usage explanation in Russian
 - `audio` - Filename.mp3
 
-**Card types created:**
-1. Reverse RU→DE
-2. Reverse DE→RU
+**JSON entries to create:** 1 entry with `"card_type": "Reverse"`
+
+**Final cards in deck:** 2 total (Reverse RU→DE, Reverse DE→RU)
 
 **Example (Conjunction):**
 ```json
@@ -602,11 +611,6 @@ After completing the workflow, verify:
 - High priority (see `CLAUDE.md` grammar priorities)
 - Notes should explain meaning distinctions in Russian
 - Example: "müssen vs sollen", "nicht dürfen vs nicht müssen"
-
-### Konjunktiv II Forms
-- Highest priority (30% - see `CLAUDE.md`)
-- Notes should explain würde-form construction
-- Example should show polite request or conditional
 
 ### Polysemous Words (Multiple Meanings, Same Word Class)
 
@@ -786,7 +790,7 @@ german/flashcards/
 ├── german_vocabulary_b1.apkg        # Final Anki deck
 ├── WORKFLOW.md                      # This file
 └── scripts/
-    ├── pending_cards.json           # Claude writes here (Step 4)
+    ├── pending_cards.json           # LLM writes here (Step 4)
     ├── update_word_tracking.py      # Update tracking (Step 1, Step 7)
     ├── insert_cards.py              # Insert cards into MD (Step 5)
     ├── generate_deck_from_md.py     # Generate .apkg (Step 6)
