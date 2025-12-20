@@ -7,7 +7,7 @@ PROJECT_ROOT = Path(__file__).resolve().parent
 # Directories
 AUDIO_DIR = PROJECT_ROOT / "audio"
 AUDIO_GENERATED = AUDIO_DIR / "generated_audio"
-AUDIO_DUOLINGO = AUDIO_DIR / "words_from_duolinguo"
+AUDIO_DUOLINGO = AUDIO_DIR / "words_from_duolingo"
 
 FLASHCARDS_DIR = PROJECT_ROOT / "flashcards"
 FLASHCARDS_SCRIPTS = FLASHCARDS_DIR / "scripts"

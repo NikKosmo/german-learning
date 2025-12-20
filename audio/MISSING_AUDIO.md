@@ -1,7 +1,7 @@
 # Missing Audio Files
 
 **Purpose:** Track German words that need audio files for flashcard generation
-**Location:** Audio files should be added to `audio/words_from_duolinguo/`
+**Location:** Audio files should be added to `audio/words_from_duolingo/`
 **Naming Convention:** Capitalized word with umlauts (e.g., `Büro.mp3`, `Straße.mp3`)
 
 ---
@@ -58,7 +58,7 @@
 1. Search for word at https://forvo.com
 2. Download MP3 pronunciation
 3. Rename to match convention (capitalized, with umlauts)
-4. Place in `audio/words_from_duolinguo/`
+4. Place in `audio/words_from_duolingo/`
 
 ### Option 2: Google Translate
 1. Go to translate.google.com

@@ -5,7 +5,7 @@ Checks if audio files exist before creating cards.
 
 Supports two audio sources:
 1. Generated WAV files (audio/generated_audio/) - Piper TTS generated
-2. Legacy MP3 files (audio/words_from_duolinguo/) - Original Duolingo files
+2. Legacy MP3 files (audio/words_from_duolingo/) - Original Duolingo files
 
 Priority: WAV files are checked first, then MP3 files.
 
