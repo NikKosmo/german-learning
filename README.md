@@ -72,7 +72,6 @@ Focused grammar study materials organized by priority for B1 exam:
 4. `grammar/modal_verbs/` - Modal verb usage and distinctions
 5. `grammar/adjective_declension/` - Adjective endings by case/gender
 
-**Note:** Grammar directories currently use kebab-case naming (e.g., `konjunktiv-ii`). Migration to snake_case pending - see `common_rules/naming_conventions.md`.
 
 ### 🎴 Flashcards
 Anki deck generation system with automated workflow.

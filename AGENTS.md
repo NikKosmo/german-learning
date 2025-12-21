@@ -103,8 +103,6 @@ Based on B1 test performance gaps. When generating materials or explanations, pr
 - `grammar/modal_verbs/`
 - `grammar/adjective_declension/`
 
-**Note:** Grammar directories currently use kebab-case (e.g., `konjunktiv-ii`). See `common_rules/naming_conventions.md` - migration to snake_case pending.
-
 **Audio resources:**
 - `audio/words_from_duolingo/` - 1,189 pronunciation files (gitignored)
 - `audio/words_from_duolingo/learned_lexemes.csv` - Tracking data
