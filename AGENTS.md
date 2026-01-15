@@ -2,6 +2,8 @@
 
 This file provides guidance to AI coding assistants when working with code in this repository.
 
+**Multi-project workspace:** This project is part of a larger workspace. For cross-project standards and shared rules (see `common_rules/`), consult the parent `../AGENTS.md` file.
+
 ## Repository Context
 
 German language learning materials for a **Russian native speaker** targeting B2 certification, currently preparing for telc B1 exam (Feb-Mar 2026).
