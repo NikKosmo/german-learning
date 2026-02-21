@@ -2,7 +2,7 @@
 
 This file provides guidance to AI coding assistants when working with code in this repository.
 
-**Multi-project workspace:** This project is part of a larger workspace. For cross-project standards and shared rules (see `common_rules/`), consult the parent `../AGENTS.md` file.
+**Multi-project workspace:** This project is part of a larger workspace. If `../AGENTS.md` exists, **you MUST read it before proceeding** — it contains cross-project standards and shared rules (`common_rules/`).
 
 ## Repository Context
 
