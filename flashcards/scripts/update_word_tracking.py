@@ -8,7 +8,6 @@ Update word_tracking.md based on current deck status
 - Does NOT add new words automatically
 """
 
-import os
 import sys
 from datetime import datetime
 from pathlib import Path
@@ -25,12 +24,14 @@ NOTE: Do not cache paths.DECK_FILE/WORD_TRACKING_FILE at import time because
 tests may monkeypatch these values. Always resolve them at call time.
 """
 
+
 def check_audio(word):
     """Check if audio exists for word using audio_checker.py"""
     audio_file = get_audio_filename(word)
     if audio_file:
         return f"✅ {audio_file}"
     return "❌ missing"
+
 
 def read_words_in_deck():
     """
@@ -43,18 +44,22 @@ def read_words_in_deck():
 
     deck_file = paths.DECK_FILE
     try:
-        with open(deck_file, 'r', encoding='utf-8') as f:
+        with open(deck_file, encoding="utf-8") as f:
             content = f.read()
             # Extract German words and word types from table
-            for line in content.split('\n'):
-                if line.startswith('|') and ('Reverse' in line or 'Cloze' in line):
-                    parts = [p.strip() for p in line.split('|')]
+            for line in content.split("\n"):
+                if line.startswith("|") and ("Reverse" in line or "Cloze" in line):
+                    parts = [p.strip() for p in line.split("|")]
                     if len(parts) >= 6:
                         word_type = parts[3].strip()  # Word Type column
-                        german = parts[5]              # German column
+                        german = parts[5]  # German column
                         # Extract base word (remove cloze markers, take last word)
-                        german = german.replace('{{c1::', '').replace('{{c2::', '').replace('}}', '')
-                        german = german.split()[-1] if german else ''  # Last word (the actual vocabulary word)
+                        german = (
+                            german.replace("{{c1::", "").replace("{{c2::", "").replace("}}", "")
+                        )
+                        german = (
+                            german.split()[-1] if german else ""
+                        )  # Last word (the actual vocabulary word)
                         if german:
                             word_lower = german.lower()
                             # Add to word-only set
@@ -69,6 +74,7 @@ def read_words_in_deck():
 
     return words_set, words_with_types
 
+
 def update_tracking_file():
     """Update word_tracking.md with current status and audio info"""
 
@@ -76,13 +82,13 @@ def update_tracking_file():
 
     # Read existing tracking file
     tracking_file = paths.WORD_TRACKING_FILE
-    with open(tracking_file, 'r', encoding='utf-8') as f:
+    with open(tracking_file, encoding="utf-8") as f:
         lines = f.readlines()
 
     # Find table start
     table_start = None
     for i, line in enumerate(lines):
-        if line.startswith('| Word | Status |'):
+        if line.startswith("| Word | Status |"):
             table_start = i
             break
 
@@ -97,14 +103,9 @@ def update_tracking_file():
 
     # Process table rows
     print("\nUpdating word tracking...")
-    today = datetime.now().strftime('%Y-%m-%d')
+    today = datetime.now().strftime("%Y-%m-%d")
 
-    stats = {
-        'in_deck': 0,
-        'pending': 0,
-        'missing_audio': 0,
-        'error': 0
-    }
+    stats = {"in_deck": 0, "pending": 0, "missing_audio": 0, "error": 0}
 
     updated_rows = []
     header_line = lines[table_start]
@@ -119,14 +120,14 @@ def update_tracking_file():
         line = lines[i].strip()
 
         # Stop at end of table (empty line or stats section)
-        if not line or line == '---' or line.startswith('##'):
+        if not line or line == "---" or line.startswith("##"):
             break
 
-        if not line.startswith('|'):
+        if not line.startswith("|"):
             continue
 
         # Parse row
-        parts = [p.strip() for p in line.split('|')]
+        parts = [p.strip() for p in line.split("|")]
         if len(parts) < 8:
             continue
 
@@ -145,32 +146,33 @@ def update_tracking_file():
         word_lower = word.lower()
         is_in_deck = False
 
-        if word_type == '—' or not word_type.strip():
+        if word_type == "—" or not word_type.strip():
             # No word type specified → match on word alone (backward compatibility)
             is_in_deck = word_lower in words_set
         else:
             # Word type specified → match on (word, type) for homonym safety
-            is_in_deck = (word_lower in words_with_types and
-                         word_type.strip() in words_with_types[word_lower])
+            is_in_deck = (
+                word_lower in words_with_types and word_type.strip() in words_with_types[word_lower]
+            )
 
         if is_in_deck:
-            new_status = 'in_deck'
+            new_status = "in_deck"
             # If status changed to in_deck, update date
-            if old_status != 'in_deck' and date_added == '—':
+            if old_status != "in_deck" and date_added == "—":
                 date_added = today
-                type_label = f" ({word_type})" if word_type != '—' else ""
+                type_label = f" ({word_type})" if word_type != "—" else ""
                 changes.append(f"  {word}{type_label}: {old_status} → in_deck (date: {today})")
-            elif old_status != 'in_deck':
-                type_label = f" ({word_type})" if word_type != '—' else ""
+            elif old_status != "in_deck":
+                type_label = f" ({word_type})" if word_type != "—" else ""
                 changes.append(f"  {word}{type_label}: {old_status} → in_deck")
         else:
             # Not in deck - check audio
-            if '✅' in new_audio:
-                new_status = 'pending'
-            elif old_status == 'error':
-                new_status = 'error'  # Preserve error status
+            if "✅" in new_audio:
+                new_status = "pending"
+            elif old_status == "error":
+                new_status = "error"  # Preserve error status
             else:
-                new_status = 'missing_audio'
+                new_status = "missing_audio"
 
         # Track audio changes
         if old_audio != new_audio:
@@ -180,12 +182,14 @@ def update_tracking_file():
         stats[new_status] = stats.get(new_status, 0) + 1
 
         # Write updated row
-        updated_rows.append(f"| {word} | {new_status} | {new_audio} | {ipa} | {word_type} | {date_added} | {notes} |\n")
+        updated_rows.append(
+            f"| {word} | {new_status} | {new_audio} | {ipa} | {word_type} | {date_added} | {notes} |\n"
+        )
 
     # Write file
-    print(f"\nWriting updated tracking file...")
+    print("\nWriting updated tracking file...")
 
-    with open(tracking_file, 'w', encoding='utf-8') as f:
+    with open(tracking_file, "w", encoding="utf-8") as f:
         # Write header section (everything before table)
         for line in lines[:table_start]:
             f.write(line)
@@ -202,19 +206,19 @@ def update_tracking_file():
         f.write(f"- **In deck:** {stats['in_deck']}\n")
         f.write(f"- **Pending (with audio):** {stats['pending']}\n")
         f.write(f"- **Missing audio:** {stats['missing_audio']}\n")
-        if stats['error'] > 0:
+        if stats["error"] > 0:
             f.write(f"- **Error:** {stats['error']}\n")
         f.write(f"- **Ready to process:** {stats['pending']}\n")
 
     # Print summary
-    print("\n" + "="*60)
+    print("\n" + "=" * 60)
     print("WORD TRACKING UPDATED")
-    print("="*60)
+    print("=" * 60)
     print(f"Total words: {total}")
     print(f"In deck: {stats['in_deck']}")
     print(f"Pending (with audio): {stats['pending']}")
     print(f"Missing audio: {stats['missing_audio']}")
-    if stats['error'] > 0:
+    if stats["error"] > 0:
         print(f"Error: {stats['error']}")
 
     if changes:
@@ -224,7 +228,8 @@ def update_tracking_file():
     else:
         print("\nNo changes detected")
 
-    print("="*60)
+    print("=" * 60)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     update_tracking_file()

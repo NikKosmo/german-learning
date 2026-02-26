@@ -1,4 +1,5 @@
 """Project path configuration - all scripts import from this module"""
+
 from pathlib import Path
 
 # Project root is where this file lives

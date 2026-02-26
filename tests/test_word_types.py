@@ -8,8 +8,8 @@ this module's public API as required in temp/test_requirements.md.
 import importlib
 import sys
 from pathlib import Path
-import pytest
 
+import pytest
 
 # Ensure project root on sys.path for imports like flashcards.scripts.word_types
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -62,7 +62,7 @@ def test_compound_types_are_alphabetically_ordered():
     [
         *WordType.all_values(),
         "—",  # placeholder allowed
-        "",   # empty allowed
+        "",  # empty allowed
         None,  # None treated as empty
     ],
 )

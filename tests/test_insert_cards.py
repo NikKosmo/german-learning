@@ -7,7 +7,6 @@ import importlib
 import sys
 from pathlib import Path
 
-
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
@@ -103,4 +102,5 @@ def test_update_deck_metadata_counts_and_updates(tmp_paths, monkeypatch):
     assert "- Total cards: 2" in updated
     # Generated should be updated to today (YYYY-MM-DD) pattern
     import re
+
     assert re.search(r"- Generated: \d{4}-\d{2}-\d{2}", updated)

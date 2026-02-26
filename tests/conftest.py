@@ -1,8 +1,8 @@
 import sys
-from pathlib import Path
 import types
-import pytest
+from pathlib import Path
 
+import pytest
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
@@ -13,6 +13,7 @@ if str(PROJECT_ROOT) not in sys.path:
 def tmp_paths(monkeypatch, tmp_path):
     """Monkeypatch paths.DECK_FILE and paths.WORD_TRACKING_FILE to temp files."""
     import paths
+
     deck = tmp_path / "german_vocabulary_b1.md"
     tracking = tmp_path / "word_tracking.md"
     deck.write_text("", encoding="utf-8")

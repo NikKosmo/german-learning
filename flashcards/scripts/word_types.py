@@ -6,6 +6,7 @@ All word types must match these exact values (case-sensitive).
 
 from enum import Enum
 
+
 class WordType(Enum):
     """
     Valid word types for German vocabulary cards.
@@ -119,7 +120,7 @@ class WordType(Enum):
         # Validate before processing
         cls.validate_strict(word_type_str, "(in get_primary_type)")
 
-        return word_type_str.split('/')[0]
+        return word_type_str.split("/")[0]
 
     @classmethod
     def contains_type(cls, word_type_str, check_type_enum):
@@ -139,7 +140,7 @@ class WordType(Enum):
 
         cls.validate_strict(word_type_str)
 
-        parts = word_type_str.split('/')
+        parts = word_type_str.split("/")
         return check_type_enum.value in parts
 
     # Type checking methods (using exact matching)

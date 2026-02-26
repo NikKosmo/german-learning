@@ -10,17 +10,18 @@ Output:
     temp/deck_data.json - Complete card data with all fields
 """
 
-import sqlite3
-import zipfile
 import json
+import shutil
+import sqlite3
 import sys
 import tempfile
-import shutil
-from pathlib import Path
+import zipfile
 from datetime import datetime
+from pathlib import Path
 
 try:
     import zstandard
+
     HAS_ZSTANDARD = True
 except ImportError:
     HAS_ZSTANDARD = False
@@ -32,16 +33,17 @@ sys.path.insert(0, str(PROJECT_ROOT))
 import paths
 
 # Configuration
-DEFAULT_APKG = paths.FLASHCARDS_DIR / 'german_vocabulary_b1.apkg'
-TEMP_DIR = PROJECT_ROOT / 'temp'
-OUTPUT_FILE = TEMP_DIR / 'deck_data.json'
+DEFAULT_APKG = paths.FLASHCARDS_DIR / "german_vocabulary_b1.apkg"
+TEMP_DIR = PROJECT_ROOT / "temp"
+OUTPUT_FILE = TEMP_DIR / "deck_data.json"
+
 
 def extract_apkg(apkg_path, extract_to):
     """Extract .apkg file (it's a ZIP) to temporary directory"""
     print(f"Extracting {apkg_path.name}...")
 
     try:
-        with zipfile.ZipFile(apkg_path, 'r') as zip_ref:
+        with zipfile.ZipFile(apkg_path, "r") as zip_ref:
             zip_ref.extractall(extract_to)
         print(f"✅ Extracted to {extract_to}")
         return True
@@ -51,6 +53,7 @@ def extract_apkg(apkg_path, extract_to):
     except Exception as e:
         print(f"❌ ERROR: Failed to extract: {e}")
         return False
+
 
 def get_models_from_collection(db_path):
     """Extract model definitions from collection
@@ -71,16 +74,15 @@ def get_models_from_collection(db_path):
         cursor.execute("SELECT id, name, config FROM notetypes")
         notetypes = cursor.fetchall()
 
-        for notetype_id, notetype_name, config_json in notetypes:
+        for notetype_id, notetype_name, _ in notetypes:
             # Get field names for this notetype
-            cursor.execute("SELECT name, ord FROM fields WHERE ntid = ? ORDER BY ord", (notetype_id,))
+            cursor.execute(
+                "SELECT name, ord FROM fields WHERE ntid = ? ORDER BY ord", (notetype_id,)
+            )
             fields = cursor.fetchall()
             field_names = [field[0] for field in fields]
 
-            model_fields[str(notetype_id)] = {
-                'name': notetype_name,
-                'fields': field_names
-            }
+            model_fields[str(notetype_id)] = {"name": notetype_name, "fields": field_names}
     else:
         # Old format: models are stored as JSON in the col table
         cursor.execute("SELECT models FROM col")
@@ -89,15 +91,13 @@ def get_models_from_collection(db_path):
 
         # Parse models to get field names by model ID
         for model_id, model_data in models.items():
-            model_name = model_data['name']
-            field_names = [field['name'] for field in model_data['flds']]
-            model_fields[model_id] = {
-                'name': model_name,
-                'fields': field_names
-            }
+            model_name = model_data["name"]
+            field_names = [field["name"] for field in model_data["flds"]]
+            model_fields[model_id] = {"name": model_name, "fields": field_names}
 
     conn.close()
     return model_fields
+
 
 def unpack_notes(db_path):
     """Extract all notes from Anki database"""
@@ -120,7 +120,7 @@ def unpack_notes(db_path):
         note_id, guid, model_id, fields_str, tags = row
 
         # Split fields (separated by \x1f)
-        field_values = fields_str.split('\x1f')
+        field_values = fields_str.split("\x1f")
 
         # Get model info
         model_id_str = str(model_id)
@@ -129,8 +129,8 @@ def unpack_notes(db_path):
             continue
 
         model_info = models[model_id_str]
-        model_name = model_info['name']
-        field_names = model_info['fields']
+        model_name = model_info["name"]
+        field_names = model_info["fields"]
 
         # Map field names to values
         fields_dict = {}
@@ -140,21 +140,22 @@ def unpack_notes(db_path):
                 value = field_values[i].strip()
                 fields_dict[field_name] = value
             else:
-                fields_dict[field_name] = ''
+                fields_dict[field_name] = ""
 
         card = {
-            'note_id': note_id,
-            'guid': guid,
-            'model_id': model_id,
-            'model_name': model_name,
-            'tags': tags,
-            'fields': fields_dict
+            "note_id": note_id,
+            "guid": guid,
+            "model_id": model_id,
+            "model_name": model_name,
+            "tags": tags,
+            "fields": fields_dict,
         }
 
         cards.append(card)
 
     conn.close()
     return cards
+
 
 def get_deck_info(db_path):
     """Get deck name and ID from database
@@ -175,10 +176,7 @@ def get_deck_info(db_path):
         cursor.execute("SELECT id, name FROM decks")
         decks = cursor.fetchall()
         for deck_id, deck_name in decks:
-            deck_info.append({
-                'id': deck_id,
-                'name': deck_name
-            })
+            deck_info.append({"id": deck_id, "name": deck_name})
     else:
         # Old format: decks stored as JSON in col table
         cursor.execute("SELECT decks FROM col")
@@ -186,48 +184,46 @@ def get_deck_info(db_path):
         decks = json.loads(decks_json)
 
         for deck_id, deck_data in decks.items():
-            deck_info.append({
-                'id': int(deck_id),
-                'name': deck_data['name']
-            })
+            deck_info.append({"id": int(deck_id), "name": deck_data["name"]})
 
     conn.close()
     return deck_info
+
 
 def decompress_anki21b(extract_dir):
     """Decompress collection.anki21b if it exists (Anki 2.1.50+)
 
     Returns path to the database to use (either decompressed or original)
     """
-    anki21b_path = extract_dir / 'collection.anki21b'
-    anki2_path = extract_dir / 'collection.anki2'
+    anki21b_path = extract_dir / "collection.anki21b"
+    anki2_path = extract_dir / "collection.anki2"
 
     if anki21b_path.exists():
-        print(f"Found newer format: collection.anki21b (compressed)")
+        print("Found newer format: collection.anki21b (compressed)")
 
         if not HAS_ZSTANDARD:
-            print(f"⚠️  WARNING: zstandard library not installed")
-            print(f"   Install with: pip install zstandard")
-            print(f"   Falling back to collection.anki2 (may have incomplete data)")
+            print("⚠️  WARNING: zstandard library not installed")
+            print("   Install with: pip install zstandard")
+            print("   Falling back to collection.anki2 (may have incomplete data)")
             return anki2_path
 
-        print(f"Decompressing collection.anki21b...")
-        decompressed_path = extract_dir / 'collection_decompressed.anki2'
+        print("Decompressing collection.anki21b...")
+        decompressed_path = extract_dir / "collection_decompressed.anki2"
 
         try:
             dctx = zstandard.ZstdDecompressor()
-            with open(anki21b_path, 'rb') as ifh:
-                with open(decompressed_path, 'wb') as ofh:
-                    dctx.copy_stream(ifh, ofh)
-            print(f"✅ Decompressed successfully")
+            with open(anki21b_path, "rb") as ifh, open(decompressed_path, "wb") as ofh:
+                dctx.copy_stream(ifh, ofh)
+            print("✅ Decompressed successfully")
             return decompressed_path
         except Exception as e:
             print(f"❌ ERROR: Failed to decompress: {e}")
-            print(f"   Falling back to collection.anki2")
+            print("   Falling back to collection.anki2")
             return anki2_path
     else:
-        print(f"Using collection.anki2 (old format)")
+        print("Using collection.anki2 (old format)")
         return anki2_path
+
 
 def main():
     print("=" * 70)
@@ -266,7 +262,7 @@ def main():
         # Decompress collection.anki21b if it exists, otherwise use collection.anki2
         collection_db = decompress_anki21b(extract_dir)
         if not collection_db.exists():
-            print(f"❌ ERROR: No valid collection database found in package")
+            print("❌ ERROR: No valid collection database found in package")
             sys.exit(1)
 
         print()
@@ -281,17 +277,17 @@ def main():
 
         # Prepare output data
         output_data = {
-            'source_file': str(apkg_path),
-            'extracted_at': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-            'decks': deck_info,
-            'total_cards': len(cards),
-            'cards': cards
+            "source_file": str(apkg_path),
+            "extracted_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "decks": deck_info,
+            "total_cards": len(cards),
+            "cards": cards,
         }
 
         # Write to JSON
         print()
         print(f"Writing output to: {OUTPUT_FILE}")
-        with open(OUTPUT_FILE, 'w', encoding='utf-8') as f:
+        with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
             json.dump(output_data, f, ensure_ascii=False, indent=2)
 
         print(f"✅ Successfully unpacked {len(cards)} cards")
@@ -311,5 +307,6 @@ def main():
     print(f"End time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     print("=" * 70)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()

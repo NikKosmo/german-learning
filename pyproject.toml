@@ -1,0 +1,52 @@
+[tool.pytest.ini_options]
+minversion = "8.0"
+addopts = "-q"
+testpaths = ["tests"]
+pythonpath = ["."]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+exclude = [
+    "audio/",
+    "temp/",
+    "grammar/",
+    "speaking/",
+    "writing/",
+    "vocabulary/",
+    "study_plan/",
+    "resources/",
+]
+
+[tool.ruff.lint]
+select = [
+    "F",     # Pyflakes (unused imports, undefined names, dead code)
+    "E",     # pycodestyle errors
+    "W",     # pycodestyle warnings
+    "I",     # isort (import sorting)
+    "UP",    # pyupgrade (modern Python syntax)
+    "B",     # flake8-bugbear (common bugs)
+    "SIM",   # flake8-simplify
+    "RUF",   # Ruff-specific rules
+]
+
+[tool.ruff.lint.per-file-ignores]
+"flashcards/scripts/*.py" = ["E402"]
+"flashcards/scripts/generate_deck_from_md.py" = ["E501"]
+"flashcards/scripts/generate_cases_deck.py" = ["E501"]
+"flashcards/scripts/insert_cards.py" = ["E501"]
+"flashcards/scripts/unpack_deck.py" = ["E501"]
+"flashcards/scripts/update_word_tracking.py" = ["E501"]
+"flashcards/scripts/validate_deck.py" = ["E501"]
+"tests/*.py" = ["E501"]
+
+[tool.pyright]
+pythonVersion = "3.11"
+typeCheckingMode = "basic"
+include = ["flashcards/scripts", "tests"]
+exclude = []
+venvPath = "."
+venv = "venv"
+reportOptionalMemberAccess = "warning"
+reportArgumentType = "warning"
+reportAttributeAccessIssue = "warning"
