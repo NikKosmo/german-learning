@@ -15,33 +15,36 @@ import paths
 
 DECK_FILE = paths.DECK_FILE
 
+
 def count_actual_cards():
     """Count actual card rows in the deck file"""
-    with open(DECK_FILE, 'r', encoding='utf-8') as f:
+    with open(DECK_FILE, encoding="utf-8") as f:
         content = f.read()
 
-    lines = content.split('\n')
+    lines = content.split("\n")
 
     actual_count = 0
     for line in lines:
         # Count table rows (skip header and separator)
-        if line.startswith('|') and not line.startswith('| ID |') and not line.startswith('|-'):
+        if line.startswith("|") and not line.startswith("| ID |") and not line.startswith("|-"):
             actual_count += 1
 
     return actual_count
 
+
 def get_metadata_count():
     """Get card count from metadata"""
-    with open(DECK_FILE, 'r', encoding='utf-8') as f:
+    with open(DECK_FILE, encoding="utf-8") as f:
         content = f.read()
 
-    lines = content.split('\n')
+    lines = content.split("\n")
 
     for line in lines:
-        if line.startswith('- Total cards:'):
-            return int(line.split(':')[1].strip())
+        if line.startswith("- Total cards:"):
+            return int(line.split(":")[1].strip())
 
     return None
+
 
 def main():
     print("=" * 60)
@@ -56,6 +59,10 @@ def main():
     print(f"Metadata card count:    {metadata}")
     print()
 
+    if metadata is None:
+        print("❌ ERROR - Could not find metadata count in file")
+        return 1
+
     if actual == metadata:
         print("✅ SYNC OK - Metadata matches actual card count")
         return 0
@@ -64,9 +71,10 @@ def main():
         print(f"❌ SYNC ERROR - Metadata is off by {diff} cards")
         print()
         print("Run insert_cards.py with empty pending_cards.json to fix:")
-        print('  echo \'{"cards": []}\' > pending_cards.json')
-        print('  python3 insert_cards.py')
+        print("  echo '{\"cards\": []}' > pending_cards.json")
+        print("  python3 insert_cards.py")
         return 1
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     sys.exit(main())

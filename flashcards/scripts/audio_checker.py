@@ -19,7 +19,6 @@ Usage:
         print("Audio missing!")
 """
 
-import os
 import sys
 from pathlib import Path
 
@@ -31,17 +30,10 @@ import paths
 
 # Audio directories (checked in priority order)
 AUDIO_DIRS = [
-    {
-        'path': paths.AUDIO_GENERATED,
-        'extension': '.wav',
-        'description': 'Generated (Piper TTS)'
-    },
-    {
-        'path': paths.AUDIO_DUOLINGO,
-        'extension': '.mp3',
-        'description': 'Legacy (Duolingo)'
-    }
+    {"path": paths.AUDIO_GENERATED, "extension": ".wav", "description": "Generated (Piper TTS)"},
+    {"path": paths.AUDIO_DUOLINGO, "extension": ".mp3", "description": "Legacy (Duolingo)"},
 ]
+
 
 def check_audio(word):
     """
@@ -65,9 +57,9 @@ def check_audio(word):
     # Try multiple casing variations
     variations = [
         word[0].upper() + word[1:],  # Capitalize first letter (most common for audio files)
-        word,                         # Exact match
-        word.lower(),                # All lowercase
-        word.upper(),                # All uppercase
+        word,  # Exact match
+        word.lower(),  # All lowercase
+        word.upper(),  # All uppercase
     ]
 
     # Remove duplicates while preserving order
@@ -78,26 +70,27 @@ def check_audio(word):
         # Try each variation
         for variant in variations:
             filename = f"{variant}{audio_dir['extension']}"
-            filepath = audio_dir['path'] / filename
+            filepath = audio_dir["path"] / filename
 
             if filepath.exists():
                 return filename
 
         # If no exact match found, do case-insensitive search in directory
-        if audio_dir['path'].exists():
+        if audio_dir["path"].exists():
             try:
-                files = [f.name for f in audio_dir['path'].iterdir() if f.is_file()]
+                files = [f.name for f in audio_dir["path"].iterdir() if f.is_file()]
                 word_lower = word.lower()
 
                 for file in files:
                     # Check if filename (without extension) matches word (case-insensitive)
                     file_base = Path(file).stem.lower()
-                    if file_base == word_lower and file.endswith(audio_dir['extension']):
+                    if file_base == word_lower and file.endswith(audio_dir["extension"]):
                         return file  # Return actual filename with correct casing
             except OSError:
                 pass  # Directory access error, continue to next
 
     return None
+
 
 def get_audio_field(word):
     """
@@ -113,6 +106,7 @@ def get_audio_field(word):
     if audio_file:
         return f"[sound:{audio_file}]"
     return ""
+
 
 def check_multiple_words(words):
     """
@@ -137,10 +131,8 @@ def check_multiple_words(words):
         else:
             missing.append(word)
 
-    return {
-        'found': found,
-        'missing': missing
-    }
+    return {"found": found, "missing": missing}
+
 
 def print_audio_report(words, word_type="words"):
     """
@@ -156,16 +148,16 @@ def print_audio_report(words, word_type="words"):
     print("=" * 60)
 
     print(f"\n✅ Found ({len(result['found'])})")
-    for word, filename in result['found']:
+    for word, filename in result["found"]:
         print(f"   • {word:20} → {filename}")
 
-    if result['missing']:
+    if result["missing"]:
         print(f"\n❌ Missing ({len(result['missing'])})")
-        for word in result['missing']:
+        for word in result["missing"]:
             print(f"   • {word}")
-        print(f"\n⚠️  Add missing words to audio/MISSING_AUDIO.md")
+        print("\n⚠️  Add missing words to audio/MISSING_AUDIO.md")
     else:
-        print(f"\n✅ All audio files present!")
+        print("\n✅ All audio files present!")
 
     print("=" * 60)
 

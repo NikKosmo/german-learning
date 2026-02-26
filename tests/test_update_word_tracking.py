@@ -12,7 +12,6 @@ import importlib
 import sys
 from pathlib import Path
 
-
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
@@ -47,9 +46,9 @@ def read_tracking_rows(md_path: Path) -> list[str]:
         if in_table and line.startswith("|---"):
             continue
         if in_table:
-            if not line or line == '---' or line.startswith('##'):
+            if not line or line == "---" or line.startswith("##"):
                 break
-            if line.startswith('|'):
+            if line.startswith("|"):
                 body.append(line)
     return body
 
@@ -67,10 +66,10 @@ def test_read_words_in_deck_extraction(tmp_paths, monkeypatch):
     uwt = importlib.import_module("flashcards.scripts.update_word_tracking")
     words_set, words_with_types = uwt.read_words_in_deck()
 
-    assert 'schritt' in words_set
-    assert 'frage' in words_set
-    assert words_with_types['schritt'] == {'Noun'}
-    assert 'Noun' in words_with_types['frage']
+    assert "schritt" in words_set
+    assert "frage" in words_set
+    assert words_with_types["schritt"] == {"Noun"}
+    assert "Noun" in words_with_types["frage"]
 
 
 def test_update_tracking_statuses_and_dates(tmp_paths, monkeypatch):
@@ -97,36 +96,41 @@ def test_update_tracking_statuses_and_dates(tmp_paths, monkeypatch):
 
     # Mock audio: pretend Frage has audio, Schritt has audio, Fehler no audio
     uwt = importlib.import_module("flashcards.scripts.update_word_tracking")
-    monkeypatch.setattr(uwt, "get_audio_filename", lambda w: {
-        'Schritt': 'de_schritt.mp3',
-        'Frage': 'de_frage.mp3',
-    }.get(w, None))
+    monkeypatch.setattr(
+        uwt,
+        "get_audio_filename",
+        lambda w: {
+            "Schritt": "de_schritt.mp3",
+            "Frage": "de_frage.mp3",
+        }.get(w),
+    )
 
     # Run update
     uwt.update_tracking_file()
 
     rows = read_tracking_rows(tracking)
+
     # Collect row data for asserts
     def parse_row(r):
-        parts = [p.strip() for p in r.split('|')]
+        parts = [p.strip() for p in r.split("|")]
         return {
-            'word': parts[1],
-            'status': parts[2],
-            'audio': parts[3],
-            'ipa': parts[4],
-            'type': parts[5],
-            'date': parts[6],
-            'notes': parts[7],
+            "word": parts[1],
+            "status": parts[2],
+            "audio": parts[3],
+            "ipa": parts[4],
+            "type": parts[5],
+            "date": parts[6],
+            "notes": parts[7],
         }
 
-    data = {parse_row(r)['word']: parse_row(r) for r in rows}
+    data = {parse_row(r)["word"]: parse_row(r) for r in rows}
 
     # Schritt is in deck -> status becomes in_deck and date is set (not '—')
-    assert data['Schritt']['status'] == 'in_deck'
-    assert data['Schritt']['date'] != '—'
-    assert data['Schritt']['audio'].startswith('✅')
+    assert data["Schritt"]["status"] == "in_deck"
+    assert data["Schritt"]["date"] != "—"
+    assert data["Schritt"]["audio"].startswith("✅")
 
     # Frage has type placeholder '—' in tracking -> uses word-only match; it is in deck -> in_deck
-    assert data['Frage']['status'] == 'in_deck'
+    assert data["Frage"]["status"] == "in_deck"
     # Error stays error regardless of audio
-    assert data['Fehler']['status'] == 'error'
+    assert data["Fehler"]["status"] == "error"

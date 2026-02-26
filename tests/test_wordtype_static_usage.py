@@ -6,9 +6,8 @@ flashcards/scripts (excluding the enum module itself) for literals like
 "Noun", "Verb", etc. Comparisons should use the enum, not strings.
 """
 
-from pathlib import Path
 import re
-
+from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 SCRIPTS_DIR = PROJECT_ROOT / "flashcards" / "scripts"
@@ -36,9 +35,7 @@ def file_should_be_scanned(path: Path) -> bool:
     if path.suffix != ".py":
         return False
     # Exclude the enum module where literals are defined by design
-    if path.name == "word_types.py":
-        return False
-    return True
+    return path.name != "word_types.py"
 
 
 def strip_allowed_contexts(text: str) -> str:

@@ -8,13 +8,14 @@ Logs: deck_generation_YYYY-MM-DD_HH-MM.log
 The MD file is the source of truth - this script only reads, never modifies it.
 """
 
-import genanki
 import re
+import shutil
+import sys
+import tempfile
 from datetime import datetime
 from pathlib import Path
-import sys
-import shutil
-import tempfile
+
+import genanki
 
 # Add project root to Python path
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
@@ -24,18 +25,22 @@ import paths
 from flashcards.scripts.word_types import WordType, get_model_category
 
 # Configuration
-LANGUAGE_PREFIX = "de"  # Language prefix for audio files (avoids collisions with other language decks)
+LANGUAGE_PREFIX = (
+    "de"  # Language prefix for audio files (avoids collisions with other language decks)
+)
 MD_FILE = paths.DECK_FILE
-OUTPUT_FILE = paths.FLASHCARDS_DIR / 'german_vocabulary_b1.apkg'
-DECK_NAME = 'German Vocabulary - B1'
+OUTPUT_FILE = paths.FLASHCARDS_DIR / "german_vocabulary_b1.apkg"
+DECK_NAME = "German Vocabulary - B1"
 DECK_ID = 1234567890  # Fixed deck ID for consistency
 
 # Generate timestamped log filename
-timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M')
-LOG_FILE = paths.FLASHCARDS_SCRIPTS / f'deck_generation_{timestamp}.log'
+timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M")
+LOG_FILE = paths.FLASHCARDS_SCRIPTS / f"deck_generation_{timestamp}.log"
+
 
 class Logger:
     """Simple logger that writes to both console and file"""
+
     def __init__(self, log_file):
         self.log_file = log_file
         self.log_buffer = []
@@ -45,13 +50,14 @@ class Logger:
         self.log_buffer.append(message)
 
     def write_log(self):
-        with open(self.log_file, 'w', encoding='utf-8') as f:
-            f.write('\n'.join(self.log_buffer))
+        with open(self.log_file, "w", encoding="utf-8") as f:
+            f.write("\n".join(self.log_buffer))
+
 
 logger = Logger(LOG_FILE)
 
 # Shared CSS for all card types
-SHARED_CSS = '''
+SHARED_CSS = """
     .card {
         font-family: Arial, sans-serif;
         font-size: 20px;
@@ -125,7 +131,8 @@ SHARED_CSS = '''
         margin-top: 15px;
         font-style: italic;
     }
-'''
+"""
+
 
 def create_note_models():
     """Create all note models for different card types"""
@@ -133,25 +140,26 @@ def create_note_models():
     models = {}
 
     # Noun RU→DE
-    models['noun_ru_de'] = genanki.Model(
+    models["noun_ru_de"] = genanki.Model(
         1607392319,
-        'German Noun (RU→DE)',
+        "German Noun (RU→DE)",
         fields=[
-            {'name': 'ID'},
-            {'name': 'Russian'},
-            {'name': 'Article'},
-            {'name': 'Noun'},
-            {'name': 'Plural'},
-            {'name': 'Gender'},
-            {'name': 'Example_DE'},
-            {'name': 'Example_RU'},
-            {'name': 'Notes'},
-            {'name': 'Audio'},
+            {"name": "ID"},
+            {"name": "Russian"},
+            {"name": "Article"},
+            {"name": "Noun"},
+            {"name": "Plural"},
+            {"name": "Gender"},
+            {"name": "Example_DE"},
+            {"name": "Example_RU"},
+            {"name": "Notes"},
+            {"name": "Audio"},
         ],
-        templates=[{
-            'name': 'Card',
-            'qfmt': '<div class="front"><div class="russian">{{Russian}}</div><div class="hint">(существительное)</div></div>',
-            'afmt': '''
+        templates=[
+            {
+                "name": "Card",
+                "qfmt": '<div class="front"><div class="russian">{{Russian}}</div><div class="hint">(существительное)</div></div>',
+                "afmt": """
                 <div class="back">
                     <div class="german-word">
                         <span class="gender-{{Gender}}">{{Article}}</span><span>{{Noun}}</span>
@@ -165,38 +173,40 @@ def create_note_models():
                     <div class="notes">{{Notes}}</div>
                     {{Audio}}
                 </div>
-            ''',
-        }],
-        css=SHARED_CSS
+            """,
+            }
+        ],
+        css=SHARED_CSS,
     )
 
     # Noun DE→RU
-    models['noun_de_ru'] = genanki.Model(
+    models["noun_de_ru"] = genanki.Model(
         1607392320,
-        'German Noun (DE→RU)',
+        "German Noun (DE→RU)",
         fields=[
-            {'name': 'ID'},
-            {'name': 'Russian'},
-            {'name': 'Article'},
-            {'name': 'Noun'},
-            {'name': 'Plural'},
-            {'name': 'Gender'},
-            {'name': 'Example_DE'},
-            {'name': 'Example_RU'},
-            {'name': 'Notes'},
-            {'name': 'Audio'},
+            {"name": "ID"},
+            {"name": "Russian"},
+            {"name": "Article"},
+            {"name": "Noun"},
+            {"name": "Plural"},
+            {"name": "Gender"},
+            {"name": "Example_DE"},
+            {"name": "Example_RU"},
+            {"name": "Notes"},
+            {"name": "Audio"},
         ],
-        templates=[{
-            'name': 'Card',
-            'qfmt': '''
+        templates=[
+            {
+                "name": "Card",
+                "qfmt": """
                 <div class="front">
                     <div class="russian">
                         <span class="gender-{{Gender}}">{{Article}}</span><span>{{Noun}}</span>
                     </div>
                     <div class="hint">(существительное)</div>
                 </div>
-            ''',
-            'afmt': '''
+            """,
+                "afmt": """
                 <div class="back">
                     <div class="german-word">{{Russian}}</div>
                     <div class="forms">Plural: {{Plural}}</div>
@@ -208,33 +218,35 @@ def create_note_models():
                     <div class="notes">{{Notes}}</div>
                     {{Audio}}
                 </div>
-            ''',
-        }],
-        css=SHARED_CSS
+            """,
+            }
+        ],
+        css=SHARED_CSS,
     )
 
     # Noun Cloze
-    models['noun_cloze'] = genanki.Model(
+    models["noun_cloze"] = genanki.Model(
         1607392321,
-        'German Noun Gender Cloze',
+        "German Noun Gender Cloze",
         fields=[
-            {'name': 'ID'},
-            {'name': 'Cloze_German'},
-            {'name': 'Plural'},
-            {'name': 'Example_DE'},
-            {'name': 'Example_RU'},
-            {'name': 'Notes'},
-            {'name': 'Audio'},
+            {"name": "ID"},
+            {"name": "Cloze_German"},
+            {"name": "Plural"},
+            {"name": "Example_DE"},
+            {"name": "Example_RU"},
+            {"name": "Notes"},
+            {"name": "Audio"},
         ],
-        templates=[{
-            'name': 'Card',
-            'qfmt': '''
+        templates=[
+            {
+                "name": "Card",
+                "qfmt": """
                 <div class="front">
                     <div class="russian" style="font-size: 36px;">{{cloze:Cloze_German}}</div>
                     <div class="hint">(род существительного)</div>
                 </div>
-            ''',
-            'afmt': '''
+            """,
+                "afmt": """
                 <div class="back">
                     <div class="german-word">{{cloze:Cloze_German}}</div>
                     <div class="forms">Plural: {{Plural}}</div>
@@ -246,30 +258,32 @@ def create_note_models():
                     <div class="notes">{{Notes}}</div>
                     {{Audio}}
                 </div>
-            ''',
-        }],
+            """,
+            }
+        ],
         model_type=genanki.Model.CLOZE,
-        css=SHARED_CSS
+        css=SHARED_CSS,
     )
 
     # Verb RU→DE
-    models['verb_ru_de'] = genanki.Model(
+    models["verb_ru_de"] = genanki.Model(
         1607392322,
-        'German Verb (RU→DE)',
+        "German Verb (RU→DE)",
         fields=[
-            {'name': 'ID'},
-            {'name': 'Russian'},
-            {'name': 'Infinitive'},
-            {'name': 'Perfekt'},
-            {'name': 'Example_DE'},
-            {'name': 'Example_RU'},
-            {'name': 'Notes'},
-            {'name': 'Audio'},
+            {"name": "ID"},
+            {"name": "Russian"},
+            {"name": "Infinitive"},
+            {"name": "Perfekt"},
+            {"name": "Example_DE"},
+            {"name": "Example_RU"},
+            {"name": "Notes"},
+            {"name": "Audio"},
         ],
-        templates=[{
-            'name': 'Card',
-            'qfmt': '<div class="front"><div class="russian">{{Russian}}</div><div class="hint">(глагол)</div></div>',
-            'afmt': '''
+        templates=[
+            {
+                "name": "Card",
+                "qfmt": '<div class="front"><div class="russian">{{Russian}}</div><div class="hint">(глагол)</div></div>',
+                "afmt": """
                 <div class="back">
                     <div class="german-word">{{Infinitive}}</div>
                     <div class="forms">Perfekt: {{Perfekt}}</div>
@@ -281,29 +295,31 @@ def create_note_models():
                     <div class="notes">{{Notes}}</div>
                     {{Audio}}
                 </div>
-            ''',
-        }],
-        css=SHARED_CSS
+            """,
+            }
+        ],
+        css=SHARED_CSS,
     )
 
     # Verb DE→RU
-    models['verb_de_ru'] = genanki.Model(
+    models["verb_de_ru"] = genanki.Model(
         1607392323,
-        'German Verb (DE→RU)',
+        "German Verb (DE→RU)",
         fields=[
-            {'name': 'ID'},
-            {'name': 'Russian'},
-            {'name': 'Infinitive'},
-            {'name': 'Perfekt'},
-            {'name': 'Example_DE'},
-            {'name': 'Example_RU'},
-            {'name': 'Notes'},
-            {'name': 'Audio'},
+            {"name": "ID"},
+            {"name": "Russian"},
+            {"name": "Infinitive"},
+            {"name": "Perfekt"},
+            {"name": "Example_DE"},
+            {"name": "Example_RU"},
+            {"name": "Notes"},
+            {"name": "Audio"},
         ],
-        templates=[{
-            'name': 'Card',
-            'qfmt': '<div class="front"><div class="russian">{{Infinitive}}</div><div class="hint">(глагол)</div></div>',
-            'afmt': '''
+        templates=[
+            {
+                "name": "Card",
+                "qfmt": '<div class="front"><div class="russian">{{Infinitive}}</div><div class="hint">(глагол)</div></div>',
+                "afmt": """
                 <div class="back">
                     <div class="german-word">{{Russian}}</div>
                     <div class="forms">Perfekt: {{Perfekt}}</div>
@@ -315,29 +331,31 @@ def create_note_models():
                     <div class="notes">{{Notes}}</div>
                     {{Audio}}
                 </div>
-            ''',
-        }],
-        css=SHARED_CSS
+            """,
+            }
+        ],
+        css=SHARED_CSS,
     )
 
     # Adjective RU→DE
-    models['adj_ru_de'] = genanki.Model(
+    models["adj_ru_de"] = genanki.Model(
         1607392324,
-        'German Adjective (RU→DE)',
+        "German Adjective (RU→DE)",
         fields=[
-            {'name': 'ID'},
-            {'name': 'Russian'},
-            {'name': 'Base'},
-            {'name': 'Forms'},
-            {'name': 'Example_DE'},
-            {'name': 'Example_RU'},
-            {'name': 'Notes'},
-            {'name': 'Audio'},
+            {"name": "ID"},
+            {"name": "Russian"},
+            {"name": "Base"},
+            {"name": "Forms"},
+            {"name": "Example_DE"},
+            {"name": "Example_RU"},
+            {"name": "Notes"},
+            {"name": "Audio"},
         ],
-        templates=[{
-            'name': 'Card',
-            'qfmt': '<div class="front"><div class="russian">{{Russian}}</div><div class="hint">(прилагательное)</div></div>',
-            'afmt': '''
+        templates=[
+            {
+                "name": "Card",
+                "qfmt": '<div class="front"><div class="russian">{{Russian}}</div><div class="hint">(прилагательное)</div></div>',
+                "afmt": """
                 <div class="back">
                     <div class="german-word">{{Base}}</div>
                     <div class="forms">{{Forms}}</div>
@@ -349,29 +367,31 @@ def create_note_models():
                     <div class="notes">{{Notes}}</div>
                     {{Audio}}
                 </div>
-            ''',
-        }],
-        css=SHARED_CSS
+            """,
+            }
+        ],
+        css=SHARED_CSS,
     )
 
     # Adjective DE→RU
-    models['adj_de_ru'] = genanki.Model(
+    models["adj_de_ru"] = genanki.Model(
         1607392325,
-        'German Adjective (DE→RU)',
+        "German Adjective (DE→RU)",
         fields=[
-            {'name': 'ID'},
-            {'name': 'Russian'},
-            {'name': 'Base'},
-            {'name': 'Forms'},
-            {'name': 'Example_DE'},
-            {'name': 'Example_RU'},
-            {'name': 'Notes'},
-            {'name': 'Audio'},
+            {"name": "ID"},
+            {"name": "Russian"},
+            {"name": "Base"},
+            {"name": "Forms"},
+            {"name": "Example_DE"},
+            {"name": "Example_RU"},
+            {"name": "Notes"},
+            {"name": "Audio"},
         ],
-        templates=[{
-            'name': 'Card',
-            'qfmt': '<div class="front"><div class="russian">{{Base}}</div><div class="hint">(прилагательное)</div></div>',
-            'afmt': '''
+        templates=[
+            {
+                "name": "Card",
+                "qfmt": '<div class="front"><div class="russian">{{Base}}</div><div class="hint">(прилагательное)</div></div>',
+                "afmt": """
                 <div class="back">
                     <div class="german-word">{{Russian}}</div>
                     <div class="forms">{{Forms}}</div>
@@ -383,29 +403,31 @@ def create_note_models():
                     <div class="notes">{{Notes}}</div>
                     {{Audio}}
                 </div>
-            ''',
-        }],
-        css=SHARED_CSS
+            """,
+            }
+        ],
+        css=SHARED_CSS,
     )
 
     # Preposition RU→DE
-    models['prep_ru_de'] = genanki.Model(
+    models["prep_ru_de"] = genanki.Model(
         1607392326,
-        'German Preposition (RU→DE)',
+        "German Preposition (RU→DE)",
         fields=[
-            {'name': 'ID'},
-            {'name': 'Russian'},
-            {'name': 'Preposition'},
-            {'name': 'Case'},
-            {'name': 'Example_DE'},
-            {'name': 'Example_RU'},
-            {'name': 'Notes'},
-            {'name': 'Audio'},
+            {"name": "ID"},
+            {"name": "Russian"},
+            {"name": "Preposition"},
+            {"name": "Case"},
+            {"name": "Example_DE"},
+            {"name": "Example_RU"},
+            {"name": "Notes"},
+            {"name": "Audio"},
         ],
-        templates=[{
-            'name': 'Card',
-            'qfmt': '<div class="front"><div class="russian">{{Russian}}</div><div class="hint">(предлог)</div></div>',
-            'afmt': '''
+        templates=[
+            {
+                "name": "Card",
+                "qfmt": '<div class="front"><div class="russian">{{Russian}}</div><div class="hint">(предлог)</div></div>',
+                "afmt": """
                 <div class="back">
                     <div class="german-word">{{Preposition}}</div>
                     <div class="forms">({{Case}})</div>
@@ -417,34 +439,36 @@ def create_note_models():
                     <div class="notes">{{Notes}}</div>
                     {{Audio}}
                 </div>
-            ''',
-        }],
-        css=SHARED_CSS
+            """,
+            }
+        ],
+        css=SHARED_CSS,
     )
 
     # Preposition DE→RU
-    models['prep_de_ru'] = genanki.Model(
+    models["prep_de_ru"] = genanki.Model(
         1607392327,
-        'German Preposition (DE→RU)',
+        "German Preposition (DE→RU)",
         fields=[
-            {'name': 'ID'},
-            {'name': 'Russian'},
-            {'name': 'Preposition'},
-            {'name': 'Case'},
-            {'name': 'Example_DE'},
-            {'name': 'Example_RU'},
-            {'name': 'Notes'},
-            {'name': 'Audio'},
+            {"name": "ID"},
+            {"name": "Russian"},
+            {"name": "Preposition"},
+            {"name": "Case"},
+            {"name": "Example_DE"},
+            {"name": "Example_RU"},
+            {"name": "Notes"},
+            {"name": "Audio"},
         ],
-        templates=[{
-            'name': 'Card',
-            'qfmt': '''
+        templates=[
+            {
+                "name": "Card",
+                "qfmt": """
                 <div class="front">
                     <div class="russian">{{Preposition}}</div>
                     <div class="hint">(предлог • {{Case}})</div>
                 </div>
-            ''',
-            'afmt': '''
+            """,
+                "afmt": """
                 <div class="back">
                     <div class="german-word">{{Russian}}</div>
                     <hr>
@@ -455,28 +479,30 @@ def create_note_models():
                     <div class="notes">{{Notes}}</div>
                     {{Audio}}
                 </div>
-            ''',
-        }],
-        css=SHARED_CSS
+            """,
+            }
+        ],
+        css=SHARED_CSS,
     )
 
     # Adverb RU→DE
-    models['adv_ru_de'] = genanki.Model(
+    models["adv_ru_de"] = genanki.Model(
         1607392328,
-        'German Adverb (RU→DE)',
+        "German Adverb (RU→DE)",
         fields=[
-            {'name': 'ID'},
-            {'name': 'Russian'},
-            {'name': 'German'},
-            {'name': 'Example_DE'},
-            {'name': 'Example_RU'},
-            {'name': 'Notes'},
-            {'name': 'Audio'},
+            {"name": "ID"},
+            {"name": "Russian"},
+            {"name": "German"},
+            {"name": "Example_DE"},
+            {"name": "Example_RU"},
+            {"name": "Notes"},
+            {"name": "Audio"},
         ],
-        templates=[{
-            'name': 'Card',
-            'qfmt': '<div class="front"><div class="russian">{{Russian}}</div><div class="hint">(наречие)</div></div>',
-            'afmt': '''
+        templates=[
+            {
+                "name": "Card",
+                "qfmt": '<div class="front"><div class="russian">{{Russian}}</div><div class="hint">(наречие)</div></div>',
+                "afmt": """
                 <div class="back">
                     <div class="german-word">{{German}}</div>
                     <hr>
@@ -487,28 +513,30 @@ def create_note_models():
                     <div class="notes">{{Notes}}</div>
                     {{Audio}}
                 </div>
-            ''',
-        }],
-        css=SHARED_CSS
+            """,
+            }
+        ],
+        css=SHARED_CSS,
     )
 
     # Adverb DE→RU
-    models['adv_de_ru'] = genanki.Model(
+    models["adv_de_ru"] = genanki.Model(
         1607392329,
-        'German Adverb (DE→RU)',
+        "German Adverb (DE→RU)",
         fields=[
-            {'name': 'ID'},
-            {'name': 'Russian'},
-            {'name': 'German'},
-            {'name': 'Example_DE'},
-            {'name': 'Example_RU'},
-            {'name': 'Notes'},
-            {'name': 'Audio'},
+            {"name": "ID"},
+            {"name": "Russian"},
+            {"name": "German"},
+            {"name": "Example_DE"},
+            {"name": "Example_RU"},
+            {"name": "Notes"},
+            {"name": "Audio"},
         ],
-        templates=[{
-            'name': 'Card',
-            'qfmt': '<div class="front"><div class="russian">{{German}}</div><div class="hint">(наречие)</div></div>',
-            'afmt': '''
+        templates=[
+            {
+                "name": "Card",
+                "qfmt": '<div class="front"><div class="russian">{{German}}</div><div class="hint">(наречие)</div></div>',
+                "afmt": """
                 <div class="back">
                     <div class="german-word">{{Russian}}</div>
                     <hr>
@@ -519,19 +547,21 @@ def create_note_models():
                     <div class="notes">{{Notes}}</div>
                     {{Audio}}
                 </div>
-            ''',
-        }],
-        css=SHARED_CSS
+            """,
+            }
+        ],
+        css=SHARED_CSS,
     )
 
     return models
+
 
 def parse_md_table(md_file):
     """Parse markdown table and extract card data"""
     logger.log(f"Reading MD file: {md_file}")
 
     try:
-        with open(md_file, 'r', encoding='utf-8') as f:
+        with open(md_file, encoding="utf-8") as f:
             content = f.read()
     except FileNotFoundError:
         logger.log(f"ERROR: File not found: {md_file}")
@@ -543,11 +573,11 @@ def parse_md_table(md_file):
         sys.exit(1)
 
     # Find table section
-    lines = content.split('\n')
+    lines = content.split("\n")
     table_start = None
 
     for i, line in enumerate(lines):
-        if line.startswith('| ID | Card Type'):
+        if line.startswith("| ID | Card Type"):
             table_start = i
             break
 
@@ -564,33 +594,36 @@ def parse_md_table(md_file):
 
     for i, line in enumerate(lines[data_start:], start=data_start):
         line = line.strip()
-        if not line or not line.startswith('|'):
+        if not line or not line.startswith("|"):
             break  # End of table
 
         # Parse table row
-        parts = [p.strip() for p in line.split('|')[1:-1]]  # Remove first and last empty elements
+        parts = [p.strip() for p in line.split("|")[1:-1]]  # Remove first and last empty elements
 
         if len(parts) != 10:
-            logger.log(f"WARNING: Line {i + 1} has {len(parts)} columns (expected 10), skipping: {line[:50]}...")
+            logger.log(
+                f"WARNING: Line {i + 1} has {len(parts)} columns (expected 10), skipping: {line[:50]}..."
+            )
             continue
 
         card = {
-            'ID': parts[0],
-            'Card_Type': parts[1],
-            'Word_Type': parts[2],
-            'Russian': parts[3],
-            'German': parts[4],
-            'Extra': parts[5],  # Plural/Perfekt/Forms
-            'Example_DE': parts[6],
-            'Example_RU': parts[7],
-            'Notes': parts[8],
-            'Audio': parts[9],
+            "ID": parts[0],
+            "Card_Type": parts[1],
+            "Word_Type": parts[2],
+            "Russian": parts[3],
+            "German": parts[4],
+            "Extra": parts[5],  # Plural/Perfekt/Forms
+            "Example_DE": parts[6],
+            "Example_RU": parts[7],
+            "Notes": parts[8],
+            "Audio": parts[9],
         }
 
         cards.append(card)
 
     logger.log(f"Parsed {len(cards)} cards from table")
     return cards
+
 
 def get_model_key(card_type, word_type):
     """Determine which note model to use based on card type and word type.
@@ -599,136 +632,138 @@ def get_model_key(card_type, word_type):
     """
 
     # Handle cloze separately
-    if card_type == 'Cloze':
-        return 'noun_cloze'
+    if card_type == "Cloze":
+        return "noun_cloze"
 
     # Validate and categorize word type using enum utilities
     WordType.validate_strict(word_type, context="(in get_model_key)")
     category = get_model_category(word_type)
 
     # Map category to model base key used by this script
-    if category == 'noun':
-        base_type = 'noun'
-    elif category == 'verb':
-        base_type = 'verb'
-    elif category == 'adjective':
-        base_type = 'adj'
-    elif category == 'preposition':
-        base_type = 'prep'
-    elif category in {'adverb', 'basic', 'pronoun'}:
+    if category == "noun":
+        base_type = "noun"
+    elif category == "verb":
+        base_type = "verb"
+    elif category == "adjective":
+        base_type = "adj"
+    elif category == "preposition":
+        base_type = "prep"
+    elif category in {"adverb", "basic", "pronoun"}:
         # Historically mapped to the adverb model for simple/pronoun words
-        base_type = 'adv'
+        base_type = "adv"
     else:
         return None
 
     # Determine direction
-    if 'RU→DE' in card_type:
-        direction = 'ru_de'
-    elif 'DE→RU' in card_type:
-        direction = 'de_ru'
+    if "RU→DE" in card_type:
+        direction = "ru_de"
+    elif "DE→RU" in card_type:
+        direction = "de_ru"
     else:
         return None
 
     return f"{base_type}_{direction}"
 
+
 def create_note_from_card(card, models):
     """Create a genanki Note from card data"""
 
-    model_key = get_model_key(card['Card_Type'], card['Word_Type'])
+    model_key = get_model_key(card["Card_Type"], card["Word_Type"])
 
     if model_key not in models:
         logger.log(f"WARNING: Unknown model key '{model_key}' for card {card['ID']}, skipping")
         return None
 
+    assert model_key is not None  # None case handled by early return above
     model = models[model_key]
 
     # Build fields based on model type
-    if 'noun' in model_key:
-        if 'cloze' in model_key:
+    if "noun" in model_key:
+        if "cloze" in model_key:
             # Noun cloze card
             fields = [
-                card['ID'],
-                card['German'],  # Already has {{c1::der}} format
-                card['Extra'],   # Plural
-                card['Example_DE'],
-                card['Example_RU'],
-                card['Notes'],
-                f"[sound:{card['Audio']}]" if card['Audio'] != '—' else '',
+                card["ID"],
+                card["German"],  # Already has {{c1::der}} format
+                card["Extra"],  # Plural
+                card["Example_DE"],
+                card["Example_RU"],
+                card["Notes"],
+                f"[sound:{card['Audio']}]" if card["Audio"] != "—" else "",
             ]
         else:
             # Noun reverse card
             # Extract article and noun from German field
-            german_parts = card['German'].split(' ', 1)
-            article = german_parts[0] if len(german_parts) > 1 else ''
-            noun = german_parts[1] if len(german_parts) > 1 else card['German']
+            german_parts = card["German"].split(" ", 1)
+            article = german_parts[0] if len(german_parts) > 1 else ""
+            noun = german_parts[1] if len(german_parts) > 1 else card["German"]
 
             # Extract gender from article (der/die/das)
-            gender = 'm'  # default
-            if article.lower() == 'die':
-                gender = 'f'
-            elif article.lower() == 'das':
-                gender = 'n'
-            elif article.lower() == 'der':
-                gender = 'm'
+            gender = "m"  # default
+            if article.lower() == "die":
+                gender = "f"
+            elif article.lower() == "das":
+                gender = "n"
+            elif article.lower() == "der":
+                gender = "m"
 
             fields = [
-                card['ID'],
-                card['Russian'],
+                card["ID"],
+                card["Russian"],
                 article,
                 noun,
-                card['Extra'],  # Plural
+                card["Extra"],  # Plural
                 gender,
-                card['Example_DE'],
-                card['Example_RU'],
-                card['Notes'],
-                f"[sound:{card['Audio']}]" if card['Audio'] != '—' else '',
+                card["Example_DE"],
+                card["Example_RU"],
+                card["Notes"],
+                f"[sound:{card['Audio']}]" if card["Audio"] != "—" else "",
             ]
 
-    elif 'verb' in model_key:
+    elif "verb" in model_key:
         fields = [
-            card['ID'],
-            card['Russian'],
-            card['German'],  # Infinitive
-            card['Extra'],   # Perfekt
-            card['Example_DE'],
-            card['Example_RU'],
-            card['Notes'],
-            f"[sound:{card['Audio']}]" if card['Audio'] != '—' else '',
+            card["ID"],
+            card["Russian"],
+            card["German"],  # Infinitive
+            card["Extra"],  # Perfekt
+            card["Example_DE"],
+            card["Example_RU"],
+            card["Notes"],
+            f"[sound:{card['Audio']}]" if card["Audio"] != "—" else "",
         ]
 
-    elif 'adj' in model_key:
+    elif "adj" in model_key:
         fields = [
-            card['ID'],
-            card['Russian'],
-            card['German'],  # Base form
-            card['Extra'],   # Comparative/Superlative
-            card['Example_DE'],
-            card['Example_RU'],
-            card['Notes'],
-            f"[sound:{card['Audio']}]" if card['Audio'] != '—' else '',
+            card["ID"],
+            card["Russian"],
+            card["German"],  # Base form
+            card["Extra"],  # Comparative/Superlative
+            card["Example_DE"],
+            card["Example_RU"],
+            card["Notes"],
+            f"[sound:{card['Audio']}]" if card["Audio"] != "—" else "",
         ]
 
-    elif 'prep' in model_key:
+    elif "prep" in model_key:
         fields = [
-            card['ID'],
-            card['Russian'],
-            card['German'],  # Preposition
-            card['Extra'],   # Case (+ Dativ, etc.)
-            card['Example_DE'],
-            card['Example_RU'],
-            card['Notes'],
-            f"[sound:{card['Audio']}]" if card['Audio'] != '—' else '',
+            card["ID"],
+            card["Russian"],
+            card["German"],  # Preposition
+            card["Extra"],  # Case (+ Dativ, etc.)
+            card["Example_DE"],
+            card["Example_RU"],
+            card["Notes"],
+            f"[sound:{card['Audio']}]" if card["Audio"] != "—" else "",
         ]
 
-    elif 'adv' in model_key:
+    elif "adv" in model_key:
         fields = [
-            card['ID'],
-            card['Russian'],
-            card['German'],
-            card['Example_DE'],
-            card['Example_RU'],
-            card['Notes'],
-            f"[sound:{card['Audio']}]" if card['Audio'] != '—' else '',
+            card["ID"],
+            card["Russian"],
+            card["German"],
+            card["Example_DE"],
+            card["Example_RU"],
+            card["Notes"],
+            f"[sound:{card['Audio']}]" if card["Audio"] != "—" else "",
         ]
 
     else:
@@ -740,12 +775,13 @@ def create_note_from_card(card, models):
         note = genanki.Note(
             model=model,
             fields=fields,
-            guid=card['ID']  # Use our ID hash as GUID for Anki matching
+            guid=card["ID"],  # Use our ID hash as GUID for Anki matching
         )
         return note
     except Exception as e:
         logger.log(f"ERROR: Failed to create note for card {card['ID']}: {e}")
         return None
+
 
 def main():
     logger.log("=" * 70)
@@ -793,8 +829,8 @@ def main():
     audio_mapping = {}  # original_filename -> prefixed_filename
 
     for card in cards:
-        audio_file = card.get('Audio', '').strip()
-        if audio_file and audio_file != '—':
+        audio_file = card.get("Audio", "").strip()
+        if audio_file and audio_file != "—":
             unique_audio.add(audio_file)
 
     # Create temp directory for prefixed audio files
@@ -833,15 +869,15 @@ def main():
     for note in deck.notes:
         for field_idx, field_value in enumerate(note.fields):
             # Check if field contains [sound:filename] format
-            if '[sound:' in field_value:
+            if "[sound:" in field_value:
                 # Extract filename from [sound:filename]
-                match = re.search(r'\[sound:([^\]]+)\]', field_value)
+                match = re.search(r"\[sound:([^\]]+)\]", field_value)
                 if match:
                     original_filename = match.group(1)
                     if original_filename in audio_mapping:
                         # Replace with prefixed filename
                         prefixed_filename = audio_mapping[original_filename]
-                        note.fields[field_idx] = f'[sound:{prefixed_filename}]'
+                        note.fields[field_idx] = f"[sound:{prefixed_filename}]"
                         updated_count += 1
     logger.log(f"Updated {updated_count} audio references in cards")
     logger.log("")
@@ -878,5 +914,6 @@ def main():
     logger.write_log()
     logger.log(f"\nLog saved to: {LOG_FILE}")
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()
