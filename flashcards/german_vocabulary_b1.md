@@ -1,10 +1,10 @@
 # german_vocabulary_b1
 
 **Deck Info:**
-- Total cards: 326
+- Total cards: 336
 - Words: 15 (Nouns: 6, Verbs: 3, Adjectives: 2, Prepositions: 2, Adverbs: 2)
 - Card types: Reverse RU→DE (15), Reverse DE→RU (15), Cloze (6 for nouns)
-- Generated: 2025-12-18
+- Generated: 2026-02-27
 - Follows: CARD_CREATION_RULES.md v2.1
 
 ## Cards
@@ -337,3 +337,13 @@
 | b9f74d6b | Cloze | Noun | требование, притязание | {{c1::der}} Anspruch | die Ansprüche | Sie hat Anspruch auf Urlaub. | Она имеет право на отпуск. | Мужской род • тест на артикль | de_Anspruch.wav |
 | 7faeed72 | Reverse RU→DE | Verb | означать, значить | bedeuten | hat bedeutet | Was bedeutet dieses Wort auf Deutsch? | Что означает это слово по-немецки? | Регулярный глагол • Часто в вопросах Was bedeutet...? | Bedeuten.wav |
 | 1abbb43f | Reverse DE→RU | Verb | означать, значить | bedeuten | hat bedeutet | Was bedeutet dieses Wort auf Deutsch? | Что означает это слово по-немецки? | Регулярный глагол • Часто в вопросах Was bedeutet...? | Bedeuten.wav |
+| 4793c3cd | Reverse RU→DE | Noun | стекло | das Glas | die Gläser | Das Glas ist zerbrechlich. | Стекло хрупко. | Материал; может также означать стакан для напитков | Glas.mp3 |
+| bc20083c | Reverse DE→RU | Noun | стекло | das Glas | die Gläser | Das Glas ist zerbrechlich. | Стекло хрупко. | Материал; может также означать стакан для напитков | Glas.mp3 |
+| 4590b75d | Cloze | Noun | стекло | {{c1::das}} Glas | die Gläser | {{c1::Das}} Glas ist transparent. | Стекло прозрачно. | Неутральный род; множественное число с умлаутом | Glas.mp3 |
+| bbdbfbde | Reverse RU→DE | Adjective/Adverb | довольно, весьма, довольно-таки | ziemlich | Интенсификатор, используется перед прилагательными | Das Buch ist ziemlich interessant. | Книга довольно интересная. | Как наречие степени (degree adverb), ziemlich модифицирует прилагательные и наречия, усиливая их значение. Не использует стандартные формы сравнения, так как функционирует как интенсификатор, а не как основное прилагательное. Синонимы: recht, einigermaßen. | Ziemlich.mp3 |
+| 6851d74c | Reverse DE→RU | Adjective/Adverb | довольно, весьма, довольно-таки | ziemlich | Интенсификатор, используется перед прилагательными | Das Buch ist ziemlich interessant. | Книга довольно интересная. | Как наречие степени (degree adverb), ziemlich модифицирует прилагательные и наречия, усиливая их значение. Не использует стандартные формы сравнения, так как функционирует как интенсификатор, а не как основное прилагательное. Синонимы: recht, einigermaßen. | Ziemlich.mp3 |
+| 0a4714c1 | Reverse RU→DE | Verb | думаешь | denkst | hast gedacht | Was denkst du darüber? | Что ты об этом думаешь? | 2-е лицо единственного числа, настоящее время глагола 'denken' (думать). Перфект образуется с вспомогательным глаголом 'haben'. | Denkst.wav |
+| 64c5ea03 | Reverse DE→RU | Verb | думаешь | denkst | hast gedacht | Was denkst du darüber? | Что ты об этом думаешь? | 2-е лицо единственного числа, настоящее время глагола 'denken' (думать). Перфект образуется с вспомогательным глаголом 'haben'. | Denkst.wav |
+| 52146e3f | Reverse RU→DE | Noun | пара | das Paar | Paare | Das junge Paar plant seine Hochzeit. | Молодая пара планирует свою свадьбу. | среднего рода; притяжательное местоимение sein-, не ihr-, несмотря на смысловое согласование как 'они' | Paar.wav |
+| f0e325cc | Reverse DE→RU | Noun | пара | das Paar | Paare | Das junge Paar plant seine Hochzeit. | Молодая пара планирует свою свадьбу. | среднего рода; притяжательное местоимение sein-, не ihr-, несмотря на смысловое согласование как 'они' | Paar.wav |
+| ac08e5f5 | Cloze | Noun | пара | {{c1::das}} Paar | Paare | {{c1::das}} alte Paar lebt seit 50 Jahren zusammen. | Пожилая пара живет вместе 50 лет. | среднего рода (das, не der); множественное число — Paare | Paar.wav |

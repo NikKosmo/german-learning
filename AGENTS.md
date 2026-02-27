@@ -39,6 +39,8 @@ python3 flashcards/scripts/generate_deck_from_md.py
 
 **Dependencies:**
 ```bash
+# Always install into the project venv — never globally
+source venv/bin/activate
 pip install -r requirements.txt
 ```
 

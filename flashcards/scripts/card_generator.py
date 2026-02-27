@@ -11,12 +11,14 @@ import argparse
 import json
 import os
 import random
-import re
 import shutil
 import subprocess
 import sys
 from pathlib import Path
 from typing import Any
+
+import jsonschema
+from dotenv import load_dotenv
 
 try:
     import anthropic
@@ -29,13 +31,17 @@ except ImportError:
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
+# Load project-level .env (ANTHROPIC_API_KEY etc.) — does nothing if file absent
+load_dotenv(PROJECT_ROOT / ".env")
+
 import paths
-from flashcards.scripts.word_types import WordType
 
 # Constants
 PENDING_CARDS_JSON = paths.FLASHCARDS_SCRIPTS / "pending_cards.json"
+PENDING_CARDS_SCHEMA = paths.FLASHCARDS_SCRIPTS / "pending_cards_schema.json"
 FAILED_WORDS_FILE = paths.FLASHCARDS_SCRIPTS / "failed_words.txt"
-GENERATION_MODEL = "claude-opus-4-6"
+GENERATION_MODEL = "claude-sonnet-4-6"
+CODEX_PATH = "/usr/local/bin/codex"
 
 
 def log(message: str) -> None:
@@ -166,24 +172,28 @@ def generate_card_data(
     word_type = word_info["word_type"]
     audio = word_info["audio"]
 
+    with open(PENDING_CARDS_SCHEMA, encoding="utf-8") as f:
+        schema = json.load(f)
+    schema_str = json.dumps(schema, ensure_ascii=False, indent=2)
+
     prompt = f"""Generate German flashcard data for the word: "{word}"
 Word type: {word_type}
 Audio file: {audio}
 
 Follow these rules:
-1. Output ONLY a JSON object with a "cards" array.
+1. Output ONLY a single JSON object conforming to the schema below,
+   with no additional text before or after.
 2. For Nouns: Create 2 entries (one "Reverse" and one "Cloze").
 3. For others: Create 1 entry with "Reverse".
-4. "Reverse" expands to RU->DE and DE->RU.
-5. Fields required: card_type, word_type, russian, german, extra, example_de, example_ru,
-   notes, audio.
-6. Use Russian for translations and notes.
-7. For Nouns: "german" must include article (e.g. "der Tisch"), "extra" is plural.
+4. Use Russian for translations and notes.
+5. For Nouns: "german" must include article (e.g. "der Tisch"), "extra" is plural.
    "Cloze" must use {{{{c1::article}}}} (e.g. "{{{{c1::der}}}} Tisch").
-8. For Verbs: "extra" is Perfekt (e.g. "hat gearbeitet").
-9. For Adjectives: "extra" is Comparative - Superlative.
-10. For Prepositions: "extra" is Case (e.g. "+ Dativ").
+6. For Verbs: "extra" is Perfekt (e.g. "hat gearbeitet").
+7. For Adjectives: "extra" is Comparative - Superlative.
+8. For Prepositions: "extra" is Case (e.g. "+ Dativ").
 
+JSON Schema:
+{schema_str}
 """
     if retry_feedback:
         prompt += (
@@ -207,39 +217,82 @@ Follow these rules:
         )
         raw_output = result.stdout
 
-    # Extract JSON from Claude's response (in case there's extra text)
-    json_match = re.search(r"\{.*\}", raw_output, re.DOTALL)
-    if not json_match:
-        raise ValueError(f"Claude did not return valid JSON for '{word}'")
+    # Strip markdown code fences — claude CLI sometimes wraps output in ```json ... ```
+    cleaned = raw_output.strip()
+    if cleaned.startswith("```"):
+        cleaned = cleaned.split("\n", 1)[1] if "\n" in cleaned else cleaned
+        cleaned = cleaned.rsplit("```", 1)[0].strip()
 
-    data = json.loads(json_match.group(0))
+    try:
+        data = json.loads(cleaned)
+    except json.JSONDecodeError as err:
+        raise ValueError(f"Claude returned non-JSON output for '{word}':\n{raw_output}") from err
+
+    try:
+        jsonschema.validate(instance=data, schema=schema)
+    except jsonschema.ValidationError as err:
+        raise ValueError(
+            f"Claude output for '{word}' failed schema validation: {err.message}"
+        ) from err
+
     return data.get("cards", [])
 
 
 def validate_card_data(word: str, cards: list[dict[str, Any]]) -> tuple[bool, str]:
-    """Validate card data using Gemini CLI"""
+    """Validate card data using Gemini CLI (fallback to Codex)"""
     cards_json = json.dumps({"cards": cards}, ensure_ascii=False, indent=2)
-    prompt = f"""Validate the following German flashcard data for the word "{word}".
-Check for:
-1. Accuracy of translations (Russian <-> German).
-2. Correct word type usage (must be exactly from {list(WordType.all_values())}).
-3. Correct plural/perfekt forms.
-4. Natural example sentences.
-5. All required fields present and non-empty.
-6. Formatting (Cloze deletions for nouns, articles included).
+    prompt = f"""You are validating German vocabulary card data
+for a Russian native speaker learning German.
 
-Data to validate:
+Word: {word}
+Generated data:
 {cards_json}
 
-If valid, respond ONLY with "VALID: YES".
-If invalid, respond with "VALID: NO" followed by a list of issues found.
-"""
-    log(f"Calling Gemini to validate '{word}'...")
-    result = run_command(["gemini", prompt])
+Validate:
+1. Russian translation is accurate
+2. Grammatical forms are correct
+3. Example sentences are natural German
+4. Russian translations of examples are accurate
+5. Grammatical notes are helpful and in Russian
 
-    is_valid = "VALID: YES" in result.stdout
-    feedback = result.stdout.replace("VALID: NO", "").strip() if not is_valid else ""
-    return is_valid, feedback
+IMPORTANT: Respond with ONLY valid JSON, no other text. Format:
+{{
+  "valid": true,
+  "issues": [],
+  "suggestions": []
+}}
+
+Or if invalid:
+{{
+  "valid": false,
+  "issues": ["issue 1", "issue 2"],
+  "suggestions": ["suggestion 1"]
+}}"""
+
+    log(f"Calling Gemini to validate '{word}'...")
+    try:
+        result = run_command(["gemini", "-p", prompt])
+        raw_output = result.stdout
+    except Exception as e:
+        log(f"Gemini failed: {e}. Falling back to Codex...")
+        try:
+            result = run_command(
+                [CODEX_PATH, "exec", "-m", "gpt-5.2", "-s", "read-only", "--", prompt]
+            )
+            raw_output = result.stdout
+        except Exception as codex_e:
+            log(f"Codex fallback failed: {codex_e}")
+            return False, f"Both Gemini and Codex failed to validate: {e}, {codex_e}"
+
+    try:
+        val_data = json.loads(raw_output.strip())
+        is_valid = val_data.get("valid", False)
+        issues = val_data.get("issues", [])
+        feedback = "\n".join(issues)
+        return is_valid, feedback
+    except json.JSONDecodeError as e:
+        log(f"Failed to parse validation response: {e}\nRaw output: {raw_output}")
+        return False, f"Validation returned invalid JSON: {raw_output[:100]}..."
 
 
 def process_word(word_info: dict[str, str]) -> list[dict[str, Any]]:
@@ -275,6 +328,13 @@ def main():
     args = parser.parse_args()
 
     check_prerequisites()
+
+    # Step 1 (WORKFLOW.md): refresh word_tracking.md before selecting words
+    log("Step 0: Refreshing word tracking status...")
+    try:
+        run_command([sys.executable, "update_word_tracking.py"], cwd=paths.FLASHCARDS_SCRIPTS)
+    except Exception as e:
+        log(f"WARNING: update_word_tracking.py failed at start: {e}")
 
     requested_words = [w.strip() for w in args.words.split(",")] if args.words else None
 

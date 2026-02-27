@@ -2,69 +2,69 @@
   "cards": [
     {
       "card_type": "Reverse",
-      "word_type": "Verb (Konjunktiv II)",
-      "russian": "имел бы (ты)",
-      "german": "hättest",
-      "extra": "Konjunktiv II von \"haben\" (du-Form)",
-      "example_de": "Du hättest das wissen sollen.",
-      "example_ru": "Ты должен был бы это знать.",
-      "notes": "Konjunktiv II • Форма \"du\" от haben • Используется для выражения нереального условия или сожаления в прошлом • hätte + Partizip II = плюсквамперфект конъюнктива",
-      "audio": "Hättest.wav"
+      "word_type": "Noun",
+      "russian": "стекло",
+      "german": "das Glas",
+      "extra": "die Gläser",
+      "example_de": "Das Glas ist zerbrechlich.",
+      "example_ru": "Стекло хрупко.",
+      "notes": "Материал; может также означать стакан для напитков",
+      "audio": "Glas.mp3"
+    },
+    {
+      "card_type": "Cloze",
+      "word_type": "Noun",
+      "russian": "стекло",
+      "german": "{{c1::das}} Glas",
+      "extra": "die Gläser",
+      "example_de": "{{c1::Das}} Glas ist transparent.",
+      "example_ru": "Стекло прозрачно.",
+      "notes": "Неутральный род; множественное число с умлаутом",
+      "audio": "Glas.mp3"
     },
     {
       "card_type": "Reverse",
-      "word_type": "Verb (Modal, Konjunktiv II)",
-      "russian": "должен бы (ты), следовало бы (тебе)",
-      "german": "solltest",
-      "extra": "Konjunktiv II von \"sollen\" (du-Form)",
-      "example_de": "Du solltest mehr Deutsch üben.",
-      "example_ru": "Тебе следовало бы больше практиковать немецкий.",
-      "notes": "Konjunktiv II • Форма \"du\" от sollen • Используется для вежливых советов и рекомендаций • Совпадает с Präteritum формой",
-      "audio": "Solltest.wav"
-    },
-    {
-      "card_type": "Reverse",
-      "word_type": "Verb (Modal, Konjunktiv II)",
-      "russian": "бы (ты)",
-      "german": "würdest",
-      "extra": "Konjunktiv II von \"werden\" (du-Form)",
-      "example_de": "Was würdest du an meiner Stelle tun?",
-      "example_ru": "Что бы ты сделал на моём месте?",
-      "notes": "Konjunktiv II • Форма \"du\" от werden • Основная форма для образования Konjunktiv II: würde + Infinitiv • Используется для вежливых вопросов и гипотетических ситуаций",
-      "audio": "Würdest.wav"
-    },
-    {
-      "card_type": "Reverse",
-      "word_type": "Adverb",
-      "russian": "поэтому, потому",
-      "german": "deshalb",
-      "extra": "Konnektor (Adverb)",
-      "example_de": "Es regnet, deshalb bleiben wir zu Hause.",
-      "example_ru": "Идёт дождь, поэтому мы остаёмся дома.",
-      "notes": "Соединительное наречие • Указывает на причину/следствие • Позиция 1, глагол на позиции 2 • Синонимы: daher, deswegen, darum",
-      "audio": "Deshalb.wav"
-    },
-    {
-      "card_type": "Reverse",
-      "word_type": "Adverb",
-      "russian": "несмотря на это, тем не менее",
-      "german": "trotzdem",
-      "extra": "Konnektor (Adverb)",
-      "example_de": "Es war kalt, trotzdem sind wir spazieren gegangen.",
-      "example_ru": "Было холодно, тем не менее мы пошли на прогулку.",
-      "notes": "Соединительное наречие • Выражает контраст/противоречие • Позиция 1, глагол на позиции 2 • Синоним: dennoch",
-      "audio": "Trotzdem.wav"
+      "word_type": "Adjective/Adverb",
+      "russian": "довольно, весьма, довольно-таки",
+      "german": "ziemlich",
+      "extra": "Интенсификатор, используется перед прилагательными",
+      "example_de": "Das Buch ist ziemlich interessant.",
+      "example_ru": "Книга довольно интересная.",
+      "notes": "Как наречие степени (degree adverb), ziemlich модифицирует прилагательные и наречия, усиливая их значение. Не использует стандартные формы сравнения, так как функционирует как интенсификатор, а не как основное прилагательное. Синонимы: recht, einigermaßen.",
+      "audio": "Ziemlich.mp3"
     },
     {
       "card_type": "Reverse",
       "word_type": "Verb",
-      "russian": "покидать, оставлять",
-      "german": "verlassen",
-      "extra": "Starkes Verb • Perfekt: hat verlassen",
-      "example_de": "Er hat gestern die Stadt verlassen.",
-      "example_ru": "Он вчера покинул город.",
-      "notes": "Сильный глагол • Perfekt: hat verlassen • Partizip II не изменяется (verlassen) • Требует винительный падеж (Akkusativ) • Также значение: полагаться на (sich verlassen auf + Akk.)",
-      "audio": "Verlassen.wav"
+      "russian": "думаешь",
+      "german": "denkst",
+      "extra": "hast gedacht",
+      "example_de": "Was denkst du darüber?",
+      "example_ru": "Что ты об этом думаешь?",
+      "notes": "2-е лицо единственного числа, настоящее время глагола 'denken' (думать). Перфект образуется с вспомогательным глаголом 'haben'.",
+      "audio": "Denkst.wav"
+    },
+    {
+      "card_type": "Reverse",
+      "word_type": "Noun",
+      "russian": "пара",
+      "german": "das Paar",
+      "extra": "Paare",
+      "example_de": "Das junge Paar plant seine Hochzeit.",
+      "example_ru": "Молодая пара планирует свою свадьбу.",
+      "notes": "среднего рода; притяжательное местоимение sein-, не ihr-, несмотря на смысловое согласование как 'они'",
+      "audio": "Paar.wav"
+    },
+    {
+      "card_type": "Cloze",
+      "word_type": "Noun",
+      "russian": "пара",
+      "german": "{{c1::das}} Paar",
+      "extra": "Paare",
+      "example_de": "{{c1::das}} alte Paar lebt seit 50 Jahren zusammen.",
+      "example_ru": "Пожилая пара живет вместе 50 лет.",
+      "notes": "среднего рода (das, не der); множественное число — Paare",
+      "audio": "Paar.wav"
     }
   ]
 }
