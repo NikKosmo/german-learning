@@ -22,7 +22,7 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
 import paths
-from flashcards.scripts.word_types import WordType, get_model_category
+from flashcards.scripts.word_types import StorageCardType, WordType, get_model_category
 
 # Configuration
 LANGUAGE_PREFIX = (
@@ -632,7 +632,7 @@ def get_model_key(card_type, word_type):
     """
 
     # Handle cloze separately
-    if card_type == "Cloze":
+    if card_type == StorageCardType.CLOZE.value:
         return "noun_cloze"
 
     # Validate and categorize word type using enum utilities
@@ -655,9 +655,9 @@ def get_model_key(card_type, word_type):
         return None
 
     # Determine direction
-    if "RU→DE" in card_type:
+    if card_type == StorageCardType.REVERSE_RU_DE.value:
         direction = "ru_de"
-    elif "DE→RU" in card_type:
+    elif card_type == StorageCardType.REVERSE_DE_RU.value:
         direction = "de_ru"
     else:
         return None

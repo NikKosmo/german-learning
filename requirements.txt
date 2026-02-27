@@ -9,5 +9,11 @@ zstandard>=0.18.0
 # Claude API SDK (optional — used by card_generator.py when ANTHROPIC_API_KEY is set)
 anthropic>=0.40.0
 
+# JSON Schema validation (used by card_generator.py)
+jsonschema>=4.0.0
+
+# Local config file support (.env) — ANTHROPIC_API_KEY and other secrets
+python-dotenv>=1.0.0
+
 # Testing framework
 pytest>=7.0

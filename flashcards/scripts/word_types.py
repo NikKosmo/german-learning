@@ -183,6 +183,45 @@ class WordType(Enum):
         return primary in {cls.PRONOUN.value, cls.POSSESSIVE.value, cls.QUESTION_WORD.value}
 
 
+class InputCardType(Enum):
+    """
+    Valid card types for generator-layer input (pending_cards.json).
+    """
+
+    REVERSE = "Reverse"
+    CLOZE = "Cloze"
+
+    @classmethod
+    def all_values(cls):
+        """Get all valid input card type strings."""
+        return frozenset(ct.value for ct in cls)
+
+    @classmethod
+    def is_valid(cls, card_type_str):
+        """Check if a string is a valid input card type."""
+        return card_type_str in cls.all_values()
+
+
+class StorageCardType(Enum):
+    """
+    Valid card types for storage-layer cards (german_vocabulary_b1.md).
+    """
+
+    REVERSE_RU_DE = "Reverse RU→DE"
+    REVERSE_DE_RU = "Reverse DE→RU"
+    CLOZE = "Cloze"
+
+    @classmethod
+    def all_values(cls):
+        """Get all valid storage card type strings."""
+        return frozenset(ct.value for ct in cls)
+
+    @classmethod
+    def is_valid(cls, card_type_str):
+        """Check if a string is a valid storage card type."""
+        return card_type_str in cls.all_values()
+
+
 def get_model_category(word_type_str):
     """
     Get the model category for deck generation.

@@ -1,0 +1,57 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": ["cards"],
+  "properties": {
+    "cards": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "card_type",
+          "word_type",
+          "russian",
+          "german",
+          "extra",
+          "example_de",
+          "example_ru",
+          "notes",
+          "audio"
+        ],
+        "properties": {
+          "card_type": {
+            "type": "string",
+            "enum": ["Reverse", "Cloze"]
+          },
+          "word_type": {
+            "type": "string",
+            "enum": [
+              "Adjective",
+              "Adjective/Adverb",
+              "Adverb",
+              "Adverb/Particle",
+              "Article",
+              "Conjunction",
+              "Noun",
+              "Particle",
+              "Possessive",
+              "Preposition",
+              "Pronoun",
+              "Question Word",
+              "Verb"
+            ]
+          },
+          "russian": { "type": "string" },
+          "german": { "type": "string" },
+          "extra": { "type": "string" },
+          "example_de": { "type": "string" },
+          "example_ru": { "type": "string" },
+          "notes": { "type": "string" },
+          "audio": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    }
+  }
+}

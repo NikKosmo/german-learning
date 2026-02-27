@@ -108,11 +108,11 @@ Konjunktiv# Word Tracking
 | Frau | in_deck | ✅ Frau.mp3 | — | — | 2025-11-26 | — |
 | Mann | in_deck | ✅ Mann.mp3 | — | — | 2025-11-29 | — |
 | Kind | in_deck | ✅ Kind.mp3 | — | — | 2025-11-29 | — |
-| Haus | pending | ✅ Haus.wav | — | — | — | — |
-| Stadt | pending | ✅ Stadt.mp3 | — | — | — | — |
-| Arbeit | pending | ✅ Arbeit.mp3 | — | — | — | — |
-| Freund | pending | ✅ Freund.mp3 | — | — | — | — |
-| Schritt | pending | ✅ Schritt.wav | — | — | — | — |
+| Haus | in_deck | ✅ Haus.wav | — | — | 2026-02-27 | — |
+| Stadt | in_deck | ✅ Stadt.mp3 | — | — | 2026-02-27 | — |
+| Arbeit | in_deck | ✅ Arbeit.mp3 | — | — | 2026-02-27 | — |
+| Freund | in_deck | ✅ Freund.mp3 | — | — | 2026-02-27 | — |
+| Schritt | in_deck | ✅ Schritt.wav | — | — | 2026-02-27 | — |
 | Blut | pending | ✅ Blut.wav | — | — | — | — |
 | Tatsache | pending | ✅ Tatsache.wav | — | — | — | — |
 | Atem | pending | ✅ Atem.wav | — | — | — | — |
@@ -124,7 +124,7 @@ Konjunktiv# Word Tracking
 | Elternteil | pending | ✅ Elternteil.wav | — | — | — | — |
 | Ecke | pending | ✅ Ecke.wav | — | — | — | — |
 | Problem | pending | ✅ Problem.mp3 | — | — | — | — |
-| Paar | pending | ✅ Paar.wav | — | — | — | — |
+| Paar | in_deck | ✅ Paar.wav | — | — | 2026-02-27 | — |
 | Tochter | pending | ✅ Tochter.mp3 | — | — | — | — |
 | Tasche | pending | ✅ Tasche.mp3 | — | — | — | — |
 | Hölle | pending | ✅ Hölle.wav | — | — | — | — |
@@ -167,7 +167,7 @@ Konjunktiv# Word Tracking
 | Gabel | pending | ✅ Gabel.mp3 | — | — | — | — |
 | Löffel | pending | ✅ Löffel.wav | — | — | — | — |
 | Teller | pending | ✅ Teller.wav | — | — | — | — |
-| Glas | pending | ✅ Glas.mp3 | — | — | — | — |
+| Glas | in_deck | ✅ Glas.mp3 | — | — | 2026-02-27 | — |
 | Tasse | pending | ✅ Tasse.mp3 | — | — | — | — |
 | Uhr | pending | ✅ Uhr.mp3 | — | — | — | — |
 | Dorf | pending | ✅ Dorf.mp3 | — | — | — | — |
@@ -211,7 +211,7 @@ Konjunktiv# Word Tracking
 | keine | pending | ✅ Keine.wav | — | — | — | — |
 | raus | pending | ✅ Raus.wav | — | — | — | — |
 | meine | pending | ✅ Meine.wav | — | — | — | — |
-| paar | pending | ✅ Paar.wav | — | — | — | — |
+| paar | in_deck | ✅ Paar.wav | — | — | 2026-02-27 | — |
 | besser | pending | ✅ Besser.mp3 | — | — | — | — |
 | ob | pending | ✅ Ob.wav | — | — | — | — |
 | her | pending | ✅ Her.wav | — | — | — | — |
@@ -228,9 +228,9 @@ Konjunktiv# Word Tracking
 | helfen | pending | ✅ Helfen.mp3 | — | — | — | — |
 | unsere | pending | ✅ Unsere.wav | — | — | — | — |
 | Weg | pending | ✅ Weg.mp3 | — | — | — | — |
-| selbst | pending | ✅ Selbst.wav | — | — | — | — |
-| mal | pending | ✅ Mal.mp3 | — | — | — | — |
-| jemand | pending | ✅ Jemand.wav | — | — | — | — |
+| selbst | in_deck | ✅ Selbst.wav | — | — | 2026-02-27 | — |
+| mal | in_deck | ✅ Mal.mp3 | — | — | 2026-02-27 | — |
+| jemand | in_deck | ✅ Jemand.wav | — | — | 2026-02-27 | — |
 | ok | pending | ✅ Ok.wav | — | — | — | — |
 | willst | pending | ✅ Willst.wav | — | — | — | — |
 | hilfe | pending | ✅ Hilfe.mp3 | — | — | — | — |
@@ -437,17 +437,17 @@ Konjunktiv# Word Tracking
 | fast | pending | ✅ Fast.mp3 | — | — | — | — |
 | neue | pending | ✅ Neue.wav | — | — | — | — |
 | Alter | pending | ✅ Alter.wav | — | — | — | — |
-| ziemlich | pending | ✅ Ziemlich.mp3 | — | — | — | — |
+| ziemlich | in_deck | ✅ Ziemlich.mp3 | — | — | 2026-02-27 | — |
 | siehst | pending | ✅ Siehst.mp3 | — | — | — | — |
-| Polizei | pending | ✅ Polizei.wav | — | — | — | — |
+| Polizei | in_deck | ✅ Polizei.wav | — | — | 2026-02-27 | — |
 | musste | pending | ✅ Musste.wav | — | — | — | — |
 | gewesen | pending | ✅ Gewesen.wav | — | — | — | — |
 | gerne | pending | ✅ Gerne.wav | — | — | — | — |
 | finde | pending | ✅ Finde.wav | — | — | — | — |
 | erzählt | pending | ✅ Erzählt.wav | — | — | — | — |
-| Tod | pending | ✅ Tod.wav | — | — | — | — |
+| Tod | in_deck | ✅ Tod.wav | — | — | 2026-02-27 | — |
 | Ort | pending | ✅ Ort.wav | — | — | — | — |
-| Chance | pending | ✅ Chance.wav | — | — | — | — |
+| Chance | in_deck | ✅ Chance.wav | — | — | 2026-02-27 | — |
 | bedeuten | in_deck | ✅ Bedeuten.wav | — | Verb | 2025-12-18 | — |
 | War | missing_audio | ❌ missing | — | — | — | — |
 | sagst | pending | ✅ Sagst.wav | — | — | — | — |
@@ -498,7 +498,7 @@ Konjunktiv# Word Tracking
 | niemals | pending | ✅ Niemals.wav | — | — | — | — |
 | Nimm | missing_audio | ❌ missing | — | — | — | — |
 | muß | missing_audio | ❌ missing | — | — | — | — |
-| denkst | pending | ✅ Denkst.wav | — | — | — | — |
+| denkst | in_deck | ✅ Denkst.wav | — | — | 2026-02-27 | — |
 | Waffe | pending | ✅ Waffe.wav | — | — | — | — |
 | Dollar | pending | ✅ Dollar.wav | — | — | — | — |
 | tust | pending | ✅ Tust.wav | — | — | — | — |
@@ -592,7 +592,7 @@ Konjunktiv# Word Tracking
 | besten | pending | ✅ Besten.wav | — | — | — | — |
 | meines | pending | ✅ Meines.wav | — | — | — | — |
 | Luft | pending | ✅ Luft.wav | — | — | — | — |
-| Jemand | pending | ✅ Jemand.wav | — | — | — | — |
+| Jemand | in_deck | ✅ Jemand.wav | — | — | 2026-02-27 | — |
 | Meister | pending | ✅ Meister.wav | — | — | — | — |
 | Erde | pending | ✅ Erde.wav | — | — | — | — |
 | Seit | missing_audio | ❌ missing | — | — | — | — |
@@ -800,13 +800,13 @@ Konjunktiv# Word Tracking
 | Ebene | pending | ✅ Ebene.wav | — | — | — | — |
 | sammeln | in_deck | ✅ Sammeln.mp3 | — | — | 2025-11-18 | — |
 | Stretch | pending | ✅ Stretch.wav | — | — | — | — |
-| werfen | pending | ✅ Werfen.wav | — | — | — | — |
+| werfen | in_deck | ✅ Werfen.wav | — | — | 2026-02-27 | — |
 | Glanz | pending | ✅ Glanz.wav | — | — | — | — |
 | Immobilien | pending | ✅ Immobilien.wav | — | — | — | — |
 | Spalte | pending | ✅ Spalte.wav | — | — | — | — |
-| Molekül | pending | ✅ Molekül.wav | — | — | — | — |
-| wählen | pending | ✅ Wählen.wav | — | — | — | — |
-| grau | pending | ✅ Grau.mp3 | — | — | — | — |
+| Molekül | in_deck | ✅ Molekül.wav | — | — | 2026-02-27 | — |
+| wählen | in_deck | ✅ Wählen.wav | — | — | 2026-02-27 | — |
+| grau | in_deck | ✅ Grau.mp3 | — | — | 2026-02-27 | — |
 | Wiederholung | pending | ✅ Wiederholung.wav | — | — | — | — |
 | erfordern | pending | ✅ Erfordern.wav | — | — | — | — |
 | breit | pending | ✅ Breit.mp3 | — | — | — | — |
@@ -814,14 +814,14 @@ Konjunktiv# Word Tracking
 | Salz | in_deck | ✅ Salz.mp3 | — | — | 2025-11-29 | — |
 | mehrerer | pending | ✅ Mehrerer.wav | — | — | — | — |
 | Zorn | pending | ✅ Zorn.wav | — | — | — | — |
-| Anspruch | pending | ✅ Anspruch.wav | — | — | — | — |
+| Anspruch | in_deck | ✅ Anspruch.wav | — | — | 2026-02-27 | — |
 | Kontinent | in_deck | ✅ Kontinent.wav | — | — | 2025-11-29 | — |
 | aufmachen | in_deck | ✅ Aufmachen.wav | — | Verb | 2025-11-18 | — |
 | Guthaben | in_deck | ✅ Guthaben.wav | — | Noun | 2025-11-18 | — |
 | mutig | in_deck | ✅ Mutig.wav | — | Adjective | 2025-11-18 | — |
 | Arm | in_deck | ✅ Arm.wav | — | Noun | 2025-11-30 | — |
-| Lieb | pending | ✅ Lieb.mp3 | — | Adjective | — | — |
-| Hinaus | pending | ✅ Hinaus.wav | — | Adverb | — | — |
+| Lieb | in_deck | ✅ Lieb.mp3 | — | Adjective | 2026-02-27 | — |
+| Hinaus | in_deck | ✅ Hinaus.wav | — | Adverb | 2026-02-27 | — |
 | Kraut | in_deck | ✅ Kraut.wav | — | Noun | 2025-11-30 | — |
 
 ---
@@ -829,7 +829,7 @@ Konjunktiv# Word Tracking
 ## Statistics
 
 - **Total words:** 811
-- **In deck:** 140
-- **Pending (with audio):** 654
+- **In deck:** 165
+- **Pending (with audio):** 629
 - **Missing audio:** 17
-- **Ready to process:** 654
+- **Ready to process:** 629
