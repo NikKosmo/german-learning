@@ -18,21 +18,10 @@ from pathlib import Path
 from typing import Any
 
 import jsonschema
-from dotenv import load_dotenv
-
-try:
-    import anthropic
-
-    HAS_SDK = True
-except ImportError:
-    HAS_SDK = False
 
 # Add project root to Python path
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
-
-# Load project-level .env (ANTHROPIC_API_KEY etc.) — does nothing if file absent
-load_dotenv(PROJECT_ROOT / ".env")
 
 import paths
 
@@ -51,12 +40,8 @@ def log(message: str) -> None:
 
 def check_prerequisites() -> None:
     """Verify required CLI tools are available before starting"""
-    api_key = os.environ.get("ANTHROPIC_API_KEY")
-    if not api_key and not shutil.which("claude"):
-        log(
-            "ERROR: Neither ANTHROPIC_API_KEY is set nor 'claude' CLI is available. "
-            "At least one generation method is required."
-        )
+    if not shutil.which("claude"):
+        log("ERROR: 'claude' CLI is not available in PATH.")
         sys.exit(1)
     if not shutil.which("gemini"):
         log("ERROR: 'gemini' CLI is not available in PATH.")
@@ -180,9 +165,12 @@ def generate_card_data(
 Word type: {word_type}
 Audio file: {audio}
 
-Follow these rules:
-1. Output ONLY a single JSON object conforming to the schema below,
-   with no additional text before or after.
+CRITICAL: Output ONLY a single raw JSON object. No preamble, no explanation, no markdown
+code fences, no templates, no frameworks, no wrappers. Do not read any files. Do not use
+any tools. Your entire response must be parseable by json.loads() with nothing stripped.
+
+Rules for the JSON content:
+1. Conform to the schema below exactly.
 2. For Nouns: Create 2 entries (one "Reverse" and one "Cloze").
 3. For others: Create 1 entry with "Reverse".
 4. Use Russian for translations and notes.
@@ -202,20 +190,10 @@ JSON Schema:
         )
 
     log(f"Calling Claude for '{word}'...")
-    api_key = os.environ.get("ANTHROPIC_API_KEY")
-    if api_key and HAS_SDK:
-        client = anthropic.Anthropic(api_key=api_key)
-        message = client.messages.create(
-            model=GENERATION_MODEL,
-            max_tokens=2048,
-            messages=[{"role": "user", "content": prompt}],
-        )
-        raw_output = message.content[0].text  # type: ignore[union-attr]
-    else:
-        result = run_command(
-            ["claude", "-p", prompt, "--model", GENERATION_MODEL], unset_claudecode=True
-        )
-        raw_output = result.stdout
+    result = run_command(
+        ["claude", "-p", prompt, "--model", GENERATION_MODEL], unset_claudecode=True
+    )
+    raw_output = result.stdout
 
     # Strip markdown code fences — claude CLI sometimes wraps output in ```json ... ```
     cleaned = raw_output.strip()
