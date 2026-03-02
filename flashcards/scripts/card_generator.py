@@ -19,6 +19,15 @@ from typing import Any
 
 import jsonschema
 
+_NOHOOKS_DIR = Path.home() / ".config" / "nohooks"
+
+try:
+    import anthropic
+
+    HAS_SDK = True
+except ImportError:
+    HAS_SDK = False
+
 # Add project root to Python path
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
@@ -40,8 +49,12 @@ def log(message: str) -> None:
 
 def check_prerequisites() -> None:
     """Verify required CLI tools are available before starting"""
-    if not shutil.which("claude"):
-        log("ERROR: 'claude' CLI is not available in PATH.")
+    api_key = os.environ.get("ANTHROPIC_API_KEY")
+    if not api_key and not shutil.which("claude"):
+        log(
+            "ERROR: Neither ANTHROPIC_API_KEY is set nor 'claude' CLI is available. "
+            "At least one generation method is required."
+        )
         sys.exit(1)
     if not shutil.which("gemini"):
         log("ERROR: 'gemini' CLI is not available in PATH.")
@@ -190,10 +203,22 @@ JSON Schema:
         )
 
     log(f"Calling Claude for '{word}'...")
-    result = run_command(
-        ["claude", "-p", prompt, "--model", GENERATION_MODEL], unset_claudecode=True
-    )
-    raw_output = result.stdout
+    api_key = os.environ.get("ANTHROPIC_API_KEY")
+    if api_key and HAS_SDK:
+        client = anthropic.Anthropic(api_key=api_key)
+        message = client.messages.create(
+            model=GENERATION_MODEL,
+            max_tokens=2048,
+            messages=[{"role": "user", "content": prompt}],
+        )
+        raw_output = message.content[0].text  # type: ignore[union-attr]
+    else:
+        result = run_command(
+            ["claude", "-p", prompt, "--model", GENERATION_MODEL],
+            cwd=_NOHOOKS_DIR,
+            unset_claudecode=True,
+        )
+        raw_output = result.stdout
 
     # Strip markdown code fences — claude CLI sometimes wraps output in ```json ... ```
     cleaned = raw_output.strip()
@@ -249,13 +274,14 @@ Or if invalid:
 
     log(f"Calling Gemini to validate '{word}'...")
     try:
-        result = run_command(["gemini", "-p", prompt])
+        result = run_command(["gemini", "-p", prompt], cwd=_NOHOOKS_DIR)
         raw_output = result.stdout
     except Exception as e:
         log(f"Gemini failed: {e}. Falling back to Codex...")
         try:
             result = run_command(
-                [CODEX_PATH, "exec", "-m", "gpt-5.2", "-s", "read-only", "--", prompt]
+                [CODEX_PATH, "exec", "-m", "gpt-5.2", "-s", "read-only", "--", prompt],
+                cwd=_NOHOOKS_DIR,
             )
             raw_output = result.stdout
         except Exception as codex_e:
