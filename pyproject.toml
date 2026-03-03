@@ -32,6 +32,7 @@ select = [
 
 [tool.ruff.lint.per-file-ignores]
 "flashcards/scripts/*.py" = ["E402"]
+"flashcards/scripts/add_words.py" = ["E501"]
 "flashcards/scripts/generate_deck_from_md.py" = ["E501"]
 "flashcards/scripts/generate_cases_deck.py" = ["E501"]
 "flashcards/scripts/insert_cards.py" = ["E501"]
@@ -45,6 +46,7 @@ pythonVersion = "3.11"
 typeCheckingMode = "basic"
 include = ["flashcards/scripts", "tests"]
 exclude = []
+extraPaths = ["audio/generated_audio/scripts"]
 venvPath = "."
 venv = "venv"
 reportOptionalMemberAccess = "warning"
