@@ -1,0 +1,882 @@
+[
+  {
+    "item": {
+      "id": "haette",
+      "category": "Konjunktiv_II",
+      "term": "hätte",
+      "pos": "Verb",
+      "disambiguation_hint": "Konjunktiv II von haben (сослагательное от haben)"
+    },
+    "content": {
+      "russian": "имел бы / было бы",
+      "example_de": "Wenn ich mehr Zeit hätte, würde ich öfter Sport treiben.",
+      "example_ru": "Если бы у меня было больше времени, я бы чаще занимался спортом.",
+      "cloze_de": "Wenn ich mehr Zeit {{c1::hätte}}, würde ich öfter Sport treiben.",
+      "notes_ru": "Не путайте с «hatte» (Präteritum, изъявительное наклонение) — «hätte» всегда содержит умлаут. Используется для нереальных условий в настоящем/будущем, а также в конструкции «hätte + Partizip II» для нереального прошлого: «Ich hätte es gemacht» (я бы это сделал). Глагол haben управляет Akkusativ: «Ich hätte mehr Geld» — у меня было бы больше денег."
+    }
+  },
+  {
+    "item": {
+      "id": "waere",
+      "category": "Konjunktiv_II",
+      "term": "wäre",
+      "pos": "Verb",
+      "disambiguation_hint": "Konjunktiv II von sein (сослагательное от sein)"
+    },
+    "content": {
+      "russian": "был бы / была бы / было бы",
+      "example_de": "Wenn ich mehr Zeit hätte, wäre ich öfter bei dir.",
+      "example_ru": "Если бы у меня было больше времени, я бы чаще был рядом с тобой.",
+      "cloze_de": "Wenn ich mehr Zeit hätte, {{c1::wäre}} ich öfter bei dir.",
+      "notes_ru": "wäre — это Konjunktiv II от глагола sein, используется в условных предложениях и вежливых высказываниях. В отличие от war (Präteritum — просто факт прошлого), wäre выражает нереальное условие или предположение. Часто стоит в главном предложении после wenn-придаточного: Wenn ... (Konjunktiv II), ... wäre ..."
+    }
+  },
+  {
+    "item": {
+      "id": "wuerde_inf",
+      "category": "Konjunktiv_II",
+      "term": "würde + Infinitiv",
+      "pos": "Verb",
+      "disambiguation_hint": "вспомогательная форма Konj.II для слабых глаголов (würde kaufen, würde machen)"
+    },
+    "content": {
+      "russian": "сослагательное наклонение для слабых глаголов",
+      "example_de": "Ich würde gerne ein neues Fahrrad kaufen, aber es ist zu teuer.",
+      "example_ru": "Я бы с удовольствием купил новый велосипед, но он слишком дорогой.",
+      "cloze_de": "Ich {{c1::würde}} gerne ein neues Fahrrad kaufen, aber es ist zu teuer.",
+      "notes_ru": "würde + Infinitiv — аналитическая форма Konjunktiv II, которая используется для большинства слабых глаголов, поскольку их собственная форма Konj. II совпадает с Präteritum (kaufte — и прошедшее, и сослагательное). Сильные и неправильные глаголы чаще образуют Konj. II без würde: hätte, wäre, käme, gäbe. В главном предложении würde занимает вторую позицию, инфинитив уходит в конец."
+    }
+  },
+  {
+    "item": {
+      "id": "koennte",
+      "category": "Konjunktiv_II",
+      "term": "könnte",
+      "pos": "Verb",
+      "disambiguation_hint": "Konjunktiv II von können (мог бы / можно было бы)"
+    },
+    "content": {
+      "russian": "мог бы / можно было бы",
+      "example_de": "Wenn ich mehr Zeit hätte, könnte ich dir helfen.",
+      "example_ru": "Если бы у меня было больше времени, я мог бы тебе помочь.",
+      "cloze_de": "Wenn ich mehr Zeit hätte, {{c1::könnte}} ich dir helfen.",
+      "notes_ru": "Könnte — Konjunktiv II от können, выражает гипотетическую возможность. В отличие от kann (Präsens), könnte всегда сигнализирует о нереальном или неуверенном условии — часто в паре с hätte или wäre в придаточном предложении. Инфинитив стоит в конце главного предложения: könnte … helfen."
+    }
+  },
+  {
+    "item": {
+      "id": "muesste",
+      "category": "Konjunktiv_II",
+      "term": "müsste",
+      "pos": "Verb",
+      "disambiguation_hint": "Konjunktiv II von müssen (должен был бы / следовало бы)"
+    },
+    "content": {
+      "russian": "должен был бы / следовало бы",
+      "example_de": "Du müsstest eigentlich früher schlafen gehen, wenn du morgen früh aufstehst.",
+      "example_ru": "Тебе следовало бы ложиться спать раньше, если завтра рано вставать.",
+      "cloze_de": "Du {{c1::müsstest}} eigentlich früher schlafen gehen, wenn du morgen früh aufstehst.",
+      "notes_ru": "Konjunktiv II от müssen: ich/er/sie müsste, du müsstest — выражает вежливый совет или нереализованную обязанность. Отличие от musste (Präteritum Indikativ): musste — реальный факт в прошлом («он должен был»), müsste — гипотетическая необходимость («следовало бы»). Управление: müssen + Infinitiv без zu."
+    }
+  },
+  {
+    "item": {
+      "id": "sollte",
+      "category": "Konjunktiv_II",
+      "term": "sollte",
+      "pos": "Verb",
+      "disambiguation_hint": "Konjunktiv II von sollen (следовало бы — по чужому требованию)"
+    },
+    "content": {
+      "russian": "следовало бы; должен был (по чужому требованию или совету)",
+      "example_de": "Er sollte laut Arzt nach der Operation zwei Wochen zu Hause bleiben.",
+      "example_ru": "По словам врача, после операции ему следовало оставаться дома две недели.",
+      "cloze_de": "Er {{c1::sollte}} laut Arzt nach der Operation zwei Wochen zu Hause bleiben.",
+      "notes_ru": "sollte совпадает по форме с Präteritum von sollen — разграничение только по контексту: как Konjunktiv II выражает чужое требование, ожидание или совет («ему следует/следовало бы»), тогда как Präteritum описывает реальный прошлый факт. В отличие от müsste (Konj. II von müssen — внутренняя необходимость, «пришлось бы»), sollte всегда указывает на внешнее обязательство: инструкцию, чужое ожидание или предписание. Управляет Infinitiv без zu; отрицание: sollte nicht + Infinitiv."
+    }
+  },
+  {
+    "item": {
+      "id": "duerfte",
+      "category": "Konjunktiv_II",
+      "term": "dürfte",
+      "pos": "Verb",
+      "disambiguation_hint": "Konjunktiv II von dürfen (было бы можно / наверное — вероятное предположение)"
+    },
+    "content": {
+      "russian": "наверное / вероятно (вероятное предположение); было бы позволено",
+      "example_de": "Es dürfte heute Nacht kälter werden als gestern.",
+      "example_ru": "Сегодня ночью, наверное, будет холоднее, чем вчера.",
+      "cloze_de": "Es {{c1::dürfte}} heute Nacht kälter werden als gestern.",
+      "notes_ru": "Не путайте с darf (изъявительное: «можно»): dürfte выражает вероятное предположение на основе признаков («наверное, должно быть») или вежливое условие («было бы позволено»). В предложении dürfte стоит на второй позиции как модальный глагол, основной глагол — в конце в форме инфинитива. Отличие от müsste: müsste выражает более сильную уверенность или долженствование, dürfte — мягкое, осторожное предположение."
+    }
+  },
+  {
+    "item": {
+      "id": "moechte",
+      "category": "Konjunktiv_II",
+      "term": "möchte",
+      "pos": "Verb",
+      "disambiguation_hint": "Konjunktiv II von mögen = хотел бы. Вежливая форма желания: Ich möchte bitte..."
+    },
+    "content": {
+      "russian": "хотел бы / хотела бы",
+      "example_de": "Ich möchte bitte einen Fenstertisch für zwei Personen reservieren.",
+      "example_ru": "Я хотел бы, пожалуйста, забронировать столик у окна на двоих.",
+      "cloze_de": "Ich {{c1::möchte}} bitte einen Fenstertisch für zwei Personen reservieren.",
+      "notes_ru": "«Möchte» вежливее, чем «will» — выражает желание без настойчивости и подходит для просьб незнакомым людям и в официальных ситуациях. Инфинитив ставится в конец предложения: Ich möchte Kaffee bestellen. Также принимается: würde gern + инфинитив, но «möchte» звучит естественнее в разговорной речи."
+    }
+  },
+  {
+    "item": {
+      "id": "darauf_worauf",
+      "category": "PrepPronoun",
+      "term": "darauf / worauf",
+      "pos": "Adverb",
+      "disambiguation_hint": "da+Präp = указание на упомянутое; wo+Präp = вопрос/относительное (auf = на +Akk/Dat)"
+    },
+    "content": {
+      "russian": "на это / на том — darauf (указание); на что / на чём — worauf (вопрос)",
+      "example_de": "Er hat darauf bestanden, die Aufgabe allein zu lösen.",
+      "example_ru": "Он настоял на том, чтобы решить задачу самостоятельно.",
+      "cloze_de": "Er hat {{c1::darauf}} bestanden, die Aufgabe allein zu lösen.",
+      "notes_ru": "darauf = da+auf: заменяет ранее упомянутое слово с предлогом auf («Er bestand darauf» = «Он настаивал на этом»). worauf — вопросительная или относительная форма: «Worauf bestehst du?» (На чём ты настаиваешь?). Важно: sich freuen auf + Akk. → «Ich freue mich darauf» = «Я жду этого с нетерпением» (а не просто «рад»)."
+    }
+  },
+  {
+    "item": {
+      "id": "daran_woran",
+      "category": "PrepPronoun",
+      "term": "daran / woran",
+      "pos": "Adverb",
+      "disambiguation_hint": "da+Präp / wo+Präp (an = за, к, о — daran denken, woran erkennen)"
+    },
+    "content": {
+      "russian": "об этом / о чём",
+      "example_de": "Ich muss jeden Abend daran denken, die Tür abzuschließen.",
+      "example_ru": "Я должен каждый вечер помнить о том, чтобы запирать дверь.",
+      "cloze_de": "Ich muss jeden Abend {{c1::daran}} denken, die Tür abzuschließen.",
+      "notes_ru": "daran — местоименное наречие, заменяет «an + предмет/действие»: daran denken (думать об этом), daran arbeiten (работать над этим). woran — вопросительная и относительная форма: Woran denkst du? (О чём ты думаешь?) / Das ist es, woran ich erkenne... Не путать с dabei (dabei sein — присутствовать при этом) и davon (с глаголами, требующими «von»)."
+    }
+  },
+  {
+    "item": {
+      "id": "damit_womit",
+      "category": "PrepPronoun",
+      "term": "damit / womit",
+      "pos": "Adverb",
+      "disambiguation_hint": "da+Präp / wo+Präp (mit = с, при помощи). Не путать с союзом damit (чтобы)!"
+    },
+    "content": {
+      "russian": "с этим / с чем",
+      "example_de": "Er hat einen Hammer gekauft und damit die Regale an der Wand befestigt.",
+      "example_ru": "Он купил молоток и с его помощью прикрепил полки к стене.",
+      "cloze_de": "Er hat einen Hammer gekauft und {{c1::damit}} die Regale an der Wand befestigt.",
+      "notes_ru": "damit (местоименное наречие) заменяет «mit + это» для неодушевлённых предметов вместо «mit ihm/ihr». Womit — вопросительная и относительная форма: «Womit schreibst du?» и «Das Werkzeug, womit er arbeitete». Не путать с союзом damit (чтобы): в союзной функции нет существительного-антецедента, а за ним стоит полное придаточное предложение."
+    }
+  },
+  {
+    "item": {
+      "id": "darueber_worueber",
+      "category": "PrepPronoun",
+      "term": "darüber / worüber",
+      "pos": "Adverb",
+      "disambiguation_hint": "da+Präp / wo+Präp (über = о, про — sprechen über → darüber / worüber sprechen)"
+    },
+    "content": {
+      "russian": "об этом / о чём",
+      "example_de": "Sie haben stundenlang darüber diskutiert, ob das richtig war.",
+      "example_ru": "Они часами спорили об этом, правильно ли это было.",
+      "cloze_de": "Sie haben stundenlang {{c1::darüber}} diskutiert, ob das richtig war.",
+      "notes_ru": "darüber = «об этом / про это» — указывает на уже упомянутое: Ich denke darüber nach. worüber = «о чём» — вопросительная форма: Worüber redet ihr? Оба используются с глаголами, требующими über + Akkusativ: sprechen über, nachdenken über, diskutieren über. Порядок слов: darüber стоит перед глаголом в середине предложения или в начале для эмфазы."
+    }
+  },
+  {
+    "item": {
+      "id": "darin_worin",
+      "category": "PrepPronoun",
+      "term": "darin / worin",
+      "pos": "Adverb",
+      "disambiguation_hint": "da+Präp / wo+Präp (in = в — darin = в этом; worin = в чём)"
+    },
+    "content": {
+      "russian": "в этом / в чём",
+      "example_de": "Ich erinnere mich nicht mehr, worin das Problem bestand.",
+      "example_ru": "Я уже не помню, в чём заключалась проблема.",
+      "cloze_de": "Ich erinnere mich nicht mehr, {{c1::worin}} das Problem bestand.",
+      "notes_ru": "darin — местоположение внутри чего-либо (Dativ): «Es liegt etwas darin» — там внутри что-то лежит. worin — вопросительное или относительное местоимение: «Worin liegt der Unterschied?» — в чём разница? Важно: с глаголами направления (legen, stecken) используется hinein, а не darin — «Leg es hinein» (положи внутрь), но «Es liegt darin» (оно лежит внутри)."
+    }
+  },
+  {
+    "item": {
+      "id": "dazu_wozu",
+      "category": "PrepPronoun",
+      "term": "dazu / wozu",
+      "pos": "Adverb",
+      "disambiguation_hint": "da+Präp / wo+Präp (zu = к, для — dazu = к этому/для этого; wozu = для чего)"
+    },
+    "content": {
+      "russian": "к этому / для чего",
+      "example_de": "Ich neige dazu, morgens zu viel Kaffee zu trinken.",
+      "example_ru": "Я склонен по утрам пить слишком много кофе.",
+      "cloze_de": "Ich neige {{c1::dazu}}, morgens zu viel Kaffee zu trinken.",
+      "notes_ru": "dazu (da+zu) = к этому, для этого — используется с глаголами, управляющими предлогом zu: neigen zu → dazu, beitragen zu → dazu, bereit sein zu → dazu. В отличие от dafür, dazu нельзя заменить с такими глаголами: *dafür neigen — неверно, только dazu neigen. Вопросительная форма — wozu? (для чего? / зачем?): Wozu brauchst du das?"
+    }
+  },
+  {
+    "item": {
+      "id": "davon_wovon",
+      "category": "PrepPronoun",
+      "term": "davon / wovon",
+      "pos": "Adverb",
+      "disambiguation_hint": "da+Präp / wo+Präp (von = от, об — davon = об этом; wovon = о чём)"
+    },
+    "content": {
+      "russian": "об этом; о чём",
+      "example_de": "Sie hat lange davon geträumt, nach Paris zu fahren.",
+      "example_ru": "Она долго мечтала об этом — поехать в Париж.",
+      "cloze_de": "Sie hat lange {{c1::davon}} geträumt, nach Paris zu fahren.",
+      "notes_ru": "davon = об этом / от этого (указательная форма); wovon = о чём / от чего (вопросительная). Употребляется с глаголами с предлогом von: träumen von, sprechen von, hören von, abhängen von. О людях так не говорят: von ihm / von ihr — не davon."
+    }
+  },
+  {
+    "item": {
+      "id": "dafuer_wofuer",
+      "category": "PrepPronoun",
+      "term": "dafür / wofür",
+      "pos": "Adverb",
+      "disambiguation_hint": "da+Präp / wo+Präp (für = за, для — dafür = за это; wofür = за что/для чего)"
+    },
+    "content": {
+      "russian": "за это, для этого; за что, для чего",
+      "example_de": "Er hat lange gespart und kauft sich dafür jetzt ein neues Fahrrad.",
+      "example_ru": "Он долго копил и теперь покупает себе на эти деньги новый велосипед.",
+      "cloze_de": "Er hat lange gespart und kauft sich {{c1::dafür}} jetzt ein neues Fahrrad.",
+      "notes_ru": "Местоимённое наречие: da+für заменяет «für + это» (für dieses Fahrrad → dafür). Вопросительная пара — wofür: Wofür spart er? — За что он копит? Не путайте с deshalb/deswegen (поэтому): dafür отвечает на вопрос «для чего / за что», а не «почему»."
+    }
+  },
+  {
+    "item": {
+      "id": "danach_wonach",
+      "category": "PrepPronoun",
+      "term": "danach / wonach",
+      "pos": "Adverb",
+      "disambiguation_hint": "da+Präp / wo+Präp (nach = после, по — danach = после этого; wonach = по чему)"
+    },
+    "content": {
+      "russian": "после этого / по чему",
+      "example_de": "Erst lernte sie die Theorie und danach übte sie viel.",
+      "example_ru": "Сначала она изучила теорию, а потом много практиковалась.",
+      "cloze_de": "Erst lernte sie die Theorie und {{c1::danach}} übte sie viel.",
+      "notes_ru": "danach заменяет «nach + das» — указывает на уже упомянутое: Ich habe danach gesucht (Я это искал); в контексте времени означает «после этого, затем». wonach заменяет «nach + was» в вопросах и придаточных: Wonach suchst du? (Что ты ищешь?); Ich weiß nicht, wonach er fragt (Я не знаю, о чём он спрашивает). Оба слова пишутся слитно; если nach управляет существительным — это предлог, а не часть da-/wo-слова."
+    }
+  },
+  {
+    "item": {
+      "id": "darunter_worunter",
+      "category": "PrepPronoun",
+      "term": "darunter / worunter",
+      "pos": "Adverb",
+      "disambiguation_hint": "da+Präp / wo+Präp (unter = под, среди — darunter = среди этого; worunter = под чем)"
+    },
+    "content": {
+      "russian": "под этим, среди них / под чем, среди чего",
+      "example_de": "Er leidet sehr darunter, dass seine Freunde ihn nicht verstehen.",
+      "example_ru": "Он очень страдает от того, что его друзья его не понимают.",
+      "cloze_de": "Er leidet sehr {{c1::darunter}}, dass seine Freunde ihn nicht verstehen.",
+      "notes_ru": "«Darunter» заменяет «unter + это/них» и отсылает к уже упомянутому: «leiden unter etwas» → «darunter leiden»; «davon» здесь невозможно, так как глагол управляет предлогом «unter». «Worunter» — вопросительное или относительное наречие, стоит в начале вопроса: «Worunter leidest du?» или вводит придаточное: «Das ist das Problem, worunter er leidet». «Darunter» тоже может стоять в начале предложения для логического акцента: «Darunter leide ich täglich»."
+    }
+  },
+  {
+    "item": {
+      "id": "deshalb_group",
+      "category": "Connector",
+      "term": "deshalb / darum / deswegen",
+      "pos": "Adverb",
+      "disambiguation_hint": "поэтому, следовательно (синонимы). После запятой — инверсия: deshalb VERB Subj"
+    },
+    "content": {
+      "russian": "поэтому",
+      "example_de": "Er hat das Fenster nicht zugemacht, deshalb ist es kalt in der Wohnung.",
+      "example_ru": "Он не закрыл окно, поэтому в квартире холодно.",
+      "cloze_de": "Er hat das Fenster nicht zugemacht, {{c1::deshalb}} ist es kalt in der Wohnung.",
+      "notes_ru": "После запятой — инверсия: deshalb/darum/deswegen + глагол + подлежащее (deshalb IST ES kalt). Все три слова полностью взаимозаменяемы по значению и употреблению. В карточке закреплён вариант «deshalb»; также принимается: darum, deswegen."
+    }
+  },
+  {
+    "item": {
+      "id": "trotzdem",
+      "category": "Connector",
+      "term": "trotzdem",
+      "pos": "Adverb",
+      "disambiguation_hint": "тем не менее, всё равно (наречие противопоставления). Инверсия. ≠ obwohl (союз)"
+    },
+    "content": {
+      "russian": "тем не менее; всё равно",
+      "example_de": "Das Wetter war schrecklich, trotzdem sind wir spazieren gegangen.",
+      "example_ru": "Погода была ужасной, тем не менее мы пошли гулять.",
+      "cloze_de": "Das Wetter war schrecklich, {{c1::trotzdem}} sind wir spazieren gegangen.",
+      "notes_ru": "Конъюнкциональное наречие с инверсией: trotzdem + сказуемое + подлежащее (trotzdem sind wir…). Отличие от obwohl: obwohl вводит придаточное предложение с глаголом в конце — Das Wetter war schrecklich, obwohl die Sonne schien. Синонимы dennoch и jedoch имеют более книжный, письменный оттенок; в повседневной речи употребляется именно trotzdem."
+    }
+  },
+  {
+    "item": {
+      "id": "obwohl",
+      "category": "Connector",
+      "term": "obwohl",
+      "pos": "Konjunktion",
+      "disambiguation_hint": "хотя (подчинительный союз). Глагол в конце придаточного. ≠ trotzdem (наречие)"
+    },
+    "content": {
+      "russian": "хотя",
+      "example_de": "Obwohl es stark regnet, geht er ohne Schirm spazieren.",
+      "example_ru": "Хотя идёт сильный дождь, он гуляет без зонта.",
+      "cloze_de": "{{c1::Obwohl}} es stark regnet, geht er ohne Schirm spazieren.",
+      "notes_ru": "Подчинительный союз: глагол придаточного уходит в конец предложения («…stark regnet»). Trotzdem — наречие: ставится на первую позицию в главном предложении и вызывает инверсию — глагол идёт перед подлежащим: «Es regnet stark. Trotzdem geht er spazieren.» Оба слова выражают уступку, но obwohl вводит придаточное предложение, а trotzdem — часть главного."
+    }
+  },
+  {
+    "item": {
+      "id": "waehrend",
+      "category": "Connector",
+      "term": "während",
+      "pos": "Konjunktion",
+      "disambiguation_hint": "пока / тогда как (временной или противительный союз). Глагол в конце придаточного"
+    },
+    "content": {
+      "russian": "пока; тогда как",
+      "example_de": "Während meine Eltern arbeiten, kümmere ich mich um die Kinder.",
+      "example_ru": "Пока мои родители работают, я присматриваю за детьми.",
+      "cloze_de": "{{c1::Während}} meine Eltern arbeiten, kümmere ich mich um die Kinder.",
+      "notes_ru": "Подчинительный союз: глагол придаточного предложения всегда стоит в конце (arbeiten, schläft, liest). В значении «тогда как» выражает противопоставление: «Ich lerne, während er fernsieht». Не путать с als (однократное действие в прошлом) и wenn (условие или повторяющееся действие)."
+    }
+  },
+  {
+    "item": {
+      "id": "bevor",
+      "category": "Connector",
+      "term": "bevor",
+      "pos": "Konjunktion",
+      "disambiguation_hint": "прежде чем, до того как (временной подчинительный союз). Глагол в конце"
+    },
+    "content": {
+      "russian": "прежде чем, до того как",
+      "example_de": "Ich muss die Hausaufgaben machen, bevor ich fernsehen darf.",
+      "example_ru": "Мне нужно сделать домашнее задание, прежде чем мне разрешат смотреть телевизор.",
+      "cloze_de": "Ich muss die Hausaufgaben machen, {{c1::bevor}} ich fernsehen darf.",
+      "notes_ru": "bevor — подчинительный союз времени: глагол придаточного уходит в конец. Не путать с предлогом vor + Dativ: «vor dem Essen» (существительное) против «bevor ich esse» (придаточное предложение). Также принимается: ehe (устаревший/формальный синоним bevor)"
+    }
+  },
+  {
+    "item": {
+      "id": "nachdem",
+      "category": "Connector",
+      "term": "nachdem",
+      "pos": "Konjunktion",
+      "disambiguation_hint": "после того как. Придаточное → Plusquamperfekt; главное → Perfekt/Präteritum!"
+    },
+    "content": {
+      "russian": "после того как",
+      "example_de": "Nachdem er die Arbeit beendet hatte, rief er seine Mutter an.",
+      "example_ru": "После того как он закончил работу, он позвонил маме.",
+      "cloze_de": "{{c1::Nachdem}} er die Arbeit beendet hatte, rief er seine Mutter an.",
+      "notes_ru": "Придаточное с nachdem требует Plusquamperfekt (hatte/war + Partizip II), главное предложение — Perfekt или Präteritum. Глагол в придаточном всегда стоит в конце. Не путать с предлогом nach + Dativ (nach dem Essen — после еды): nach управляет существительным, nachdem вводит целое придаточное предложение."
+    }
+  },
+  {
+    "item": {
+      "id": "seitdem",
+      "category": "Connector",
+      "term": "seitdem",
+      "pos": "Konjunktion",
+      "disambiguation_hint": "с тех пор как (временной союз). Обе части предложения — Präsens или Perfekt"
+    },
+    "content": {
+      "russian": "с тех пор",
+      "example_de": "Er hatte einen Unfall und seitdem trägt er immer einen Helm.",
+      "example_ru": "У него был несчастный случай, и с тех пор он всегда надевает шлем.",
+      "cloze_de": "Er hatte einen Unfall und {{c1::seitdem}} trägt er immer einen Helm.",
+      "notes_ru": "В данном предложении seitdem — наречие «с тех пор»; заменить его союзом seit здесь нельзя — потребовалась бы полная перестройка структуры. В роли союза оба слова равнозначны и относятся к литературной норме: «Seitdem / Seit er umgezogen ist, sehen wir uns seltener». После наречия seitdem глагол стоит на втором месте (прямой порядок слов)."
+    }
+  },
+  {
+    "item": {
+      "id": "damit_conj",
+      "category": "Connector",
+      "term": "damit (союз цели)",
+      "pos": "Konjunktion",
+      "disambiguation_hint": "чтобы (союз цели). Глагол в конце придаточного. ≠ damit (местоимение = с этим)"
+    },
+    "content": {
+      "russian": "чтобы (для того чтобы)",
+      "example_de": "Ich spreche langsam, damit du mich verstehen kannst.",
+      "example_ru": "Я говорю медленно, чтобы ты мог меня понять.",
+      "cloze_de": "Ich spreche langsam, {{c1::damit}} du mich verstehen kannst.",
+      "notes_ru": "damit-союз вводит придаточное цели: глагол уходит в конец, часто с модальным (kannst, könnt). Отличие от damit-местоимения: местоимение стоит в главном предложении и не меняет порядок слов («Ich bin damit einverstanden»). Синоним с инфинитивом — um … zu — возможен только при одном подлежащем в обоих предложениях."
+    }
+  },
+  {
+    "item": {
+      "id": "sodass",
+      "category": "Connector",
+      "term": "sodass",
+      "pos": "Konjunktion",
+      "disambiguation_hint": "так что, поэтому (союз следствия). Глагол в конце придаточного"
+    },
+    "content": {
+      "russian": "так что",
+      "example_de": "Er sprach zu leise, sodass ihn niemand verstehen konnte.",
+      "example_ru": "Он говорил слишком тихо, так что никто не мог его понять.",
+      "cloze_de": "Er sprach zu leise, {{c1::sodass}} ihn niemand verstehen konnte.",
+      "notes_ru": "sodass вводит придаточное следствия: глагол уходит в конец предложения («...sodass er schlafen konnte»). В отличие от deshalb/darum/deswegen, которые стоят в главном предложении и сохраняют глагол на 2-м месте. Ключевое различие с damit: sodass — реальный результат, damit — намеренная цель."
+    }
+  },
+  {
+    "item": {
+      "id": "je_desto",
+      "category": "Connector",
+      "term": "je...desto / je...umso",
+      "pos": "Konjunktion",
+      "disambiguation_hint": "чем...тем (сравнительная конструкция). Оба члена — Komparativ: je größer, desto besser"
+    },
+    "content": {
+      "russian": "чем...тем",
+      "example_de": "Je mehr man übt, desto besser wird man.",
+      "example_ru": "Чем больше практикуешься, тем лучше становишься.",
+      "cloze_de": "Je mehr man übt, {{c1::desto/umso}} besser wird man.",
+      "notes_ru": "Оба члена конструкции требуют Komparativ: je größer — desto/umso besser. После desto/umso порядок слов: сначала Komparativ, затем подлежащее и глагол. desto и umso полностью взаимозаменяемы — в cloze принимается любой вариант."
+    }
+  },
+  {
+    "item": {
+      "id": "sowohl_als_auch",
+      "category": "Connector",
+      "term": "sowohl...als auch",
+      "pos": "Konjunktion",
+      "disambiguation_hint": "как...так и (двойной союз, оба члена). Согласование глагола — мн. число"
+    },
+    "content": {
+      "russian": "как...так и",
+      "example_de": "Sowohl mein Bruder als auch meine Schwester sprechen fließend Russisch.",
+      "example_ru": "Как мой брат, так и моя сестра свободно говорят по-русски.",
+      "cloze_de": "{{c1::Sowohl}} mein Bruder {{c1::als auch}} meine Schwester sprechen fließend Russisch.",
+      "notes_ru": "Двойной союз: оба элемента обязательны и не заменяют друг друга — в отличие от entweder...oder (или...или), здесь оба условия выполняются одновременно. Если sowohl...als auch связывает два подлежащих, глагол стоит во множественном числе: sprechen, а не spricht. Запятая между частями союза не ставится."
+    }
+  },
+  {
+    "item": {
+      "id": "nicht_nur_sondern_auch",
+      "category": "Connector",
+      "term": "nicht nur...sondern auch",
+      "pos": "Konjunktion",
+      "disambiguation_hint": "не только...но и (двойной союз усиления)"
+    },
+    "content": {
+      "russian": "не только... но и",
+      "example_de": "Sie spricht nicht nur Deutsch, sondern auch Russisch und Spanisch.",
+      "example_ru": "Она говорит не только по-немецки, но и по-русски и по-испански.",
+      "cloze_de": "Sie spricht {{c1::nicht nur::не только}} Deutsch, {{c1::sondern auch::но и}} Russisch und Spanisch.",
+      "notes_ru": "Двойной союз «nicht nur…sondern auch» усиливает и расширяет высказывание: первая часть называет один факт, вторая добавляет ещё один. «nicht nur» стоит перед выделяемым элементом, «sondern auch» — перед добавляемым, порядок слов в обеих частях прямой. Ближайший синоним — «sowohl…als auch» (как…так и), но он нейтральнее и не несёт акцента на дополнении; «nicht bloß…sondern auch» — книжный вариант."
+    }
+  },
+  {
+    "item": {
+      "id": "weder_noch",
+      "category": "Connector",
+      "term": "weder...noch",
+      "pos": "Konjunktion",
+      "disambiguation_hint": "ни...ни (двойной отрицательный союз). Глагол — ед. число если одно подлежащее"
+    },
+    "content": {
+      "russian": "ни...ни",
+      "example_de": "Weder mein Bruder noch meine Schwester hat angerufen.",
+      "example_ru": "Ни мой брат, ни моя сестра не позвонили.",
+      "cloze_de": "{{c1::Weder}} mein Bruder {{c1::noch}} meine Schwester hat angerufen.",
+      "notes_ru": "Двойной отрицательный союз: weder...noch = «ни...ни». Если оба подлежащих стоят в единственном числе, глагол тоже в единственном числе — hat, не haben. Не путать с entweder...oder («или...или»): weder...noch всегда несёт отрицание."
+    }
+  },
+  {
+    "item": {
+      "id": "entweder_oder",
+      "category": "Connector",
+      "term": "entweder...oder",
+      "pos": "Konjunktion",
+      "disambiguation_hint": "или...или / либо...либо (разделительный союз)"
+    },
+    "content": {
+      "russian": "или...или / либо...либо",
+      "example_de": "Entweder trinkst du jetzt Tee, oder du nimmst einen Kaffee.",
+      "example_ru": "Либо ты сейчас пьёшь чай, либо берёшь кофе.",
+      "cloze_de": "{{c1::Entweder}} trinkst du jetzt Tee, {{c1::oder}} du nimmst einen Kaffee.",
+      "notes_ru": "Если «entweder» стоит в начале предложения (Vorfeld), глагол ставится сразу после него — инверсия: «Entweder trinkst du...». Союз «oder» занимает нулевую позицию (Nullposition), поэтому в следующей части порядок слов прямой: «...oder du nimmst». Оба варианта взаимно исключают друг друга."
+    }
+  },
+  {
+    "item": {
+      "id": "zwar_aber",
+      "category": "Connector",
+      "term": "zwar...aber",
+      "pos": "Konjunktion",
+      "disambiguation_hint": "конечно/правда...но (уступительный оборот): Er ist zwar müde, aber er arbeitet."
+    },
+    "content": {
+      "russian": "конечно...но / правда...но",
+      "example_de": "Das Restaurant ist zwar teuer, aber das Essen schmeckt wirklich gut.",
+      "example_ru": "Ресторан, конечно, дорогой, но еда там действительно вкусная.",
+      "cloze_de": "Das Restaurant ist {{c1::zwar}} teuer, aber das Essen schmeckt wirklich gut.",
+      "notes_ru": "Уступительный оборот: zwar вводит признанный факт, aber вводит противопоставление — оба элемента обязательны. Порядок слов: zwar стоит после первого спрягаемого глагола (или перед прилагательным), aber начинает новое предложение с прямым порядком слов. От obwohl отличается тем, что zwar...aber — это сочинительная связь двух главных предложений, тогда как obwohl вводит придаточное с глаголом в конце."
+    }
+  },
+  {
+    "item": {
+      "id": "freuen_auf",
+      "category": "VerbPrep",
+      "term": "sich freuen auf (+Akk)",
+      "pos": "Verb",
+      "disambiguation_hint": "радоваться предстоящему (будущее событие). ≠ sich freuen über (уже произошедшее)"
+    },
+    "content": {
+      "russian": "с нетерпением ждать, предвкушать",
+      "example_de": "Ich freue mich schon sehr auf das Konzert morgen Abend.",
+      "example_ru": "Я уже очень жду завтрашнего концерта вечером.",
+      "cloze_de": "Ich {{c1::freue mich}} schon sehr auf das Konzert morgen Abend.",
+      "notes_ru": "Управление: sich freuen auf + Akkusativ — предлог «auf» требует винительного падежа (auf den Urlaub, auf das Fest). Ключевое отличие от sich freuen über: «auf» — предвкушение будущего события, «über» — радость о том, что уже произошло: Ich freue mich über dein Geschenk (рад подарку, который уже получил). Возвратное местоимение стоит сразу после глагола: freue mich, freust dich, freut sich, freuen uns."
+    }
+  },
+  {
+    "item": {
+      "id": "freuen_ueber",
+      "category": "VerbPrep",
+      "term": "sich freuen über (+Akk)",
+      "pos": "Verb",
+      "disambiguation_hint": "радоваться чему-то, что уже случилось. ≠ sich freuen auf (ожидание будущего)"
+    },
+    "content": {
+      "russian": "радоваться чему-то",
+      "example_de": "Er hat sich sehr über das Lob seines Chefs gefreut.",
+      "example_ru": "Он очень обрадовался похвале своего начальника.",
+      "cloze_de": "Er hat sich sehr {{c1::über}} das Lob seines Chefs gefreut.",
+      "notes_ru": "Управление: sich freuen über + Akkusativ — радость от уже случившегося (das Lob → über das Lob). В отличие от sich freuen auf + Akk., которое выражает ожидание будущего события. В Perfekt: Ich habe mich über ... gefreut."
+    }
+  },
+  {
+    "item": {
+      "id": "warten_auf",
+      "category": "VerbPrep",
+      "term": "warten auf (+Akk)",
+      "pos": "Verb",
+      "disambiguation_hint": "ждать кого-то / чего-то (+Akk)"
+    },
+    "content": {
+      "russian": "ждать кого-то / что-то",
+      "example_de": "Sie wartet auf ihren Freund vor dem Café.",
+      "example_ru": "Она ждёт своего друга перед кафе.",
+      "cloze_de": "Sie {{c1::wartet auf}} ihren Freund vor dem Café.",
+      "notes_ru": "Глагол требует Akkusativ: warten auf den Bus, auf einen Brief — не Dativ. Предлог «auf» стоит непосредственно перед объектом. Не путать с «warten» без предлога — оно употребляется без объекта (Warte mal!)."
+    }
+  },
+  {
+    "item": {
+      "id": "denken_an",
+      "category": "VerbPrep",
+      "term": "denken an (+Akk)",
+      "pos": "Verb",
+      "disambiguation_hint": "думать о ком-то / чём-то (+Akk)"
+    },
+    "content": {
+      "russian": "думать о ком-то или чём-то",
+      "example_de": "Ich denke oft an meine alte Freundin aus der Schulzeit.",
+      "example_ru": "Я часто думаю о своей старой подруге со школьных времён.",
+      "cloze_de": "Ich {{c1::denke an}} meine alte Freundin aus der Schulzeit.",
+      "notes_ru": "Управление: denken an + Akkusativ (не Dativ). Отличие от denken über (+Akk): denken über означает размышлять, обдумывать что-то целенаправленно, тогда как denken an — вспоминать, держать в мыслях. Порядок слов: в главном предложении «an» стоит сразу после глагола, в придаточном глагол уходит в конец: «…weil ich oft an sie denke»."
+    }
+  },
+  {
+    "item": {
+      "id": "sprechen_ueber",
+      "category": "VerbPrep",
+      "term": "sprechen über (+Akk)",
+      "pos": "Verb",
+      "disambiguation_hint": "говорить о чём-то (+Akk)"
+    },
+    "content": {
+      "russian": "говорить о чём-то",
+      "example_de": "Sie haben den ganzen Abend über ihre Reise nach Italien gesprochen.",
+      "example_ru": "Они весь вечер говорили о своей поездке в Италию.",
+      "cloze_de": "Sie haben den ganzen Abend {{c1::über}} ihre Reise nach Italien gesprochen.",
+      "notes_ru": "Управляет Akkusativ: sprechen über das Thema (не über dem Thema). Не путать с sprechen mit (+Dat) — говорить с кем-то. Синоним: reden über (+Akk)."
+    }
+  },
+  {
+    "item": {
+      "id": "interessieren_fuer",
+      "category": "VerbPrep",
+      "term": "sich interessieren für (+Akk)",
+      "pos": "Verb",
+      "disambiguation_hint": "интересоваться чем-то (+Akk)"
+    },
+    "content": {
+      "russian": "интересоваться чем-либо",
+      "example_de": "Sie interessiert sich für Kunst und klassische Musik.",
+      "example_ru": "Она интересуется искусством и классической музыкой.",
+      "cloze_de": "Sie {{c1::interessiert sich für}} Kunst und klassische Musik.",
+      "notes_ru": "Глагол требует Akkusativ через предлог für: sich interessieren für + Akk. (интересоваться чем?). Рефлексивное местоимение sich стоит сразу после спрягаемого глагола: Er interessiert sich für Sport. Не путать с Interesse haben an (+Dat) — там падеж Dativ."
+    }
+  },
+  {
+    "item": {
+      "id": "aergern_ueber",
+      "category": "VerbPrep",
+      "term": "sich ärgern über (+Akk)",
+      "pos": "Verb",
+      "disambiguation_hint": "злиться / раздражаться из-за чего-то (+Akk)"
+    },
+    "content": {
+      "russian": "злиться на / раздражаться из-за",
+      "example_de": "Er ärgert sich über den langen Stau auf der Autobahn.",
+      "example_ru": "Он злится из-за длинной пробки на автобане.",
+      "cloze_de": "Er {{c1::ärgert sich über}} den langen Stau auf der Autobahn.",
+      "notes_ru": "Всегда требует Аккузатив после предлога «über»: sich ärgern über jemanden/etwas. Рефлексивное местоимение «sich» стоит сразу после спрягаемого глагола. Также принимается: sich aufregen über (+Akk) — разговорный синоним с более сильной эмоциональной окраской."
+    }
+  },
+  {
+    "item": {
+      "id": "gewoehnen_an",
+      "category": "VerbPrep",
+      "term": "sich gewöhnen an (+Akk)",
+      "pos": "Verb",
+      "disambiguation_hint": "привыкать к чему-то (+Akk)"
+    },
+    "content": {
+      "russian": "привыкать к",
+      "example_de": "Ich habe mich langsam an den neuen Job gewöhnt.",
+      "example_ru": "Я постепенно привык к новой работе.",
+      "cloze_de": "Ich habe mich langsam an den neuen Job {{c1::gewöhnt}}.",
+      "notes_ru": "Управляет Akkusativ: sich gewöhnen an + Akk (не Dativ). Отличие от «gewohnt sein»: «sich gewöhnen» — процесс привыкания, «gewohnt sein» — уже сложившаяся привычка (Ich bin es gewohnt). Рефлексивное местоимение стоит сразу после подлежащего или вспомогательного глагола."
+    }
+  },
+  {
+    "item": {
+      "id": "erinnern_an",
+      "category": "VerbPrep",
+      "term": "sich erinnern an (+Akk)",
+      "pos": "Verb",
+      "disambiguation_hint": "помнить о чём-то, вспоминать что-то (+Akk)"
+    },
+    "content": {
+      "russian": "вспоминать что-то; помнить о чём-то",
+      "example_de": "Erinnerst du dich noch an den letzten gemeinsamen Urlaub?",
+      "example_ru": "Ты ещё помнишь наш последний совместный отпуск?",
+      "cloze_de": "Erinnerst du dich noch {{c1::an}} den letzten gemeinsamen Urlaub?",
+      "notes_ru": "Глагол возвратный: sich erinnern an (+Akk) — после предлога an всегда аккузатив (кого? что?). Не путать с невозвратной формой: jemanden an etwas erinnern — напоминать кому-то о чём-то (без sich). Порядок слов: sich стоит сразу после спрягаемого глагола или подлежащего, предлог an — непосредственно перед объектом."
+    }
+  },
+  {
+    "item": {
+      "id": "beschaeftigen_mit",
+      "category": "VerbPrep",
+      "term": "sich beschäftigen mit (+Dat)",
+      "pos": "Verb",
+      "disambiguation_hint": "заниматься чем-то, быть занятым чем-то (+Dat)"
+    },
+    "content": {
+      "russian": "заниматься чем-то",
+      "example_de": "Er beschäftigt sich seit Jahren mit der deutschen Geschichte.",
+      "example_ru": "Он уже много лет занимается немецкой историей.",
+      "cloze_de": "Er {{c1::beschäftigt sich}} seit Jahren mit der deutschen Geschichte.",
+      "notes_ru": "Управление: sich beschäftigen mit + Дательный падеж. Местоимение sich стоит сразу после спрягаемого глагола. Отличие от sich interessieren für — beschäftigen подразумевает активное занятие делом, а не просто интерес. Также принимается: sich widmen + Dat (посвящать себя чему-то)."
+    }
+  },
+  {
+    "item": {
+      "id": "anfangen_mit",
+      "category": "VerbPrep",
+      "term": "anfangen mit (+Dat)",
+      "pos": "Verb",
+      "disambiguation_hint": "начинать что-то (+Dat). Trennbar: fängt an"
+    },
+    "content": {
+      "russian": "начинать что-либо",
+      "example_de": "Er fängt morgen endlich mit dem Sport an.",
+      "example_ru": "Он наконец-то начнёт завтра заниматься спортом.",
+      "cloze_de": "Er {{c1::fängt}} morgen endlich mit dem Sport {{c1::an}}.",
+      "notes_ru": "Trennbar-глагол: приставка «an» отделяется и переходит в конец предложения — Er fängt … an. Управляет Dativ через предлог «mit»: mit dem Sport, mit der Arbeit, mit dem Lernen. Синоним «beginnen» не является trennbar-глаголом и остаётся неразрывным (beginnt mit), поэтому замена недопустима."
+    }
+  },
+  {
+    "item": {
+      "id": "aufhoeren_mit",
+      "category": "VerbPrep",
+      "term": "aufhören mit (+Dat)",
+      "pos": "Verb",
+      "disambiguation_hint": "прекращать что-то, переставать делать что-то (+Dat). Trennbar: hört auf"
+    },
+    "content": {
+      "russian": "прекращать, переставать (+ Dat)",
+      "example_de": "Er hat endlich mit dem Rauchen aufgehört.",
+      "example_ru": "Он наконец-то бросил курить.",
+      "cloze_de": "Er hat endlich mit dem Rauchen {{c1::aufgehört}}.",
+      "notes_ru": "Управление: aufhören + mit + Dativ (существительное в Dativ). Раздельно-приставочный глагол: в Präsens — hört ... auf, в Perfekt — hat aufgehört. Синонимичная конструкция: aufhören zu + Infinitiv (Er hört auf zu rauchen) — без предлога mit."
+    }
+  },
+  {
+    "item": {
+      "id": "entscheiden_fuer",
+      "category": "VerbPrep",
+      "term": "sich entscheiden für (+Akk)",
+      "pos": "Verb",
+      "disambiguation_hint": "принимать решение в пользу чего-то (+Akk)"
+    },
+    "content": {
+      "russian": "решаться на что-то; выбирать что-то",
+      "example_de": "Sie hat sich schließlich für das günstigere Modell entschieden.",
+      "example_ru": "Она в итоге выбрала более дешёвую модель.",
+      "cloze_de": "Sie hat sich schließlich {{c1::für}} das günstigere Modell entschieden.",
+      "notes_ru": "После «für» всегда Akkusativ: «sich für das Modell entscheiden» (не «dem Modell»). Возвратное местоимение «sich» обязательно и не опускается. В придаточных предложениях глагол уходит в конец: «weil sie sich für das Modell entschieden hat». Также принимается: «sich entschließen», но оно чаще употребляется с zu + Infinitiv."
+    }
+  },
+  {
+    "item": {
+      "id": "gehoeren_zu",
+      "category": "VerbPrep",
+      "term": "gehören zu (+Dat)",
+      "pos": "Verb",
+      "disambiguation_hint": "принадлежать к чему-то, быть частью чего-то (+Dat)"
+    },
+    "content": {
+      "russian": "принадлежать к, быть частью",
+      "example_de": "Diese Aufgabe gehört zu den schwierigsten des Kurses.",
+      "example_ru": "Это задание относится к самым сложным в курсе.",
+      "cloze_de": "Diese Aufgabe {{c1::gehört zu}} den schwierigsten des Kurses.",
+      "notes_ru": "Управляет дательным падежом: gehören zu + Dativ. В отличие от gehören + Dativ (означает владение: «это принадлежит мне»), gehören zu выражает принадлежность к группе или категории. «Zu» здесь — предлог, а не отделяемая приставка, поэтому глагол не разделяется в конец предложения."
+    }
+  },
+  {
+    "item": {
+      "id": "bestehen_aus",
+      "category": "VerbPrep",
+      "term": "bestehen aus (+Dat)",
+      "pos": "Verb",
+      "disambiguation_hint": "состоять из чего-то (+Dat)"
+    },
+    "content": {
+      "russian": "состоять из",
+      "example_de": "Unser Frühstück besteht aus frischem Obst, Joghurt und Müsli.",
+      "example_ru": "Наш завтрак состоит из свежих фруктов, йогурта и мюсли.",
+      "cloze_de": "Unser Frühstück {{c1::besteht aus}} frischem Obst, Joghurt und Müsli.",
+      "notes_ru": "Управление: bestehen aus + Dativ (из чего?). Nicht путать с bestehen + Akkusativ в значении «сдать экзамен» (Er hat die Prüfung bestanden) или bestehen без дополнения — «существовать». Порядок слов стандартный: подлежащее — besteht — aus — существительное в Dativ."
+    }
+  },
+  {
+    "item": {
+      "id": "phrase_vorschlagen",
+      "category": "SprechenPhrase",
+      "term": "Ich würde vorschlagen, ...",
+      "pos": "Phrase",
+      "disambiguation_hint": "Я бы предложил... (вежливое предложение с Konj.II — Teil 3 Sprechen)"
+    },
+    "content": {
+      "russian": "Я бы предложил...",
+      "example_de": "Ich würde vorschlagen, dass wir die Aufgaben gleichmäßig aufteilen.",
+      "example_ru": "Я бы предложил, чтобы мы равномерно распределили задания.",
+      "cloze_de": "Ich {{c1::würde vorschlagen}}, dass wir die Aufgaben gleichmäßig aufteilen.",
+      "notes_ru": "Konjunktiv II делает предложение вежливым и осторожным — в отличие от прямого «Ich schlage vor, ...» (Präsens, более категорично). После запятой следует придаточное с «dass» + Verb в конце или инфинитивный оборот: «Ich würde vorschlagen, mehr Zeit einzuplanen». Типичная формула для Sprechen Teil 3 при обсуждении совместного решения."
+    }
+  },
+  {
+    "item": {
+      "id": "phrase_wofuer_dagegen",
+      "category": "SprechenPhrase",
+      "term": "Ich wäre dafür / dagegen, weil...",
+      "pos": "Phrase",
+      "disambiguation_hint": "Я был бы за / против, потому что... (аргументация позиции)"
+    },
+    "content": {
+      "russian": "Я был бы за / против, потому что...",
+      "example_de": "Ich wäre dafür, die Schulzeiten zu verkürzen, weil Kinder mehr Freizeit brauchen.",
+      "example_ru": "Я был бы за сокращение учебного времени, потому что детям нужно больше свободного времени.",
+      "cloze_de": "Ich {{c1::wäre dafür}}, die Schulzeiten zu verkürzen, weil Kinder mehr Freizeit brauchen.",
+      "notes_ru": "«Wäre» — конъюнктив II от «sein»: делает высказывание вежливым и осторожным, в отличие от «Ich bin dafür» (прямое утверждение). После «weil» глагол уходит в конец придаточного предложения. Также принимается: «Ich wäre dagegen, weil...» — структура та же, меняется только позиция."
+    }
+  },
+  {
+    "item": {
+      "id": "phrase_was_haeltst",
+      "category": "SprechenPhrase",
+      "term": "Was hältst du davon?",
+      "pos": "Phrase",
+      "disambiguation_hint": "Что ты об этом думаешь? (запрос мнения партнёра — Teil 2/3 Sprechen)"
+    },
+    "content": {
+      "russian": "Что ты об этом думаешь?",
+      "example_de": "Ich habe einen neuen Plan – was hältst du davon?",
+      "example_ru": "У меня есть новый план – что ты об этом думаешь?",
+      "cloze_de": "Ich habe einen neuen Plan – was {{c1::hältst}} du davon?",
+      "notes_ru": "Глагол «halten von» + Dativ: «davon» = «von dem» и указывает на уже упомянутое — именно предлог «von» отличает эту фразу от синонимов с «zu». Пропуск окружён «was» и «davon», что однозначно требует «halten», а не другой глагол. Похожие варианты с «du»: «Was meinst du dazu?», «Was sagst du dazu?» — но они управляют «zu», а не «von»."
+    }
+  },
+  {
+    "item": {
+      "id": "phrase_koennte_vorstellen",
+      "category": "SprechenPhrase",
+      "term": "Ich könnte mir vorstellen, dass...",
+      "pos": "Phrase",
+      "disambiguation_hint": "Я мог бы представить, что... (мягкое предположение с Konj.II)"
+    },
+    "content": {
+      "russian": "Я мог бы представить себе, что...",
+      "example_de": "Ich könnte mir vorstellen, dass er bald eine neue Arbeit findet.",
+      "example_ru": "Я вполне мог бы представить себе, что он скоро найдёт новую работу.",
+      "cloze_de": "Ich {{c1::könnte mir vorstellen}}, dass er bald eine neue Arbeit findet.",
+      "notes_ru": "Используется Konjunktiv II от «können» — звучит мягче и гипотетичнее, чем «Ich kann mir vorstellen» (реальная уверенность). После «dass» глагол уходит в самый конец придаточного: «...dass er bald **findet**». Также принимается: «Ich stelle mir vor, dass...» — нейтральный вариант без оттенка предположения."
+    }
+  },
+  {
+    "item": {
+      "id": "phrase_einerseits",
+      "category": "SprechenPhrase",
+      "term": "Einerseits...andererseits...",
+      "pos": "Phrase",
+      "disambiguation_hint": "С одной стороны...с другой стороны... (двустороннее рассуждение)"
+    },
+    "content": {
+      "russian": "С одной стороны...с другой стороны...",
+      "example_de": "Einerseits will ich reisen, andererseits habe ich kein Geld.",
+      "example_ru": "С одной стороны, я хочу путешествовать, с другой стороны, у меня нет денег.",
+      "cloze_de": "{{c1::Einerseits}} will ich reisen, andererseits habe ich kein Geld.",
+      "notes_ru": "Оба слова занимают первую позицию в предложении и требуют инверсии: глагол стоит на втором месте, подлежащее — на третьем (Einerseits will ich...). Пары не смешиваются: einerseits употребляется только с andererseits, а не с zum anderen — именно поэтому ответ в cloze однозначен. Синонимичная пара zum einen...zum anderen имеет то же значение, но является отдельной конструкцией."
+    }
+  },
+  {
+    "item": {
+      "id": "phrase_finde_wichtig",
+      "category": "SprechenPhrase",
+      "term": "Ich finde es wichtig / schön / schade, dass...",
+      "pos": "Phrase",
+      "disambiguation_hint": "Я считаю важным / красивым / жаль, что... (мнение с dass-Satz)"
+    },
+    "content": {
+      "russian": "Я считаю важным / хорошим, что...; Жаль, что... (мнение с dass-придаточным)",
+      "example_de": "Ich finde es schade, dass du nicht zur Party kommen kannst.",
+      "example_ru": "Мне жаль, что ты не можешь прийти на вечеринку.",
+      "cloze_de": "Ich finde es {{c1::schade}}, dass du nicht zur Party kommen kannst.",
+      "notes_ru": "Конструкция: «Ich finde es + прилагательное + dass...» — глагол finden означает «считать», формальное es обязательно перед придаточным. Три варианта: wichtig (считаю важным), schön (считаю хорошим / мне приятно), schade (жаль, что) — последнее не переводится через «считаю». Глагол придаточного предложения стоит в конце после dass."
+    }
+  },
+  {
+    "item": {
+      "id": "phrase_koennten_wir",
+      "category": "SprechenPhrase",
+      "term": "Wir könnten... Was meinst du?",
+      "pos": "Phrase",
+      "disambiguation_hint": "Мы могли бы... Что думаешь? (совместное планирование — Teil 3 Sprechen)"
+    },
+    "content": {
+      "russian": "Мы могли бы... Что думаешь?",
+      "example_de": "Wir könnten die Präsentation gemeinsam vorbereiten. Was meinst du?",
+      "example_ru": "Мы могли бы подготовить презентацию вместе. Что думаешь?",
+      "cloze_de": "Wir {{c1::könnten}} die Präsentation gemeinsam vorbereiten. Was meinst du?",
+      "notes_ru": "«Könnten» — Konjunktiv II от können, выражает вежливое предложение или возможность. В Teil 3 Sprechen эта конструкция используется для совместного планирования: «Wir könnten + Infinitiv» = мягкое предложение партнёру, не приказ. Отличие от «Sollen wir...?» (предлагаем решить вместе) и «Ich schlage vor, dass...» (более формально): «Wir könnten...» звучит наиболее естественно и непринуждённо в разговоре. Также принимается: Wir könnten auch..."
+    }
+  }
+]
