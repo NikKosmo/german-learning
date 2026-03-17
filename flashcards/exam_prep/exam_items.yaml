@@ -1,0 +1,353 @@
+# German B1 Exam Prep — Targeted Items
+# Source of truth for generate_exam_deck.py
+# Generated deck: Deutsch B1::Prüfung
+#
+# Fields:
+#   id:                   unique identifier
+#   category:             Konjunktiv_II | PrepPronoun | Connector | VerbPrep | SprechenPhrase
+#   term:                 German word/phrase (shown on DE-side of cards)
+#   pos:                  part of speech (context for LLM)
+#   disambiguation_hint:  shown on front of RU→DE card; makes expected answer unambiguous
+
+items:
+
+  # ─── Konjunktiv II ─────────────────────────────────────────────────────────
+  - id: haette
+    category: Konjunktiv_II
+    term: "hätte"
+    pos: Verb
+    disambiguation_hint: "Konjunktiv II von haben (сослагательное от haben)"
+
+  - id: waere
+    category: Konjunktiv_II
+    term: "wäre"
+    pos: Verb
+    disambiguation_hint: "Konjunktiv II von sein (сослагательное от sein)"
+
+  - id: wuerde_inf
+    category: Konjunktiv_II
+    term: "würde + Infinitiv"
+    pos: Verb
+    disambiguation_hint: "вспомогательная форма Konj.II для слабых глаголов (würde kaufen, würde machen)"
+
+  - id: koennte
+    category: Konjunktiv_II
+    term: "könnte"
+    pos: Verb
+    disambiguation_hint: "Konjunktiv II von können (мог бы / можно было бы)"
+
+  - id: muesste
+    category: Konjunktiv_II
+    term: "müsste"
+    pos: Verb
+    disambiguation_hint: "Konjunktiv II von müssen (должен был бы / следовало бы)"
+
+  - id: sollte
+    category: Konjunktiv_II
+    term: "sollte"
+    pos: Verb
+    disambiguation_hint: "Konjunktiv II von sollen (следовало бы — по чужому требованию)"
+
+  - id: duerfte
+    category: Konjunktiv_II
+    term: "dürfte"
+    pos: Verb
+    disambiguation_hint: "Konjunktiv II von dürfen (было бы можно / наверное — вероятное предположение)"
+
+  - id: moechte
+    category: Konjunktiv_II
+    term: "möchte"
+    pos: Verb
+    disambiguation_hint: "Konjunktiv II von mögen = хотел бы. Вежливая форма желания: Ich möchte bitte..."
+
+  # ─── Prepositional Pronouns (da+ / wo+) ────────────────────────────────────
+  - id: darauf_worauf
+    category: PrepPronoun
+    term: "darauf / worauf"
+    pos: Adverb
+    disambiguation_hint: "da+Präp = указание на упомянутое; wo+Präp = вопрос/относительное (auf = на +Akk/Dat)"
+
+  - id: daran_woran
+    category: PrepPronoun
+    term: "daran / woran"
+    pos: Adverb
+    disambiguation_hint: "da+Präp / wo+Präp (an = за, к, о — daran denken, woran erkennen)"
+
+  - id: damit_womit
+    category: PrepPronoun
+    term: "damit / womit"
+    pos: Adverb
+    disambiguation_hint: "da+Präp / wo+Präp (mit = с, при помощи). Не путать с союзом damit (чтобы)!"
+
+  - id: darueber_worueber
+    category: PrepPronoun
+    term: "darüber / worüber"
+    pos: Adverb
+    disambiguation_hint: "da+Präp / wo+Präp (über = о, про — sprechen über → darüber / worüber sprechen)"
+
+  - id: darin_worin
+    category: PrepPronoun
+    term: "darin / worin"
+    pos: Adverb
+    disambiguation_hint: "da+Präp / wo+Präp (in = в — darin = в этом; worin = в чём)"
+
+  - id: dazu_wozu
+    category: PrepPronoun
+    term: "dazu / wozu"
+    pos: Adverb
+    disambiguation_hint: "da+Präp / wo+Präp (zu = к, для — dazu = к этому/для этого; wozu = для чего)"
+
+  - id: davon_wovon
+    category: PrepPronoun
+    term: "davon / wovon"
+    pos: Adverb
+    disambiguation_hint: "da+Präp / wo+Präp (von = от, об — davon = об этом; wovon = о чём)"
+
+  - id: dafuer_wofuer
+    category: PrepPronoun
+    term: "dafür / wofür"
+    pos: Adverb
+    disambiguation_hint: "da+Präp / wo+Präp (für = за, для — dafür = за это; wofür = за что/для чего)"
+
+  - id: danach_wonach
+    category: PrepPronoun
+    term: "danach / wonach"
+    pos: Adverb
+    disambiguation_hint: "da+Präp / wo+Präp (nach = после, по — danach = после этого; wonach = по чему)"
+
+  - id: darunter_worunter
+    category: PrepPronoun
+    term: "darunter / worunter"
+    pos: Adverb
+    disambiguation_hint: "da+Präp / wo+Präp (unter = под, среди — darunter = среди этого; worunter = под чем)"
+
+  # ─── Connectors & Linkers ───────────────────────────────────────────────────
+  - id: deshalb_group
+    category: Connector
+    term: "deshalb / darum / deswegen"
+    pos: Adverb
+    disambiguation_hint: "поэтому, следовательно (синонимы). После запятой — инверсия: deshalb VERB Subj"
+
+  - id: trotzdem
+    category: Connector
+    term: "trotzdem"
+    pos: Adverb
+    disambiguation_hint: "тем не менее, всё равно (наречие противопоставления). Инверсия. ≠ obwohl (союз)"
+
+  - id: obwohl
+    category: Connector
+    term: "obwohl"
+    pos: Konjunktion
+    disambiguation_hint: "хотя (подчинительный союз). Глагол в конце придаточного. ≠ trotzdem (наречие)"
+
+  - id: waehrend
+    category: Connector
+    term: "während"
+    pos: Konjunktion
+    disambiguation_hint: "пока / тогда как (временной или противительный союз). Глагол в конце придаточного"
+
+  - id: bevor
+    category: Connector
+    term: "bevor"
+    pos: Konjunktion
+    disambiguation_hint: "прежде чем, до того как (временной подчинительный союз). Глагол в конце"
+
+  - id: nachdem
+    category: Connector
+    term: "nachdem"
+    pos: Konjunktion
+    disambiguation_hint: "после того как. Придаточное → Plusquamperfekt; главное → Perfekt/Präteritum!"
+
+  - id: seitdem
+    category: Connector
+    term: "seitdem"
+    pos: Konjunktion
+    disambiguation_hint: "с тех пор как (временной союз). Обе части предложения — Präsens или Perfekt"
+
+  - id: damit_conj
+    category: Connector
+    term: "damit (союз цели)"
+    pos: Konjunktion
+    disambiguation_hint: "чтобы (союз цели). Глагол в конце придаточного. ≠ damit (местоимение = с этим)"
+
+  - id: sodass
+    category: Connector
+    term: "sodass"
+    pos: Konjunktion
+    disambiguation_hint: "так что, поэтому (союз следствия). Глагол в конце придаточного"
+
+  - id: je_desto
+    category: Connector
+    term: "je...desto / je...umso"
+    pos: Konjunktion
+    disambiguation_hint: "чем...тем (сравнительная конструкция). Оба члена — Komparativ: je größer, desto besser"
+
+  - id: sowohl_als_auch
+    category: Connector
+    term: "sowohl...als auch"
+    pos: Konjunktion
+    disambiguation_hint: "как...так и (двойной союз, оба члена). Согласование глагола — мн. число"
+
+  - id: nicht_nur_sondern_auch
+    category: Connector
+    term: "nicht nur...sondern auch"
+    pos: Konjunktion
+    disambiguation_hint: "не только...но и (двойной союз усиления)"
+
+  - id: weder_noch
+    category: Connector
+    term: "weder...noch"
+    pos: Konjunktion
+    disambiguation_hint: "ни...ни (двойной отрицательный союз). Глагол — ед. число если одно подлежащее"
+
+  - id: entweder_oder
+    category: Connector
+    term: "entweder...oder"
+    pos: Konjunktion
+    disambiguation_hint: "или...или / либо...либо (разделительный союз)"
+
+  - id: zwar_aber
+    category: Connector
+    term: "zwar...aber"
+    pos: Konjunktion
+    disambiguation_hint: "конечно/правда...но (уступительный оборот): Er ist zwar müde, aber er arbeitet."
+
+  # ─── Verb + Preposition Collocations ────────────────────────────────────────
+  - id: freuen_auf
+    category: VerbPrep
+    term: "sich freuen auf (+Akk)"
+    pos: Verb
+    disambiguation_hint: "радоваться предстоящему (будущее событие). ≠ sich freuen über (уже произошедшее)"
+
+  - id: freuen_ueber
+    category: VerbPrep
+    term: "sich freuen über (+Akk)"
+    pos: Verb
+    disambiguation_hint: "радоваться чему-то, что уже случилось. ≠ sich freuen auf (ожидание будущего)"
+
+  - id: warten_auf
+    category: VerbPrep
+    term: "warten auf (+Akk)"
+    pos: Verb
+    disambiguation_hint: "ждать кого-то / чего-то (+Akk)"
+
+  - id: denken_an
+    category: VerbPrep
+    term: "denken an (+Akk)"
+    pos: Verb
+    disambiguation_hint: "думать о ком-то / чём-то (+Akk)"
+
+  - id: sprechen_ueber
+    category: VerbPrep
+    term: "sprechen über (+Akk)"
+    pos: Verb
+    disambiguation_hint: "говорить о чём-то (+Akk)"
+
+  - id: interessieren_fuer
+    category: VerbPrep
+    term: "sich interessieren für (+Akk)"
+    pos: Verb
+    disambiguation_hint: "интересоваться чем-то (+Akk)"
+
+  - id: aergern_ueber
+    category: VerbPrep
+    term: "sich ärgern über (+Akk)"
+    pos: Verb
+    disambiguation_hint: "злиться / раздражаться из-за чего-то (+Akk)"
+
+  - id: gewoehnen_an
+    category: VerbPrep
+    term: "sich gewöhnen an (+Akk)"
+    pos: Verb
+    disambiguation_hint: "привыкать к чему-то (+Akk)"
+
+  - id: erinnern_an
+    category: VerbPrep
+    term: "sich erinnern an (+Akk)"
+    pos: Verb
+    disambiguation_hint: "помнить о чём-то, вспоминать что-то (+Akk)"
+
+  - id: beschaeftigen_mit
+    category: VerbPrep
+    term: "sich beschäftigen mit (+Dat)"
+    pos: Verb
+    disambiguation_hint: "заниматься чем-то, быть занятым чем-то (+Dat)"
+
+  - id: anfangen_mit
+    category: VerbPrep
+    term: "anfangen mit (+Dat)"
+    pos: Verb
+    disambiguation_hint: "начинать что-то (+Dat). Trennbar: fängt an"
+
+  - id: aufhoeren_mit
+    category: VerbPrep
+    term: "aufhören mit (+Dat)"
+    pos: Verb
+    disambiguation_hint: "прекращать что-то, переставать делать что-то (+Dat). Trennbar: hört auf"
+
+  - id: entscheiden_fuer
+    category: VerbPrep
+    term: "sich entscheiden für (+Akk)"
+    pos: Verb
+    disambiguation_hint: "принимать решение в пользу чего-то (+Akk)"
+
+  - id: gehoeren_zu
+    category: VerbPrep
+    term: "gehören zu (+Dat)"
+    pos: Verb
+    disambiguation_hint: "принадлежать к чему-то, быть частью чего-то (+Dat)"
+
+  - id: bestehen_aus
+    category: VerbPrep
+    term: "bestehen aus (+Dat)"
+    pos: Verb
+    disambiguation_hint: "состоять из чего-то (+Dat)"
+
+  # ─── Sprechen Phrases ────────────────────────────────────────────────────────
+  - id: phrase_vorschlagen
+    category: SprechenPhrase
+    term: "Ich würde vorschlagen, ..."
+    pos: Phrase
+    disambiguation_hint: "Я бы предложил... (вежливое предложение с Konj.II — Teil 3 Sprechen)"
+
+  - id: phrase_wofuer_dagegen
+    category: SprechenPhrase
+    term: "Ich wäre dafür / dagegen, weil..."
+    pos: Phrase
+    disambiguation_hint: "Я был бы за / против, потому что... (аргументация позиции)"
+
+  - id: phrase_was_haeltst
+    category: SprechenPhrase
+    term: "Was hältst du davon?"
+    pos: Phrase
+    disambiguation_hint: "Что ты об этом думаешь? (запрос мнения партнёра — Teil 2/3 Sprechen)"
+
+  - id: phrase_koennte_vorstellen
+    category: SprechenPhrase
+    term: "Ich könnte mir vorstellen, dass..."
+    pos: Phrase
+    disambiguation_hint: "Я мог бы представить, что... (мягкое предположение с Konj.II)"
+
+  - id: phrase_einerseits
+    category: SprechenPhrase
+    term: "Einerseits...andererseits..."
+    pos: Phrase
+    disambiguation_hint: "С одной стороны...с другой стороны... (двустороннее рассуждение)"
+
+  - id: phrase_stimmt_aber
+    category: SprechenPhrase
+    term: "Das stimmt, aber..."
+    pos: Phrase
+    disambiguation_hint: "Это верно, но... (согласие с оговоркой, вежливое возражение)"
+
+  - id: phrase_finde_wichtig
+    category: SprechenPhrase
+    term: "Ich finde es wichtig / schön / schade, dass..."
+    pos: Phrase
+    disambiguation_hint: "Я считаю важным / красивым / жаль, что... (мнение с dass-Satz)"
+
+  - id: phrase_koennten_wir
+    category: SprechenPhrase
+    term: "Wir könnten... Was meinst du?"
+    pos: Phrase
+    disambiguation_hint: "Мы могли бы... Что думаешь? (совместное планирование — Teil 3 Sprechen)"

@@ -35,6 +35,7 @@ select = [
 "flashcards/scripts/add_words.py" = ["E501"]
 "flashcards/scripts/generate_deck_from_md.py" = ["E501"]
 "flashcards/scripts/generate_cases_deck.py" = ["E501"]
+"flashcards/scripts/generate_exam_deck.py" = ["E501", "RUF001"]
 "flashcards/scripts/insert_cards.py" = ["E501"]
 "flashcards/scripts/unpack_deck.py" = ["E501"]
 "flashcards/scripts/update_word_tracking.py" = ["E501"]
