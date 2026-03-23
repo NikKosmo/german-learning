@@ -45,9 +45,8 @@ __pycache__/
 *.so
 .Python
 env/
-venv/
+.venv/
 ENV/
-.venv
 *.egg-info/
 dist/
 build/
