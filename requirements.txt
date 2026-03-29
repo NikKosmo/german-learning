@@ -9,6 +9,9 @@ zstandard>=0.18.0
 # Claude API SDK (optional — used by card_generator.py when ANTHROPIC_API_KEY is set)
 anthropic>=0.40.0
 
+# Claude CLI wrapper (fallback when ANTHROPIC_API_KEY is not set)
+claude-runner>=0.1.0
+
 # JSON Schema validation (used by card_generator.py)
 jsonschema>=4.0.0
 

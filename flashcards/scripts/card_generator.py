@@ -28,6 +28,13 @@ try:
 except ImportError:
     HAS_SDK = False
 
+try:
+    from claude_runner import run_sync
+
+    HAS_RUNNER = True
+except ImportError:
+    HAS_RUNNER = False
+
 # Add project root to Python path
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
@@ -50,10 +57,10 @@ def log(message: str) -> None:
 def check_prerequisites() -> None:
     """Verify required CLI tools are available before starting"""
     api_key = os.environ.get("ANTHROPIC_API_KEY")
-    if not api_key and not shutil.which("claude"):
+    if not api_key and not HAS_RUNNER and not shutil.which("claude"):
         log(
-            "ERROR: Neither ANTHROPIC_API_KEY is set nor 'claude' CLI is available. "
-            "At least one generation method is required."
+            "ERROR: Neither ANTHROPIC_API_KEY is set, nor 'claude-runner' is installed, "
+            "nor 'claude' CLI is available. At least one generation method is required."
         )
         sys.exit(1)
     if not shutil.which("gemini"):
@@ -75,6 +82,14 @@ def run_command(
         log(f"STDOUT: {e.stdout}")
         log(f"STDERR: {e.stderr}")
         raise
+
+
+def _strip_fences(text: str) -> str:
+    text = text.strip()
+    if text.startswith("```"):
+        text = text.split("\n", 1)[1] if "\n" in text else text
+        text = text.rsplit("```", 1)[0].strip()
+    return text
 
 
 def get_pending_words() -> list[dict[str, str]]:
@@ -213,19 +228,9 @@ JSON Schema:
         )
         raw_output = message.content[0].text  # type: ignore[union-attr]
     else:
-        result = run_command(
-            ["claude", "-p", prompt, "--model", GENERATION_MODEL],
-            cwd=_NOHOOKS_DIR,
-            unset_claudecode=True,
-        )
-        raw_output = result.stdout
+        raw_output = run_sync(prompt, model=GENERATION_MODEL).text
 
-    # Strip markdown code fences — claude CLI sometimes wraps output in ```json ... ```
-    cleaned = raw_output.strip()
-    if cleaned.startswith("```"):
-        cleaned = cleaned.split("\n", 1)[1] if "\n" in cleaned else cleaned
-        cleaned = cleaned.rsplit("```", 1)[0].strip()
-
+    cleaned = _strip_fences(raw_output)
     try:
         data = json.loads(cleaned)
     except json.JSONDecodeError as err:
