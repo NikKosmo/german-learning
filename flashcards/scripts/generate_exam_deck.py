@@ -54,6 +54,13 @@ try:
 except ImportError:
     HAS_SDK = False
 
+try:
+    from claude_runner import run_sync
+
+    HAS_RUNNER = True
+except ImportError:
+    HAS_RUNNER = False
+
 
 # ─── CSS ──────────────────────────────────────────────────────────────────────
 
@@ -258,10 +265,10 @@ def generate_content(item: dict) -> dict:
             messages=[{"role": "user", "content": prompt}],
         )
         raw = msg.content[0].text  # type: ignore[union-attr]
+        return json.loads(_strip_fences(raw))
     else:
-        raw = run(["claude", "-p", prompt, "--model", GENERATION_MODEL], unset_claudecode=True)
-
-    return json.loads(_strip_fences(raw))
+        result = run_sync(prompt, model=GENERATION_MODEL)
+        return json.loads(_strip_fences(result.text))
 
 
 def validate_content(term: str, content: dict) -> tuple[bool, str]:
@@ -384,8 +391,8 @@ Examples:
         print(f"\nTotal: {len(items)} items → ~{len(items) * 3} cards (2 reverse + 1 cloze each)")
         return
 
-    if not HAS_SDK and not __import__("shutil").which("claude"):
-        print("ERROR: Need ANTHROPIC_API_KEY or 'claude' CLI.")
+    if not HAS_SDK and not HAS_RUNNER and not __import__("shutil").which("claude"):
+        print("ERROR: Need ANTHROPIC_API_KEY, 'claude-runner' package, or 'claude' CLI.")
         sys.exit(1)
     if not args.skip_validation and not __import__("shutil").which("gemini"):
         print("ERROR: 'gemini' CLI not found. Use --skip-validation to skip.")
