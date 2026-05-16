@@ -27,6 +27,10 @@ See `flashcards/WORKFLOW.md` for the complete 7-step card generation process.
 
 **Quick reference:**
 ```bash
+# Add words via automatic Wiktionary classification + lemmatization
+# (NDJSON records on stdout, human-readable progress on stderr)
+python3 flashcards/scripts/add_words.py --words "Lieb Hinausgegangen bearbeiten"
+
 # Update word tracking status
 python3 flashcards/scripts/update_word_tracking.py
 
@@ -40,7 +44,7 @@ python3 flashcards/scripts/generate_deck_from_md.py
 **Dependencies:**
 ```bash
 # Always install into the project venv — never globally
-source venv/bin/activate
+source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
