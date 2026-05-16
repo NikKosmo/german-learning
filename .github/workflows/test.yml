@@ -28,6 +28,7 @@ jobs:
     - name: Run tests
       run: |
         cd tests
+        export TEST_SUBPROCESS_PYTHON="$(which python)"
         python -m pytest -v
 
     - name: Test Summary
