@@ -8,16 +8,36 @@ Automated Flashcard Generation for German Vocabulary
 """
 
 import argparse
+import contextlib
 import json
 import os
 import random
 import shutil
 import subprocess
 import sys
+import tempfile
 from pathlib import Path
 from typing import Any
 
 import jsonschema
+
+
+def _atomic_write_json(path: Path, data: dict[str, Any]) -> None:
+    """Write JSON to `path` via temp file + rename. Crash-safe."""
+    with tempfile.NamedTemporaryFile(
+        "w", encoding="utf-8", dir=path.parent, delete=False, suffix=".tmp"
+    ) as tmp:
+        tmp_path = Path(tmp.name)
+        try:
+            json.dump(data, tmp, ensure_ascii=False, indent=2)
+            tmp.flush()
+            os.fsync(tmp.fileno())
+        except Exception:
+            with contextlib.suppress(OSError):
+                tmp_path.unlink()
+            raise
+    os.replace(tmp_path, path)
+
 
 _NOHOOKS_DIR = Path.home() / ".config" / "nohooks"
 
@@ -69,12 +89,19 @@ def check_prerequisites() -> None:
 
 
 def run_command(
-    cmd: list[str], cwd: Path | str | None = None, unset_claudecode: bool = False
+    cmd: list[str],
+    cwd: Path | str | None = None,
+    unset_claudecode: bool = False,
+    extra_env: dict[str, str] | None = None,
 ) -> subprocess.CompletedProcess[str]:
     """Run a shell command and return the result"""
-    env = None
-    if unset_claudecode:
-        env = {k: v for k, v in os.environ.items() if k != "CLAUDECODE"}
+    env: dict[str, str] | None = None
+    if unset_claudecode or extra_env:
+        env = dict(os.environ)
+        if unset_claudecode:
+            env.pop("CLAUDECODE", None)
+        if extra_env:
+            env.update(extra_env)
     try:
         return subprocess.run(cmd, capture_output=True, text=True, check=True, cwd=cwd, env=env)
     except subprocess.CalledProcessError as e:
@@ -279,13 +306,27 @@ Or if invalid:
 
     log(f"Calling Gemini to validate '{word}'...")
     try:
-        result = run_command(["gemini", "-p", prompt], cwd=_NOHOOKS_DIR)
+        result = run_command(
+            ["gemini", "-p", prompt],
+            cwd=_NOHOOKS_DIR,
+            extra_env={"GEMINI_CLI_TRUST_WORKSPACE": "true"},
+        )
         raw_output = result.stdout
     except Exception as e:
         log(f"Gemini failed: {e}. Falling back to Codex...")
         try:
             result = run_command(
-                [CODEX_PATH, "exec", "-m", "gpt-5.2", "-s", "read-only", "--", prompt],
+                [
+                    CODEX_PATH,
+                    "exec",
+                    "--skip-git-repo-check",
+                    "-m",
+                    "gpt-5.2",
+                    "-s",
+                    "read-only",
+                    "--",
+                    prompt,
+                ],
                 cwd=_NOHOOKS_DIR,
             )
             raw_output = result.stdout
@@ -326,7 +367,10 @@ def process_word(word_info: dict[str, str]) -> list[dict[str, Any]]:
             return []
 
     except Exception as e:
-        log(f"ERROR processing '{word}': {e}")
+        msg = f"exception during processing: {e}"
+        log(f"ERROR processing '{word}': {msg}")
+        with open(FAILED_WORDS_FILE, "a", encoding="utf-8") as f:
+            f.write(f"{word}: {msg}\n")
         return []
 
 
@@ -356,20 +400,32 @@ def main():
 
     all_cards = []
     processed_count = 0
+    failed_words: list[str] = []
     for word_info in selected_words:
         cards = process_word(word_info)
         if cards:
             all_cards.extend(cards)
             processed_count += 1
+        else:
+            failed_words.append(word_info["word"])
+
+    # All-or-nothing contract: if any per-word failure, do not insert anything
+    # and exit non-zero so loom keeps the bullets in the capture file for retry.
+    if failed_words:
+        log(
+            f"❌ {len(failed_words)} of {len(selected_words)} words failed: "
+            f"{', '.join(failed_words)}. Skipping insertion; see failed_words.txt for details."
+        )
+        sys.exit(1)
 
     if not all_cards:
         log("No cards were successfully generated. Exiting.")
-        return
+        sys.exit(1)
 
-    # Write pending_cards.json
+    # Write pending_cards.json atomically (temp file + rename) so a crash
+    # mid-write cannot leave a truncated file that a later run would consume.
     log(f"Writing {len(all_cards)} cards to {PENDING_CARDS_JSON}...")
-    with open(PENDING_CARDS_JSON, "w", encoding="utf-8") as f:
-        json.dump({"cards": all_cards}, f, ensure_ascii=False, indent=2)
+    _atomic_write_json(PENDING_CARDS_JSON, {"cards": all_cards})
 
     # Verification of written file
     if not PENDING_CARDS_JSON.exists():

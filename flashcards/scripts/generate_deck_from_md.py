@@ -770,12 +770,18 @@ def create_note_from_card(card, models):
         logger.log(f"WARNING: Unhandled model type '{model_key}' for card {card['ID']}, skipping")
         return None
 
-    # Create note with GUID set to our ID
+    # Create note with GUID set to our ID. Pass an explicit integer
+    # `sort_field` (parsed from the GUID hex) so the value lands in Anki's
+    # `notes.sfld` column with INTEGER affinity. Anki 24.11's import path
+    # rejects TEXT-affinity sfld with "NOT NULL constraint failed: notes.sfld"
+    # (see https://forums.ankiweb.net/t/corrupt-text-value-in-notes-sfld/51300
+    # and genanki issue #159 for the upstream schema-v18 gap).
     try:
         note = genanki.Note(
             model=model,
             fields=fields,
             guid=card["ID"],  # Use our ID hash as GUID for Anki matching
+            sort_field=int(card["ID"], 16),
         )
         return note
     except Exception as e:

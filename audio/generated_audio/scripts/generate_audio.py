@@ -35,7 +35,7 @@ class AudioGenerator:
         model_dir: Path,
         output_dir: Path,
         length_scale: float = 1.5,
-        model_name: str = "de_DE-thorsten-high"
+        model_name: str = "de_DE-thorsten-high",
     ):
         self.model_dir = Path(model_dir)
         self.output_dir = Path(output_dir)
@@ -68,22 +68,27 @@ class AudioGenerator:
         """
         output_path = self.output_dir / output_filename
 
+        # Use the current interpreter (this venv's python) so piper-tts
+        # resolves to the in-venv install. Hardcoded "python3" would resolve
+        # via PATH and pick up whatever python is first there (e.g. loom's
+        # venv when this script is invoked as a subprocess from loom).
         cmd = [
-            "python3", "-m", "piper",
-            "--model", str(self.model_file),
-            "--config", str(self.config_file),
-            "--length-scale", str(self.length_scale),
-            "--output_file", str(output_path)
+            sys.executable,
+            "-m",
+            "piper",
+            "--model",
+            str(self.model_file),
+            "--config",
+            str(self.config_file),
+            "--length-scale",
+            str(self.length_scale),
+            "--output_file",
+            str(output_path),
         ]
 
         try:
             result = subprocess.run(
-                cmd,
-                input=text,
-                text=True,
-                capture_output=True,
-                check=True,
-                timeout=30
+                cmd, input=text, text=True, capture_output=True, check=True, timeout=30
             )
 
             # Check file was created
@@ -124,7 +129,7 @@ class AudioGenerator:
 def read_words_from_file(filepath: Path) -> List[str]:
     """Read words from file (one word per line)"""
     try:
-        with open(filepath, 'r', encoding='utf-8') as f:
+        with open(filepath, "r", encoding="utf-8") as f:
             words = [line.strip() for line in f if line.strip()]
         return words
     except Exception as e:
@@ -142,50 +147,37 @@ Examples:
   %(prog)s --words "wissen sagen denken" --output audio/generated_audio/
   %(prog)s --input-file words.txt --output audio/generated_audio/
   %(prog)s --input-file words.txt --output audio/generated_audio/ --length-scale 1.2
-        """
+        """,
     )
 
     # Input options (mutually exclusive)
     input_group = parser.add_mutually_exclusive_group(required=True)
-    input_group.add_argument(
-        '--word',
-        help='Single word to generate'
-    )
-    input_group.add_argument(
-        '--words',
-        help='Space-separated list of words'
-    )
-    input_group.add_argument(
-        '--input-file',
-        type=Path,
-        help='Input file with one word per line'
-    )
+    input_group.add_argument("--word", help="Single word to generate")
+    input_group.add_argument("--words", help="Space-separated list of words")
+    input_group.add_argument("--input-file", type=Path, help="Input file with one word per line")
 
     # Output options
     parser.add_argument(
-        '--output',
-        type=Path,
-        required=True,
-        help='Output directory for audio files'
+        "--output", type=Path, required=True, help="Output directory for audio files"
     )
 
     # Model options
     parser.add_argument(
-        '--model-dir',
+        "--model-dir",
         type=Path,
-        default=Path(__file__).parent.parent.parent / 'piper_test',
-        help='Directory containing Piper model files (default: audio/piper_test/)'
+        default=Path(__file__).parent.parent.parent / "piper_test",
+        help="Directory containing Piper model files (default: audio/piper_test/)",
     )
     parser.add_argument(
-        '--model-name',
-        default='de_DE-thorsten-high',
-        help='Model name (default: de_DE-thorsten-high)'
+        "--model-name",
+        default="de_DE-thorsten-high",
+        help="Model name (default: de_DE-thorsten-high)",
     )
     parser.add_argument(
-        '--length-scale',
+        "--length-scale",
         type=float,
         default=1.5,
-        help='Speech speed (1.0=normal, 1.5=50%% slower, default: 1.5)'
+        help="Speech speed (1.0=normal, 1.5=50%% slower, default: 1.5)",
     )
 
     args = parser.parse_args()
@@ -209,7 +201,7 @@ Examples:
             model_dir=args.model_dir,
             output_dir=args.output,
             length_scale=args.length_scale,
-            model_name=args.model_name
+            model_name=args.model_name,
         )
     except Exception as e:
         print(f"❌ Failed to initialize generator: {e}")
@@ -245,7 +237,7 @@ Examples:
     print()
     print("=" * 70)
     print(f"Completed: {success_count}/{len(words)} files generated")
-    print(f"Success rate: {success_count/len(words)*100:.1f}%")
+    print(f"Success rate: {success_count / len(words) * 100:.1f}%")
 
     if failed_words:
         print()

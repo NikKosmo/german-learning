@@ -15,6 +15,10 @@ claude-runner>=0.1.0
 # JSON Schema validation (used by card_generator.py)
 jsonschema>=4.0.0
 
+# Piper TTS for audio generation (audio/generated_audio/scripts/generate_audio.py).
+# Requires Python ≤3.12 — onnxruntime/piper-phonemize lack 3.14 wheels.
+piper-tts>=1.4.0
+
 # Local config file support (.env) — ANTHROPIC_API_KEY and other secrets
 python-dotenv>=1.0.0
 
