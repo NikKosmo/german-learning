@@ -15,7 +15,7 @@
 | der | in_deck | ✅ Der.mp3 | — | Article | 2025-11-13 | — |
 | die | in_deck | ✅ Die.mp3 | — | Article | 2025-11-13 | — |
 | das | in_deck | ✅ Das.mp3 | — | Article | 2025-11-13 | — |
-| ein | in_deck | ✅ Ein.mp3 | — | Article | 2025-11-13 | — |
+| ein | in_deck | ✅ Ein.wav | — | Article | 2025-11-13 | — |
 | und | in_deck | ✅ Und.mp3 | — | Conjunction | 2025-11-13 | — |
 | ja | in_deck | ✅ Ja.mp3 | — | Particle | 2025-11-13 | — |
 | nein | in_deck | ✅ Nein.mp3 | — | Particle | 2025-11-13 | — |
@@ -196,7 +196,7 @@
 | Mutter | pending | ✅ Mutter.mp3 | — | Noun | — | — |
 | reden | pending | ✅ Reden.mp3 | — | Verb | — | — |
 | raus | pending | ✅ Raus.wav | — | Adverb | — | — |
-| ob | pending | ✅ Ob.wav | — | Conjunction | — | — |
+| ob | in_deck | ✅ Ob.wav | — | Conjunction | 2026-05-27 | — |
 | her | pending | ✅ Her.wav | — | Adverb | — | — |
 | Ordnung | pending | ✅ Ordnung.wav | — | Noun | — | — |
 | klar | pending | ✅ Klar.mp3 | — | Adjective | — | — |
@@ -296,7 +296,7 @@
 | schließen | pending | ✅ Schließen.mp3 | — | Verb | — | — |
 | hören | pending | ✅ Hören.mp3 | — | Verb | — | — |
 | lachen | pending | ✅ Lachen.mp3 | — | Verb | — | — |
-| lieben | pending | ✅ Lieben.mp3 | — | Verb | — | — |
+| lieben | pending | ✅ Lieben.wav | — | Verb | — | — |
 | anfangen | in_deck | ✅ Anfangen.wav | — | Verb | 2025-11-18 | — |
 | Halt | pending | ✅ Halt.wav | — | Noun | — | — |
 | Fall | pending | ✅ Fall.wav | — | Noun | — | — |
@@ -347,11 +347,11 @@
 | Polizei | in_deck | ✅ Polizei.wav | — | Noun | 2026-02-27 | — |
 | gerne | pending | ✅ Gerne.wav | — | Adverb | — | — |
 | Tod | in_deck | ✅ Tod.wav | — | Noun | 2026-02-27 | — |
-| Ort | pending | ✅ Ort.wav | — | Noun | — | — |
+| Ort | in_deck | ✅ Ort.wav | — | Noun | 2026-06-06 | — |
 | Chance | in_deck | ✅ Chance.wav | — | Noun | 2026-02-27 | — |
 | bedeuten | in_deck | ✅ Bedeuten.wav | — | Verb | 2025-12-18 | — |
 | sogar | in_deck | ✅ Sogar.mp3 | — | Adverb/Particle | 2026-02-27 | — |
-| Wahrheit | pending | ✅ Wahrheit.wav | — | Noun | — | — |
+| Wahrheit | in_deck | ✅ Wahrheit.wav | — | Noun | 2026-06-06 | — |
 | Spaß | pending | ✅ Spaß.mp3 | — | Noun | — | — |
 | oben | pending | ✅ Oben.wav | — | Adverb | — | — |
 | Mama | pending | ✅ Mama.mp3 | — | Noun | — | — |
@@ -574,12 +574,12 @@
 | Molekül | in_deck | ✅ Molekül.wav | — | Noun | 2026-02-27 | — |
 | wählen | in_deck | ✅ Wählen.wav | — | Verb | 2026-02-27 | — |
 | grau | in_deck | ✅ Grau.mp3 | — | Adjective | 2026-02-27 | — |
-| Wiederholung | pending | ✅ Wiederholung.wav | — | Noun | — | — |
+| Wiederholung | in_deck | ✅ Wiederholung.wav | — | Noun | 2026-06-06 | — |
 | erfordern | pending | ✅ Erfordern.wav | — | Verb | — | — |
 | breit | pending | ✅ Breit.mp3 | — | Adjective | — | — |
 | vorbereiten | in_deck | ✅ Vorbereiten.mp3 | — | Verb | 2025-11-18 | — |
 | Salz | in_deck | ✅ Salz.mp3 | — | Noun | 2025-11-29 | — |
-| Zorn | pending | ✅ Zorn.wav | — | Noun | — | — |
+| Zorn | in_deck | ✅ Zorn.wav | — | Noun | 2026-06-06 | — |
 | Anspruch | in_deck | ✅ Anspruch.wav | — | Noun | 2026-02-27 | — |
 | Kontinent | in_deck | ✅ Kontinent.wav | — | Noun | 2025-11-29 | — |
 | aufmachen | in_deck | ✅ Aufmachen.wav | — | Verb | 2025-11-18 | — |
@@ -589,13 +589,22 @@
 | lieb | in_deck | ✅ Lieb.mp3 | — | Adjective | 2026-02-27 | — |
 | hinaus | in_deck | ✅ Hinaus.wav | — | Adverb | 2026-02-27 | — |
 | Kraut | in_deck | ✅ Kraut.wav | — | Noun | 2025-11-30 | — |
+| regnen | in_deck | ✅ Regnen.wav | — | Verb | 2026-05-20 | — |
+| Versuch | in_deck | ✅ Versuch.wav | — | Noun | 2026-05-21 | — |
+| gefährlich | in_deck | ✅ Gefährlich.wav | — | Adjective | 2026-05-21 | — |
+| werten | in_deck | ✅ Werten.wav | — | Verb | 2026-05-27 | — |
+| dankbar | in_deck | ✅ Dankbar.wav | — | Adjective | 2026-05-27 | — |
+| ob | pending | ✅ Ob.wav | — | Preposition | — | — |
+| also | in_deck | ✅ Also.wav | — | Adverb/Particle | 2026-05-27 | — |
+| bestellen | in_deck | ✅ Bestellen.wav | — | Verb | 2026-05-27 | — |
+| entweder | in_deck | ✅ Entweder.wav | — | Conjunction | 2026-05-27 | — |
 
 ---
 
 ## Statistics
 
-- **Total words:** 577
-- **In deck:** 162
-- **Pending (with audio):** 415
+- **Total words:** 586
+- **In deck:** 175
+- **Pending (with audio):** 411
 - **Missing audio:** 0
-- **Ready to process:** 415
+- **Ready to process:** 411
