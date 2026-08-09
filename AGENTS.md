@@ -146,7 +146,36 @@ When suggesting study materials or exercises:
 
 **Study plan reference:** See `study_plan/das_leben_study_plan.md` for detailed 4-week plan and `resources/das_leben_book_analysis.md` for complete chapter analysis.
 
+## Gotchas
+
+*(Ported 2026-08-09 from the assistant's rule corpus during the LifeOS migration.)*
+
+- **Cloze cards on closed-class forms need a hint or they are unanswerable.** For pronouns,
+  articles and declension endings, a bare `{{c1::x}}` hides an answer that many candidates fit
+  — `Das ist ___ Vater.` accepts all seven possessives — so the learner "fails" a card for
+  giving a different perfectly-correct form. The German Pronouns deck shipped 181 cards this
+  way and the first test session exposed it. Use `{{c1::answer::hint}}`, which renders the
+  hint inside the blank: put the Russian lemma or owner there (`{{c1::mein::мой}}`,
+  `{{c1::dich::тебя}}`) and let the sentence frame supply case and gender so the ending still
+  has to be derived.
+
+- **AnkiConnect `setSpecificValueOfCard` silently ignores string values on numeric fields.**
+  `due`, `queue`, `type`, `ivl`, `factor` must be passed as `int`. A `str` returns
+  `{'result': [True], 'error': None}` and changes nothing. Cost a wrong report on the
+  irregular-verbs deck: 123 cards "reordered" to 1..123 while the real due values stayed
+  random. Always verify with `cardsInfo` afterwards — this API actively lies.
+
+- **Numerals are intentionally out of scope.** Do not add `Numerale`/`Numeral` to
+  `POS_TEMPLATE_MAP` and do not write tests for `eins`, `zwei`, `erste` and friends, even when
+  their Wiktionary pages have technically-recoverable redirect behaviour. Surface a numeral
+  edge case for awareness; don't auto-fix it.
+
+- **Never purge-and-replace a deck under study.** Update only the notes that change, in place,
+  via `updateNoteFields` on specific note IDs — `deleteNotes` + `addNotes` destroys
+  spaced-repetition scheduling and review history for every card, including the ones you
+  weren't touching.
+
 ---
 
-**Last Updated:** 2025-12-21
+**Last Updated:** 2026-08-09
 **Note:** Follow `common_rules/naming_conventions.md` for file/directory naming (snake_case standard).
