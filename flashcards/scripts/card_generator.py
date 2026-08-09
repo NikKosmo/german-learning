@@ -49,7 +49,7 @@ except ImportError:
     HAS_SDK = False
 
 try:
-    from claude_runner import run_sync
+    from claude_runner import run_claude
 
     HAS_RUNNER = True
 except ImportError:
@@ -255,7 +255,7 @@ JSON Schema:
         )
         raw_output = message.content[0].text  # type: ignore[union-attr]
     else:
-        raw_output = run_sync(prompt, model=GENERATION_MODEL).text
+        raw_output = run_claude(prompt, model=GENERATION_MODEL, timeout=120)
 
     cleaned = _strip_fences(raw_output)
     try:
