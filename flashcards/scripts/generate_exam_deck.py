@@ -55,7 +55,7 @@ except ImportError:
     HAS_SDK = False
 
 try:
-    from claude_runner import run_sync
+    from claude_runner import run_claude
 
     HAS_RUNNER = True
 except ImportError:
@@ -267,8 +267,8 @@ def generate_content(item: dict) -> dict:
         raw = msg.content[0].text  # type: ignore[union-attr]
         return json.loads(_strip_fences(raw))
     else:
-        result = run_sync(prompt, model=GENERATION_MODEL)
-        return json.loads(_strip_fences(result.text))
+        raw = run_claude(prompt, model=GENERATION_MODEL, timeout=120)
+        return json.loads(_strip_fences(raw))
 
 
 def validate_content(term: str, content: dict) -> tuple[bool, str]:
