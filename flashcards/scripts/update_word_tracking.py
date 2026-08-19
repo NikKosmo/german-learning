@@ -166,11 +166,13 @@ def update_tracking_file():
                 type_label = f" ({word_type})" if word_type != "—" else ""
                 changes.append(f"  {word}{type_label}: {old_status} → in_deck")
         else:
-            # Not in deck - check audio
-            if "✅" in new_audio:
+            # Not in deck. `error` is a deliberate quarantine written by card_generator after a
+            # validator judged the word twice, so it outranks the audio check — otherwise every
+            # quarantined word with audio would be reset to pending and drawn again.
+            if old_status == "error":
+                new_status = "error"
+            elif "✅" in new_audio:
                 new_status = "pending"
-            elif old_status == "error":
-                new_status = "error"  # Preserve error status
             else:
                 new_status = "missing_audio"
 

@@ -16,6 +16,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+from datetime import datetime
 from pathlib import Path
 from typing import Any
 
@@ -30,6 +31,23 @@ def _atomic_write_json(path: Path, data: dict[str, Any]) -> None:
         tmp_path = Path(tmp.name)
         try:
             json.dump(data, tmp, ensure_ascii=False, indent=2)
+            tmp.flush()
+            os.fsync(tmp.fileno())
+        except Exception:
+            with contextlib.suppress(OSError):
+                tmp_path.unlink()
+            raise
+    os.replace(tmp_path, path)
+
+
+def _atomic_write_text(path: Path, content: str) -> None:
+    """Write text to `path` via temp file + rename. Crash-safe."""
+    with tempfile.NamedTemporaryFile(
+        "w", encoding="utf-8", dir=path.parent, delete=False, suffix=".tmp"
+    ) as tmp:
+        tmp_path = Path(tmp.name)
+        try:
+            tmp.write(content)
             tmp.flush()
             os.fsync(tmp.fileno())
         except Exception:
@@ -67,6 +85,10 @@ PENDING_CARDS_SCHEMA = paths.FLASHCARDS_SCRIPTS / "pending_cards_schema.json"
 FAILED_WORDS_FILE = paths.FLASHCARDS_SCRIPTS / "failed_words.txt"
 GENERATION_MODEL = "claude-sonnet-4-6"
 CODEX_PATH = "/usr/local/bin/codex"
+# Codex rejects retired model ids with a 400 that the fallback only surfaces as
+# "Both Gemini and Codex failed to validate". Bump this when the account's Codex
+# lineup moves; gpt-5.2 was rejected outright from 2026.
+CODEX_MODEL = "gpt-5.4"
 
 
 def log(message: str) -> None:
@@ -77,14 +99,27 @@ def log(message: str) -> None:
 def check_prerequisites() -> None:
     """Verify required CLI tools are available before starting"""
     api_key = os.environ.get("ANTHROPIC_API_KEY")
-    if not api_key and not HAS_RUNNER and not shutil.which("claude"):
+    # Only two generation paths are implemented: the anthropic SDK (needs both a
+    # key AND the package) and run_claude from claude-runner. A bare `claude` on
+    # PATH is not one of them, so accepting it here let a broken claude_runner
+    # import pass preflight and resurface 200 lines later as
+    # `NameError: name 'run_claude' is not defined`, once per word, with the real
+    # cause nowhere in the output. Fail here instead, naming what is missing.
+    if not (api_key and HAS_SDK) and not HAS_RUNNER:
         log(
-            "ERROR: Neither ANTHROPIC_API_KEY is set, nor 'claude-runner' is installed, "
-            "nor 'claude' CLI is available. At least one generation method is required."
+            "ERROR: no usable generation path. "
+            f"anthropic SDK installed: {HAS_SDK}, ANTHROPIC_API_KEY set: {bool(api_key)}, "
+            f"claude_runner importable: {HAS_RUNNER}. "
+            "If claude_runner is False, the venv most likely holds the unrelated PyPI "
+            "'claude-runner' package — reinstall from "
+            "git+https://github.com/NikKosmo/claude-runner.git@main"
         )
         sys.exit(1)
-    if not shutil.which("gemini"):
-        log("ERROR: 'gemini' CLI is not available in PATH.")
+    # Validation needs at least one validator, not specifically Gemini — its free
+    # individual tier is decommissioned, so hard-requiring it here would block
+    # every run on a tool that can no longer answer.
+    if not Path(CODEX_PATH).exists() and not shutil.which("codex") and not shutil.which("gemini"):
+        log("ERROR: no validation backend available — need codex or gemini on PATH.")
         sys.exit(1)
 
 
@@ -273,8 +308,14 @@ JSON Schema:
     return data.get("cards", [])
 
 
-def validate_card_data(word: str, cards: list[dict[str, Any]]) -> tuple[bool, str]:
-    """Validate card data using Gemini CLI (fallback to Codex)"""
+def validate_card_data(word: str, cards: list[dict[str, Any]]) -> tuple[bool, str, bool]:
+    """Validate card data using Codex (fallback to Gemini).
+
+    Returns (is_valid, feedback, conclusive). ``conclusive`` is True only when a validator
+    actually returned a parseable verdict. An unreachable or unparseable validator is an
+    infrastructure failure, not a judgement about the word, and must never quarantine it —
+    that class of failure is what silently drained the deck for two months.
+    """
     cards_json = json.dumps({"cards": cards}, ensure_ascii=False, indent=2)
     prompt = f"""You are validating German vocabulary card data
 for a Russian native speaker learning German.
@@ -304,45 +345,119 @@ Or if invalid:
   "suggestions": ["suggestion 1"]
 }}"""
 
-    log(f"Calling Gemini to validate '{word}'...")
-    try:
-        result = run_command(
-            ["gemini", "-p", prompt],
-            cwd=_NOHOOKS_DIR,
-            extra_env={"GEMINI_CLI_TRUST_WORKSPACE": "true"},
-        )
-        raw_output = result.stdout
-    except Exception as e:
-        log(f"Gemini failed: {e}. Falling back to Codex...")
+    # Codex leads. Gemini's free individual tier was decommissioned (it now fails
+    # with IneligibleTierError / UNSUPPORTED_CLIENT), so leaving it first cost a
+    # full failed prompt round-trip on every single word before Codex picked up.
+    # It stays as a fallback so that restoring Gemini auth needs no code change.
+    validators: list[tuple[str, list[str], dict[str, str] | None]] = [
+        (
+            "Codex",
+            [
+                CODEX_PATH,
+                "exec",
+                "--skip-git-repo-check",
+                "-m",
+                CODEX_MODEL,
+                "-s",
+                "read-only",
+                "--",
+                prompt,
+            ],
+            None,
+        ),
+        ("Gemini", ["gemini", "-p", prompt], {"GEMINI_CLI_TRUST_WORKSPACE": "true"}),
+    ]
+
+    raw_output = None
+    failures: list[str] = []
+    for name, cmd, extra_env in validators:
+        if not shutil.which(cmd[0]) and not Path(cmd[0]).exists():
+            failures.append(f"{name}: not installed")
+            continue
+        log(f"Calling {name} to validate '{word}'...")
         try:
-            result = run_command(
-                [
-                    CODEX_PATH,
-                    "exec",
-                    "--skip-git-repo-check",
-                    "-m",
-                    "gpt-5.2",
-                    "-s",
-                    "read-only",
-                    "--",
-                    prompt,
-                ],
-                cwd=_NOHOOKS_DIR,
-            )
-            raw_output = result.stdout
-        except Exception as codex_e:
-            log(f"Codex fallback failed: {codex_e}")
-            return False, f"Both Gemini and Codex failed to validate: {e}, {codex_e}"
+            raw_output = run_command(cmd, cwd=_NOHOOKS_DIR, extra_env=extra_env).stdout
+            break
+        except Exception as exc:
+            log(f"{name} failed: {exc}")
+            failures.append(f"{name}: {exc}")
+
+    if raw_output is None:
+        return False, f"No validator could check this card — {'; '.join(failures)}", False
 
     try:
         val_data = json.loads(raw_output.strip())
         is_valid = val_data.get("valid", False)
         issues = val_data.get("issues", [])
         feedback = "\n".join(issues)
-        return is_valid, feedback
+        return is_valid, feedback, True
     except json.JSONDecodeError as e:
         log(f"Failed to parse validation response: {e}\nRaw output: {raw_output}")
-        return False, f"Validation returned invalid JSON: {raw_output[:100]}..."
+        return False, f"Validation returned invalid JSON: {raw_output[:100]}...", False
+
+
+QUARANTINE_STATUS = "error"
+QUARANTINE_NOTE_LIMIT = 120
+
+
+def _quarantine_note(reason: str, today: str) -> str:
+    """A one-line note that cannot break the markdown table it lives in."""
+    flattened = " ".join(reason.split())
+    flattened = flattened.replace("|", "/")
+    if len(flattened) > QUARANTINE_NOTE_LIMIT:
+        flattened = flattened[: QUARANTINE_NOTE_LIMIT - 1].rstrip() + "…"
+    return f"{today} validation failed: {flattened}" if flattened else f"{today} validation failed"
+
+
+def quarantine_word(word: str, word_type: str, reason: str) -> bool:
+    """Mark a word `error` in word_tracking.md so it stops being drawn.
+
+    `error` is an existing documented status that update_word_tracking.py already preserves
+    across its recompute, so nothing else has to change. Returns True when a row was updated.
+    """
+    tracking_path = paths.WORD_TRACKING_FILE
+    try:
+        content = tracking_path.read_text(encoding="utf-8")
+    except OSError as exc:
+        log(f"WARNING: could not read {tracking_path} to quarantine '{word}': {exc}")
+        return False
+
+    today = datetime.now().strftime("%Y-%m-%d")
+    lines = content.splitlines()
+    updated = False
+
+    for index, line in enumerate(lines):
+        if not line.startswith("|"):
+            continue
+        parts = line.split("|")
+        if len(parts) < 9:
+            continue
+        cells = [part.strip() for part in parts]
+        if cells[1] != word:
+            continue
+        # Match the type too, so a homonym pair is not quarantined wholesale.
+        if word_type not in ("—", "", None) and cells[5] not in (word_type, "—", ""):
+            continue
+        if cells[2] == QUARANTINE_STATUS:
+            return True
+        cells[2] = QUARANTINE_STATUS
+        cells[7] = _quarantine_note(reason, today)
+        lines[index] = "| " + " | ".join(cells[1:8]) + " |"
+        updated = True
+        break
+
+    if not updated:
+        log(f"WARNING: '{word}' not found in {tracking_path}; nothing quarantined")
+        return False
+
+    try:
+        _atomic_write_text(tracking_path, "\n".join(lines) + "\n")
+    except OSError as exc:
+        log(f"WARNING: could not write {tracking_path} to quarantine '{word}': {exc}")
+        return False
+
+    log(f"🚫 Quarantined '{word}' (status → {QUARANTINE_STATUS}); it will not be drawn again.")
+    return True
 
 
 def process_word(word_info: dict[str, str]) -> list[dict[str, Any]]:
@@ -350,12 +465,12 @@ def process_word(word_info: dict[str, str]) -> list[dict[str, Any]]:
     word = word_info["word"]
     try:
         cards = generate_card_data(word_info)
-        is_valid, feedback = validate_card_data(word, cards)
+        is_valid, feedback, conclusive = validate_card_data(word, cards)
 
         if not is_valid:
             log(f"Validation failed for '{word}'. Retrying once... Feedback: {feedback}")
             cards = generate_card_data(word_info, retry_feedback=feedback)
-            is_valid, feedback = validate_card_data(word, cards)
+            is_valid, feedback, conclusive = validate_card_data(word, cards)
 
         if is_valid:
             log(f"✅ Successfully generated and validated cards for '{word}'")
@@ -364,6 +479,12 @@ def process_word(word_info: dict[str, str]) -> list[dict[str, Any]]:
             log(f"❌ Failed to validate cards for '{word}' after retry. Feedback: {feedback}")
             with open(FAILED_WORDS_FILE, "a", encoding="utf-8") as f:
                 f.write(f"{word}: {feedback}\n")
+            if conclusive:
+                # The validator judged the word itself, twice. Take it out of the draw so one
+                # unwinnable word cannot keep zeroing whole runs.
+                quarantine_word(word, word_info.get("word_type", "—"), feedback)
+            else:
+                log(f"'{word}' stays pending: no validator verdict, so this is not its fault.")
             return []
 
     except Exception as e:
