@@ -134,3 +134,38 @@ def test_update_tracking_statuses_and_dates(tmp_paths, monkeypatch):
     assert data["Frage"]["status"] == "in_deck"
     # Error stays error regardless of audio
     assert data["Fehler"]["status"] == "error"
+
+
+def test_quarantined_word_with_audio_stays_error(tmp_paths, monkeypatch):
+    """A quarantined word keeps its error status even though its audio is present.
+
+    Audio used to be checked first, so every quarantined word with audio was reset to pending
+    and drawn again on the next run — which would have made quarantine a no-op.
+    """
+    deck, tracking = tmp_paths
+    write_deck(deck, [])
+    write_tracking(
+        tracking,
+        [
+            "| Spiel | error | ✅ Spiel.mp3 | — | Noun | — | 2026-08-18 validation failed: nope |",
+            "| Fenster | pending | ✅ Fenster.mp3 | — | Noun | — | — |",
+        ],
+    )
+
+    uwt = importlib.import_module("flashcards.scripts.update_word_tracking")
+    monkeypatch.setattr(
+        uwt,
+        "get_audio_filename",
+        lambda w: {"Spiel": "Spiel.mp3", "Fenster": "Fenster.mp3"}.get(w),
+    )
+
+    uwt.update_tracking_file()
+
+    rows = {}
+    for row in read_tracking_rows(tracking):
+        parts = [p.strip() for p in row.split("|")]
+        rows[parts[1]] = {"status": parts[2], "notes": parts[7]}
+
+    assert rows["Spiel"]["status"] == "error"
+    assert "validation failed" in rows["Spiel"]["notes"]
+    assert rows["Fenster"]["status"] == "pending"
