@@ -115,7 +115,7 @@
 | Lippe | pending | ✅ Lippe.wav | — | Noun | — | — |
 | Sonne | pending | ✅ Sonne.mp3 | — | Noun | — | — |
 | Gebäude | pending | ✅ Gebäude.mp3 | — | Noun | — | — |
-| Nummer | pending | ✅ Nummer.mp3 | — | Noun | — | — |
+| Nummer | in_deck | ✅ Nummer.mp3 | — | Noun | 2026-08-19 | — |
 | Ehemann | pending | ✅ Ehemann.wav | — | Noun | — | — |
 | Elternteil | pending | ✅ Elternteil.wav | — | Noun | — | — |
 | Ecke | pending | ✅ Ecke.wav | — | Noun | — | — |
@@ -174,9 +174,9 @@
 | Feuer | pending | ✅ Feuer.wav | — | Noun | — | — |
 | Licht | pending | ✅ Licht.wav | — | Noun | — | — |
 | Schatten | pending | ✅ Schatten.wav | — | Noun | — | — |
-| Spiel | pending | ✅ Spiel.mp3 | — | Noun | — | — |
+| Spiel | error | ✅ Spiel.mp3 | — | Noun | — | 2026-08-18 validation failed: Перевод "пьеса" неточен: Spiel означает игру/матч; для пьесы используется das Theaterstück |
 | Musik | pending | ✅ Musik.mp3 | — | Noun | — | — |
-| Tanz | pending | ✅ Tanz.wav | — | Noun | — | — |
+| Tanz | in_deck | ✅ Tanz.wav | — | Noun | 2026-08-19 | — |
 | Film | pending | ✅ Film.mp3 | — | Noun | — | — |
 | Bild | pending | ✅ Bild.mp3 | — | Noun | — | — |
 | Farbe | pending | ✅ Farbe.mp3 | — | Noun | — | — |
@@ -236,7 +236,7 @@
 | Familie | pending | ✅ Familie.mp3 | — | Noun | — | — |
 | Morgen | pending | ✅ Morgen.mp3 | — | Noun | — | — |
 | je | pending | ✅ Je.wav | — | Adverb | — | — |
-| Abend | pending | ✅ Abend.mp3 | — | Noun | — | — |
+| Abend | in_deck | ✅ Abend.mp3 | — | Noun | 2026-08-19 | — |
 | darin | in_deck | ✅ Darin.wav | — | Adverb | 2025-11-29 | — |
 | rund | pending | ✅ Rund.wav | — | Adjective | — | — |
 | Aufgabe | pending | ✅ Aufgabe.mp3 | — | Noun | — | — |
@@ -254,7 +254,7 @@
 | daher | pending | ✅ Daher.wav | — | Adverb | — | — |
 | obwohl | pending | ✅ Obwohl.wav | — | Conjunction | — | — |
 | Nacht | pending | ✅ Nacht.mp3 | — | Noun | — | — |
-| verlieren | pending | ✅ Verlieren.mp3 | — | Verb | — | — |
+| verlieren | in_deck | ✅ Verlieren.mp3 | — | Verb | 2026-08-17 | — |
 | Ding | pending | ✅ Ding.wav | — | Noun | — | — |
 | deutlich | pending | ✅ Deutlich.mp3 | — | Adjective | — | — |
 | allgemein | pending | ✅ Allgemein.wav | — | Adjective | — | — |
@@ -275,9 +275,9 @@
 | lernen | pending | ✅ Lernen.mp3 | — | Verb | — | — |
 | fahren | pending | ✅ Fahren.mp3 | — | Verb | — | — |
 | kaufen | pending | ✅ Kaufen.mp3 | — | Verb | — | — |
-| verkaufen | pending | ✅ Verkaufen.mp3 | — | Verb | — | — |
+| verkaufen | in_deck | ✅ Verkaufen.mp3 | — | Verb | 2026-08-17 | — |
 | bauen | in_deck | ✅ Bauen.wav | — | Verb | 2026-02-27 | — |
-| suchen | pending | ✅ Suchen.mp3 | — | Verb | — | — |
+| suchen | in_deck | ✅ Suchen.mp3 | — | Verb | 2026-08-17 | — |
 | schicken | pending | ✅ Schicken.mp3 | — | Verb | — | — |
 | sitzen | pending | ✅ Sitzen.mp3 | — | Verb | — | — |
 | fallen | pending | ✅ Fallen.wav | — | Verb | — | — |
@@ -345,7 +345,7 @@
 | Alter | pending | ✅ Alter.wav | — | Noun | — | — |
 | ziemlich | in_deck | ✅ Ziemlich.mp3 | — | Adjective/Adverb | 2026-02-27 | — |
 | Polizei | in_deck | ✅ Polizei.wav | — | Noun | 2026-02-27 | — |
-| gerne | pending | ✅ Gerne.wav | — | Adverb | — | — |
+| gerne | in_deck | ✅ Gerne.wav | — | Adverb | 2026-08-19 | — |
 | Tod | in_deck | ✅ Tod.wav | — | Noun | 2026-02-27 | — |
 | Ort | in_deck | ✅ Ort.wav | — | Noun | 2026-06-06 | — |
 | Chance | in_deck | ✅ Chance.wav | — | Noun | 2026-02-27 | — |
@@ -366,7 +366,7 @@
 | zwischen | pending | ✅ Zwischen.mp3 | — | Preposition | — | — |
 | woher | pending | ✅ Woher.mp3 | — | Adverb | — | — |
 | Schatz | pending | ✅ Schatz.mp3 | — | Noun | — | — |
-| versuchen | pending | ✅ Versuchen.wav | — | Verb | — | — |
+| versuchen | in_deck | ✅ Versuchen.wav | — | Verb | 2026-08-17 | — |
 | nett | pending | ✅ Nett.mp3 | — | Adjective | — | — |
 | zu | pending | ✅ Zu.mp3 | — | Preposition | — | — |
 | Arsch | pending | ✅ Arsch.wav | — | Noun | — | — |
@@ -378,7 +378,7 @@
 | Dollar | pending | ✅ Dollar.wav | — | Noun | — | — |
 | holen | pending | ✅ Holen.mp3 | — | Verb | — | — |
 | oft | pending | ✅ Oft.mp3 | — | Adverb | — | — |
-| drauf | pending | ✅ Drauf.wav | — | Adverb | — | — |
+| drauf | in_deck | ✅ Drauf.wav | — | Adverb | 2026-08-17 | — |
 | unten | pending | ✅ Unten.wav | — | Adverb | — | — |
 | Wagen | pending | ✅ Wagen.wav | — | Noun | — | — |
 | wichtig | in_deck | ✅ Wichtig.mp3 | — | Adjective | 2026-02-27 | — |
@@ -463,7 +463,7 @@
 | ohne | pending | ✅ Ohne.mp3 | — | Preposition | — | — |
 | Rest | pending | ✅ Rest.wav | — | Noun | — | — |
 | entschuldigen | pending | ✅ Entschuldigen.wav | — | Verb | — | — |
-| Doktor | pending | ✅ Doktor.wav | — | Noun | — | — |
+| Doktor | in_deck | ✅ Doktor.wav | — | Noun | 2026-08-17 | — |
 | Mist | in_deck | ✅ Mist.wav | — | Noun | 2026-02-27 | — |
 | König | pending | ✅ König.wav | — | Noun | — | — |
 | Wiedersehen | pending | ✅ Wiedersehen.wav | — | Noun | — | — |
@@ -490,7 +490,7 @@
 | Sicherheit | pending | ✅ Sicherheit.wav | — | Noun | — | — |
 | ehrlich | pending | ✅ Ehrlich.wav | — | Adjective | — | — |
 | Sex | pending | ✅ Sex.wav | — | Noun | — | — |
-| ziehen | pending | ✅ Ziehen.wav | — | Verb | — | — |
+| ziehen | in_deck | ✅ Ziehen.wav | — | Verb | 2026-08-19 | — |
 | Augenblick | pending | ✅ Augenblick.wav | — | Noun | — | — |
 | Klasse | pending | ✅ Klasse.wav | — | Noun | — | — |
 | stark | pending | ✅ Stark.mp3 | — | Adjective | — | — |
@@ -568,7 +568,7 @@
 | Ebene | pending | ✅ Ebene.wav | — | Noun | — | — |
 | sammeln | in_deck | ✅ Sammeln.mp3 | — | Verb | 2025-11-18 | — |
 | werfen | in_deck | ✅ Werfen.wav | — | Verb | 2026-02-27 | — |
-| Glanz | pending | ✅ Glanz.wav | — | Noun | — | — |
+| Glanz | in_deck | ✅ Glanz.wav | — | Noun | 2026-08-17 | — |
 | Immobilien | pending | ✅ Immobilien.wav | — | Noun | — | — |
 | Spalte | pending | ✅ Spalte.wav | — | Noun | — | — |
 | Molekül | in_deck | ✅ Molekül.wav | — | Noun | 2026-02-27 | — |
@@ -604,7 +604,8 @@
 ## Statistics
 
 - **Total words:** 586
-- **In deck:** 175
-- **Pending (with audio):** 411
+- **In deck:** 187
+- **Pending (with audio):** 398
 - **Missing audio:** 0
-- **Ready to process:** 411
+- **Error:** 1
+- **Ready to process:** 398
