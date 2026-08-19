@@ -199,3 +199,45 @@ def test_an_exception_during_processing_leaves_the_word_pending(tracking, monkey
 
     assert cg.process_word({"word": "Spiel", "word_type": "Noun"}) == []
     assert _row(tracking.read_text(encoding="utf-8"), "Spiel")[2] == "pending"
+
+
+# --- no silent substitution ----------------------------------------------------------------
+
+
+def test_an_unavailable_request_forfeits_its_slot(tracking, monkeypatch):
+    """Asking for a word that cannot be drawn must not run a random substitute instead."""
+    monkeypatch.setattr(cg, "log", lambda *args, **kwargs: None)
+    assert cg.select_words(["der"], count=1) == []
+
+
+def test_a_quarantined_request_is_not_substituted(tracking, monkeypatch):
+    monkeypatch.setattr(cg, "log", lambda *args, **kwargs: None)
+    cg.quarantine_word("Spiel", "Noun", "reason")
+    assert cg.select_words(["Spiel"], count=1) == []
+
+
+def test_available_requests_still_resolve(tracking, monkeypatch):
+    monkeypatch.setattr(cg, "log", lambda *args, **kwargs: None)
+    selected = cg.select_words(["Fenster"], count=1)
+    assert [word["word"] for word in selected] == ["Fenster"]
+
+
+def test_a_mixed_batch_keeps_the_available_words(tracking, monkeypatch):
+    monkeypatch.setattr(cg, "log", lambda *args, **kwargs: None)
+    selected = cg.select_words(["Fenster", "der"], count=2)
+    assert [word["word"] for word in selected] == ["Fenster"]
+
+
+def test_the_daily_drip_still_fills_beyond_the_requested_words(tracking, monkeypatch):
+    """The drip is deliberate: count above the requested list still pulls random pending words."""
+    monkeypatch.setattr(cg, "log", lambda *args, **kwargs: None)
+    selected = cg.select_words(["Fenster"], count=3)
+    assert len(selected) == 3
+    assert "Fenster" in {word["word"] for word in selected}
+
+
+def test_the_drip_is_not_widened_by_an_unavailable_request(tracking, monkeypatch):
+    """'der' is in_deck, so it forfeits its slot; the drip fills only its own share."""
+    monkeypatch.setattr(cg, "log", lambda *args, **kwargs: None)
+    selected = cg.select_words(["Fenster", "der"], count=3)
+    assert len(selected) == 2

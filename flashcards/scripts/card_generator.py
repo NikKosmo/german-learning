@@ -206,6 +206,7 @@ def select_words(requested_words: list[str] | None, count: int) -> list[dict[str
     """Select words based on requested list and total count"""
     all_pending = get_pending_words()
     selected = []
+    unavailable = 0
 
     # 1. Start with explicitly requested words
     if requested_words:
@@ -215,15 +216,19 @@ def select_words(requested_words: list[str] | None, count: int) -> list[dict[str
             if match:
                 selected.append(match)
             else:
+                unavailable += 1
                 # Check if it exists at all but is not pending
                 msg = (
                     f"WARNING: Requested word '{req}' is not available "
-                    "(not pending or missing audio)"
+                    "(not pending, quarantined, or missing audio)"
                 )
                 log(msg)
 
-    # 2. Fill remaining slots randomly
-    remaining_count = count - len(selected)
+    # 2. Fill remaining slots randomly for the daily drip.
+    # A requested word that is unavailable forfeits its slot rather than being swapped for a
+    # random substitute: that would attribute the substitute's failure to the word you asked
+    # for, which is exactly how a request for 'fief' produced a failed run on 'Salvaging'.
+    remaining_count = count - len(selected) - unavailable
     if remaining_count > 0:
         others = [w for w in all_pending if w not in selected]
         if len(others) < remaining_count:
