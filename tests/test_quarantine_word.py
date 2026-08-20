@@ -124,6 +124,16 @@ def test_quarantining_twice_is_idempotent(tracking):
     assert tracking.read_text(encoding="utf-8") == first
 
 
+def test_quarantining_emits_the_machine_readable_marker(tracking, monkeypatch):
+    """loom parks the capture bullet off this line; prose alone would leave it retried forever."""
+    lines: list[str] = []
+    monkeypatch.setattr(cg, "log", lambda message: lines.append(message))
+
+    cg.quarantine_word("Spiel", "Noun", "translation is wrong")
+
+    assert f"{cg.QUARANTINE_MARKER} Spiel" in lines
+
+
 def test_unreadable_tracking_file_does_not_raise(tmp_path, monkeypatch):
     import paths
 
@@ -147,7 +157,7 @@ def test_a_judged_rejection_quarantines(tracking, monkeypatch, tmp_path):
     monkeypatch.setattr(cg, "FAILED_WORDS_FILE", tmp_path / "failed.txt")
     _stub_generation(monkeypatch, [(False, "bad translation", True), (False, "still bad", True)])
 
-    assert cg.process_word({"word": "Spiel", "word_type": "Noun"}) == []
+    assert cg.process_word({"word": "Spiel", "word_type": "Noun"}).cards == []
     assert _row(tracking.read_text(encoding="utf-8"), "Spiel")[2] == "error"
 
 
@@ -162,7 +172,7 @@ def test_an_unreachable_validator_leaves_the_word_pending(tracking, monkeypatch,
         ],
     )
 
-    assert cg.process_word({"word": "Spiel", "word_type": "Noun"}) == []
+    assert cg.process_word({"word": "Spiel", "word_type": "Noun"}).cards == []
     assert _row(tracking.read_text(encoding="utf-8"), "Spiel")[2] == "pending"
 
 
@@ -176,7 +186,7 @@ def test_unparseable_validator_output_leaves_the_word_pending(tracking, monkeypa
         ],
     )
 
-    assert cg.process_word({"word": "Spiel", "word_type": "Noun"}) == []
+    assert cg.process_word({"word": "Spiel", "word_type": "Noun"}).cards == []
     assert _row(tracking.read_text(encoding="utf-8"), "Spiel")[2] == "pending"
 
 
@@ -184,7 +194,7 @@ def test_a_word_that_passes_on_retry_is_not_quarantined(tracking, monkeypatch, t
     monkeypatch.setattr(cg, "FAILED_WORDS_FILE", tmp_path / "failed.txt")
     _stub_generation(monkeypatch, [(False, "first attempt off", True), (True, "", True)])
 
-    assert cg.process_word({"word": "Spiel", "word_type": "Noun"}) == [{"front": "x"}]
+    assert cg.process_word({"word": "Spiel", "word_type": "Noun"}).cards == [{"front": "x"}]
     assert _row(tracking.read_text(encoding="utf-8"), "Spiel")[2] == "pending"
 
 
@@ -197,7 +207,7 @@ def test_an_exception_during_processing_leaves_the_word_pending(tracking, monkey
 
     monkeypatch.setattr(cg, "generate_card_data", boom)
 
-    assert cg.process_word({"word": "Spiel", "word_type": "Noun"}) == []
+    assert cg.process_word({"word": "Spiel", "word_type": "Noun"}).cards == []
     assert _row(tracking.read_text(encoding="utf-8"), "Spiel")[2] == "pending"
 
 

@@ -18,7 +18,7 @@ import sys
 import tempfile
 from datetime import datetime
 from pathlib import Path
-from typing import Any
+from typing import Any, NamedTuple
 
 import jsonschema
 
@@ -403,6 +403,7 @@ Or if invalid:
 
 QUARANTINE_STATUS = "error"
 QUARANTINE_NOTE_LIMIT = 120
+QUARANTINE_MARKER = "QUARANTINED:"
 
 
 def _quarantine_note(reason: str, today: str) -> str:
@@ -461,11 +462,25 @@ def quarantine_word(word: str, word_type: str, reason: str) -> bool:
         log(f"WARNING: could not write {tracking_path} to quarantine '{word}': {exc}")
         return False
 
+    # Machine-readable for loom: the capture bullet should be parked, not retried tomorrow.
+    log(f"{QUARANTINE_MARKER} {word}")
     log(f"🚫 Quarantined '{word}' (status → {QUARANTINE_STATUS}); it will not be drawn again.")
     return True
 
 
-def process_word(word_info: dict[str, str]) -> list[dict[str, Any]]:
+class WordOutcome(NamedTuple):
+    """What one word produced: its cards, and whether it was parked on the way out.
+
+    `quarantined` is what tells the caller a failure is permanent. A word that merely failed
+    stays pending and is worth another run tomorrow; a parked one never will be, so its capture
+    bullet should go rather than sit there being retried forever.
+    """
+
+    cards: list[dict[str, Any]]
+    quarantined: bool = False
+
+
+def process_word(word_info: dict[str, str]) -> WordOutcome:
     """Generate and validate cards for a single word, with one retry"""
     word = word_info["word"]
     try:
@@ -479,7 +494,7 @@ def process_word(word_info: dict[str, str]) -> list[dict[str, Any]]:
 
         if is_valid:
             log(f"✅ Successfully generated and validated cards for '{word}'")
-            return cards
+            return WordOutcome(cards)
         else:
             log(f"❌ Failed to validate cards for '{word}' after retry. Feedback: {feedback}")
             with open(FAILED_WORDS_FILE, "a", encoding="utf-8") as f:
@@ -487,17 +502,17 @@ def process_word(word_info: dict[str, str]) -> list[dict[str, Any]]:
             if conclusive:
                 # The validator judged the word itself, twice. Take it out of the draw so one
                 # unwinnable word cannot keep zeroing whole runs.
-                quarantine_word(word, word_info.get("word_type", "—"), feedback)
-            else:
-                log(f"'{word}' stays pending: no validator verdict, so this is not its fault.")
-            return []
+                parked = quarantine_word(word, word_info.get("word_type", "—"), feedback)
+                return WordOutcome([], quarantined=parked)
+            log(f"'{word}' stays pending: no validator verdict, so this is not its fault.")
+            return WordOutcome([])
 
     except Exception as e:
         msg = f"exception during processing: {e}"
         log(f"ERROR processing '{word}': {msg}")
         with open(FAILED_WORDS_FILE, "a", encoding="utf-8") as f:
             f.write(f"{word}: {msg}\n")
-        return []
+        return WordOutcome([])
 
 
 def main():
@@ -525,27 +540,45 @@ def main():
     log(f"Processing {len(selected_words)} words...")
 
     all_cards = []
-    processed_count = 0
+    generated_words: list[str] = []
     failed_words: list[str] = []
+    quarantined_words: list[str] = []
     for word_info in selected_words:
-        cards = process_word(word_info)
-        if cards:
-            all_cards.extend(cards)
-            processed_count += 1
+        outcome = process_word(word_info)
+        if outcome.cards:
+            all_cards.extend(outcome.cards)
+            generated_words.append(word_info["word"])
         else:
             failed_words.append(word_info["word"])
+            if outcome.quarantined:
+                quarantined_words.append(word_info["word"])
 
-    # All-or-nothing contract: if any per-word failure, do not insert anything
-    # and exit non-zero so loom keeps the bullets in the capture file for retry.
+    # A failed word costs its own slot and nothing else. The predecessor of this block discarded
+    # the whole batch on any failure, which zeroed ten of eleven drip runs in August; it existed
+    # only because the exit code was the sole signal loom had. The summary below carries the
+    # per-word outcome instead, so loom can keep the right capture bullets without the script
+    # having to throw away good cards to make a point.
     if failed_words:
         log(
-            f"❌ {len(failed_words)} of {len(selected_words)} words failed: "
-            f"{', '.join(failed_words)}. Skipping insertion; see failed_words.txt for details."
+            f"⚠️ {len(failed_words)} of {len(selected_words)} words failed: "
+            f"{', '.join(failed_words)}. See failed_words.txt for details."
         )
-        sys.exit(1)
 
     if not all_cards:
         log("No cards were successfully generated. Exiting.")
+        print(
+            json.dumps(
+                {
+                    "status": "failed",
+                    "words_requested": len(selected_words),
+                    "words_generated": 0,
+                    "cards_inserted": 0,
+                    "generated": [],
+                    "failed": failed_words,
+                    "quarantined": quarantined_words,
+                }
+            )
+        )
         sys.exit(1)
 
     # Write pending_cards.json atomically (temp file + rename) so a crash
@@ -580,12 +613,15 @@ def main():
 
     # Final output
     output = {
-        "status": "success",
+        "status": "partial" if failed_words else "success",
         "words_requested": len(selected_words),
-        "words_generated": processed_count,
+        "words_generated": len(generated_words),
         "cards_inserted": len(all_cards),
+        "generated": generated_words,
+        "failed": failed_words,
+        "quarantined": quarantined_words,
     }
-    print(json.dumps(output))
+    print(json.dumps(output, ensure_ascii=False))
 
 
 if __name__ == "__main__":
