@@ -410,7 +410,7 @@
 | dass | pending | ✅ Dass.wav | — | Conjunction | — | — |
 | Stunde | pending | ✅ Stunde.mp3 | — | Noun | — | — |
 | Szene | pending | ✅ Szene.wav | — | Noun | — | — |
-| einige | pending | ✅ Einige.wav | — | Pronoun | — | — |
+| einige | error | ✅ Einige.wav | — | Pronoun | — | 2026-08-20 validation failed: В грамматических примечаниях, вероятно, неверно указана форма Gen. Sg. Neut.: для 'einiges' не следует давать 'Gen. — e… |
 | deshalb | in_deck | ✅ Deshalb.wav | — | Adverb | 2025-12-01 | — |
 | Telefon | pending | ✅ Telefon.mp3 | — | Noun | — | — |
 | Captain | pending | ✅ Captain.wav | — | Noun | — | — |
