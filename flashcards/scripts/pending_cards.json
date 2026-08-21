@@ -2,91 +2,58 @@
   "cards": [
     {
       "card_type": "Reverse",
+      "word_type": "Noun",
+      "russian": "щель, трещина, столбец, колонка",
+      "german": "die Spalte",
+      "extra": "die Spalten",
+      "example_de": "Die Spalte in der Wand wird immer breiter.",
+      "example_ru": "Трещина в стене становится всё шире.",
+      "notes": "Может означать физическую щель/трещину, а также столбец в таблице или газете.",
+      "audio": "Spalte.wav"
+    },
+    {
+      "card_type": "Cloze",
+      "word_type": "Noun",
+      "russian": "щель, трещина, столбец, колонка",
+      "german": "{{c1::die}} Spalte",
+      "extra": "die Spalten",
+      "example_de": "Die Daten sind in drei Spalten aufgeteilt.",
+      "example_ru": "Данные разделены на три столбца.",
+      "notes": "Может означать физическую щель/трещину, а также столбец в таблице или газете.",
+      "audio": "Spalte.wav"
+    },
+    {
+      "card_type": "Reverse",
+      "word_type": "Adjective/Adverb",
+      "russian": "чёртов, проклятый; чертовски (как усилитель)",
+      "german": "verdammt",
+      "extra": "nicht steigerbar",
+      "example_de": "Das war verdammt schwierig.",
+      "example_ru": "Это было чертовски сложно.",
+      "notes": "Употребляется как прилагательное ('ein verdammter Fehler' — чёртова ошибка) и как наречный усилитель ('verdammt gut' — чертовски хорошо). В разговорной речи — бранное слово. Степени сравнения практически не используются.",
+      "audio": "Verdammt.wav"
+    },
+    {
+      "card_type": "Reverse",
       "word_type": "Verb",
-      "russian": "тянуть, тащить, тянуться, переезжать",
-      "german": "ziehen",
-      "extra": "hat/ist gezogen",
-      "example_de": "Er zieht den schweren Koffer durch den Bahnhof.",
-      "example_ru": "Он тащит тяжёлый чемодан через вокзал.",
-      "notes": "Переходный глагол: тянуть, тащить (hat gezogen). Непереходный: переезжать, двигаться (ist gezogen). Также: sich ziehen — тянуться, простираться.",
-      "audio": "Ziehen.wav"
-    },
-    {
-      "card_type": "Reverse",
-      "word_type": "Noun",
-      "russian": "вечер",
-      "german": "der Abend",
-      "extra": "die Abende",
-      "example_de": "Wir verbringen den Abend zu Hause.",
-      "example_ru": "Мы проводим вечер дома.",
-      "notes": "Устойчивые выражения: am Abend (вечером), heute Abend (сегодня вечером), guten Abend (добрый вечер).",
-      "audio": "Abend.mp3"
-    },
-    {
-      "card_type": "Cloze",
-      "word_type": "Noun",
-      "russian": "вечер",
-      "german": "{{c1::der}} Abend",
-      "extra": "die Abende",
-      "example_de": "Wir verbringen den Abend zu Hause.",
-      "example_ru": "Мы проводим вечер дома.",
-      "notes": "Устойчивые выражения: am Abend (вечером), heute Abend (сегодня вечером), guten Abend (добрый вечер).",
-      "audio": "Abend.mp3"
-    },
-    {
-      "card_type": "Reverse",
-      "word_type": "Noun",
-      "russian": "номер",
-      "german": "die Nummer",
-      "extra": "die Nummern",
-      "example_de": "Wie ist deine Telefonnummer?",
-      "example_ru": "Какой у тебя номер телефона?",
-      "notes": "«die Nummer» означает «номер» (порядковый, телефонный, номер дома и т.д.). Не путать с «die Zahl» (абстрактное число) и «die Ziffer» (цифра).",
-      "audio": "Nummer.mp3"
-    },
-    {
-      "card_type": "Cloze",
-      "word_type": "Noun",
-      "russian": "номер",
-      "german": "{{c1::die}} Nummer",
-      "extra": "die Nummern",
-      "example_de": "Ich habe seine Nummer verloren.",
-      "example_ru": "Я потерял его номер.",
-      "notes": "«die Nummer» означает «номер» (порядковый, телефонный, номер дома и т.д.). Не путать с «die Zahl» (абстрактное число) и «die Ziffer» (цифра).",
-      "audio": "Nummer.mp3"
+      "russian": "вести, руководить, управлять",
+      "german": "führen",
+      "extra": "hat geführt",
+      "example_de": "Der Manager führt das Team sehr gut.",
+      "example_ru": "Менеджер очень хорошо руководит командой.",
+      "notes": "Слабый глагол: führen – führte – hat geführt. Употребляется в значении физического ведения (вести за руку) и абстрактного руководства (управлять компанией, страной).",
+      "audio": "Führen.wav"
     },
     {
       "card_type": "Reverse",
       "word_type": "Adverb",
-      "russian": "охотно, с удовольствием",
-      "german": "gerne",
+      "russian": "точно так же, так же (как)",
+      "german": "genauso",
       "extra": "",
-      "example_de": "Ich trinke gerne Kaffee am Morgen.",
-      "example_ru": "Я с удовольствием пью кофе по утрам.",
-      "notes": "Синоним: gern. Употребляется с глаголами для выражения удовольствия или готовности что-то делать. Например: 'Ich helfe gerne' — я с удовольствием помогу.",
-      "audio": "Gerne.wav"
-    },
-    {
-      "card_type": "Reverse",
-      "word_type": "Noun",
-      "russian": "танец",
-      "german": "der Tanz",
-      "extra": "die Tänze",
-      "example_de": "Der Tanz war wunderschön.",
-      "example_ru": "Танец был великолепен.",
-      "notes": "der Tanz — мужской род. Происходит от глагола tanzen (танцевать).",
-      "audio": "Tanz.wav"
-    },
-    {
-      "card_type": "Cloze",
-      "word_type": "Noun",
-      "russian": "танец",
-      "german": "{{c1::der}} Tanz",
-      "extra": "die Tänze",
-      "example_de": "{{c1::Der}} Tanz war wunderschön.",
-      "example_ru": "Танец был великолепен.",
-      "notes": "der Tanz — мужской род. Происходит от глагола tanzen (танцевать).",
-      "audio": "Tanz.wav"
+      "example_de": "Er läuft genauso schnell wie sein Bruder.",
+      "example_ru": "Он бегает точно так же быстро, как его брат.",
+      "notes": "Употребляется в сравнениях с союзом 'wie': genauso ... wie = так же ... как. Синонимы: ebenso, gleichermaßen.",
+      "audio": "Genauso.wav"
     }
   ]
 }

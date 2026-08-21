@@ -310,7 +310,7 @@
 | dran | pending | ✅ Dran.wav | — | Adverb | — | — |
 | lieber | pending | ✅ Lieber.mp3 | — | Adverb | — | — |
 | darauf | in_deck | ✅ Darauf.wav | — | Adverb | 2025-11-29 | — |
-| kein | pending | ✅ Kein.mp3 | — | Pronoun | — | — |
+| kein | error | ✅ Kein.mp3 | — | Pronoun | — | 2026-08-21 validation failed: `word_type: "Pronoun"` неточно: `kein` в данном употреблении прежде всего отрицательный артикль/детерминатив (`Negativa… |
 | Kerl | pending | ✅ Kerl.wav | — | Noun | — | — |
 | Job | pending | ✅ Job.mp3 | — | Noun | — | — |
 | äh | pending | ✅ Äh.wav | — | Particle | — | — |
@@ -500,7 +500,7 @@
 | Kraft | pending | ✅ Kraft.wav | — | Noun | — | — |
 | verschwinden | pending | ✅ Verschwinden.wav | — | Verb | — | — |
 | heraus | pending | ✅ Heraus.wav | — | Adverb | — | — |
-| genauso | pending | ✅ Genauso.wav | — | Adverb | — | — |
+| genauso | in_deck | ✅ Genauso.wav | — | Adverb | 2026-08-21 | — |
 | Sauerstoff | pending | ✅ Sauerstoff.wav | — | Noun | — | — |
 | Satz | pending | ✅ Satz.wav | — | Noun | — | — |
 | Zucker | pending | ✅ Zucker.mp3 | — | Noun | — | — |
@@ -520,7 +520,7 @@
 | diskutieren | pending | ✅ Diskutieren.wav | — | Verb | — | — |
 | vorwärts | pending | ✅ Vorwärts.wav | — | Adverb | — | — |
 | ähnlich | pending | ✅ Ähnlich.wav | — | Adjective | — | — |
-| führen | pending | ✅ Führen.wav | — | Verb | — | — |
+| führen | in_deck | ✅ Führen.wav | — | Verb | 2026-08-21 | — |
 | Erfahrung | pending | ✅ Erfahrung.wav | — | Noun | — | — |
 | Partitur | pending | ✅ Partitur.wav | — | Noun | — | — |
 | Apfel | in_deck | ✅ Apfel.mp3 | — | Noun | 2025-11-15 | — |
@@ -570,7 +570,7 @@
 | werfen | in_deck | ✅ Werfen.wav | — | Verb | 2026-02-27 | — |
 | Glanz | in_deck | ✅ Glanz.wav | — | Noun | 2026-08-17 | — |
 | Immobilien | pending | ✅ Immobilien.wav | — | Noun | — | — |
-| Spalte | pending | ✅ Spalte.wav | — | Noun | — | — |
+| Spalte | in_deck | ✅ Spalte.wav | — | Noun | 2026-08-21 | — |
 | Molekül | in_deck | ✅ Molekül.wav | — | Noun | 2026-02-27 | — |
 | wählen | in_deck | ✅ Wählen.wav | — | Verb | 2026-02-27 | — |
 | grau | in_deck | ✅ Grau.mp3 | — | Adjective | 2026-02-27 | — |
@@ -604,8 +604,8 @@
 ## Statistics
 
 - **Total words:** 586
-- **In deck:** 187
-- **Pending (with audio):** 398
+- **In deck:** 190
+- **Pending (with audio):** 393
 - **Missing audio:** 0
-- **Error:** 1
-- **Ready to process:** 398
+- **Error:** 3
+- **Ready to process:** 393

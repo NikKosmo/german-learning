@@ -185,6 +185,7 @@ class BatchRecord:
     status: str
     audio: str | None
     error: str | None
+    tracking_status: str | None = None
 
     def to_json(self) -> str:
         return json.dumps(
@@ -195,6 +196,7 @@ class BatchRecord:
                 "status": self.status,
                 "audio": self.audio,
                 "error": self.error,
+                "tracking_status": self.tracking_status,
             },
             ensure_ascii=False,
         )
@@ -624,10 +626,16 @@ def find_tracking_table_bounds(lines: list[str]) -> tuple[int, int]:
     return divider_index + 1, body_end
 
 
-def read_existing_tracking_keys(content: str) -> set[tuple[str, str]]:
+def read_existing_tracking_keys(content: str) -> dict[tuple[str, str], str]:
+    """Existing tracking rows, (normalized lemma, type) -> status.
+
+    The status matters to the caller of this script: `skipped_dup` says a row exists, which is
+    not the same as a card existing. A row still `pending` means the word was captured and never
+    carded, so its capture bullet has not done its job yet.
+    """
     lines = content.splitlines()
     body_start, body_end = find_tracking_table_bounds(lines)
-    keys: set[tuple[str, str]] = set()
+    keys: dict[tuple[str, str], str] = {}
     for line in lines[body_start:body_end]:
         if not line.startswith("|") or line.startswith("|---") or "| Word | Status |" in line:
             continue
@@ -637,7 +645,7 @@ def read_existing_tracking_keys(content: str) -> set[tuple[str, str]]:
         lemma = parts[1]
         word_type = parts[5]
         if lemma and word_type in WordType.all_values():
-            keys.add((normalize_lemma(lemma), word_type))
+            keys[(normalize_lemma(lemma), word_type)] = parts[2]
     return keys
 
 
@@ -687,6 +695,7 @@ def plan_batch(
         status: str,
         audio: str | None,
         error: str | None,
+        lemma_key: str | None = None,
     ) -> None:
         for word_type in types:
             records.append(
@@ -697,6 +706,9 @@ def plan_batch(
                     status=status,
                     audio=audio,
                     error=error,
+                    tracking_status=(
+                        seen_keys.get((lemma_key, word_type)) if lemma_key is not None else None
+                    ),
                 )
             )
 
@@ -720,7 +732,15 @@ def plan_batch(
         new_types = [t for t in resolved_types if (lemma_key, t) not in seen_keys]
 
         if not new_types:
-            emit_per_type(word, candidate.lemma, resolved_types, "skipped_dup", None, None)
+            emit_per_type(
+                word,
+                candidate.lemma,
+                resolved_types,
+                "skipped_dup",
+                None,
+                None,
+                lemma_key=lemma_key,
+            )
             continue
 
         success, audio_filename, audio_message = generate_audio(candidate.lemma)
@@ -733,7 +753,15 @@ def plan_batch(
             key = (lemma_key, word_type)
             if key in seen_keys:
                 records.append(
-                    BatchRecord(word, candidate.lemma, word_type, "skipped_dup", None, None)
+                    BatchRecord(
+                        word,
+                        candidate.lemma,
+                        word_type,
+                        "skipped_dup",
+                        None,
+                        None,
+                        tracking_status=seen_keys.get(key),
+                    )
                 )
                 continue
             staged_rows.append(
@@ -744,7 +772,7 @@ def plan_batch(
                     word_type=word_type,
                 )
             )
-            seen_keys.add(key)
+            seen_keys[key] = "pending"
             records.append(
                 BatchRecord(word, candidate.lemma, word_type, "added", audio_filename, None)
             )

@@ -485,12 +485,18 @@ def process_word(word_info: dict[str, str]) -> WordOutcome:
     word = word_info["word"]
     try:
         cards = generate_card_data(word_info)
-        is_valid, feedback, conclusive = validate_card_data(word, cards)
+        is_valid, feedback, first_conclusive = validate_card_data(word, cards)
+        conclusive = first_conclusive
 
         if not is_valid:
             log(f"Validation failed for '{word}'. Retrying once... Feedback: {feedback}")
             cards = generate_card_data(word_info, retry_feedback=feedback)
-            is_valid, feedback, conclusive = validate_card_data(word, cards)
+            is_valid, feedback, retry_conclusive = validate_card_data(word, cards)
+            # Both attempts must have produced a real verdict. Reading `conclusive` off the
+            # retry alone let one judged rejection park a word whose first attempt had merely
+            # failed to reach the validator, which is the infrastructure failure that must
+            # never quarantine.
+            conclusive = first_conclusive and retry_conclusive
 
         if is_valid:
             log(f"✅ Successfully generated and validated cards for '{word}'")
