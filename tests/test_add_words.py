@@ -745,6 +745,7 @@ def test_main_writes_rows_and_emits_ndjson(add_words_module, monkeypatch, tracki
         "status": "added",
         "audio": "Hinausgehen.wav",
         "error": None,
+        "tracking_status": None,
     }
     assert "Resolving Hinausgegangen" in captured.err
     assert (
@@ -795,6 +796,7 @@ def test_main_mixed_batch_integration(add_words_module, monkeypatch, tracking_fi
             "status": "added",
             "audio": "Bearbeiten.wav",
             "error": None,
+            "tracking_status": None,
         },
         {
             "input": "lieb",
@@ -803,6 +805,7 @@ def test_main_mixed_batch_integration(add_words_module, monkeypatch, tracking_fi
             "status": "skipped_dup",
             "audio": None,
             "error": None,
+            "tracking_status": "pending",
         },
         {
             "input": "ghost",
@@ -811,6 +814,7 @@ def test_main_mixed_batch_integration(add_words_module, monkeypatch, tracking_fi
             "status": "failed",
             "audio": None,
             "error": "no Wiktionary entry",
+            "tracking_status": None,
         },
         {
             "input": "kaputt",
@@ -819,6 +823,7 @@ def test_main_mixed_batch_integration(add_words_module, monkeypatch, tracking_fi
             "status": "failed",
             "audio": None,
             "error": "audio backend failed",
+            "tracking_status": None,
         },
         {
             "input": "gleich",
@@ -827,6 +832,7 @@ def test_main_mixed_batch_integration(add_words_module, monkeypatch, tracking_fi
             "status": "added",
             "audio": "Gleich.wav",
             "error": None,
+            "tracking_status": None,
         },
         {
             "input": "bis",
@@ -835,6 +841,7 @@ def test_main_mixed_batch_integration(add_words_module, monkeypatch, tracking_fi
             "status": "skipped_dup",
             "audio": None,
             "error": None,
+            "tracking_status": "pending",
         },
         {
             "input": "bis",
@@ -843,6 +850,7 @@ def test_main_mixed_batch_integration(add_words_module, monkeypatch, tracking_fi
             "status": "added",
             "audio": "Bis.wav",
             "error": None,
+            "tracking_status": None,
         },
     ]
 
@@ -959,6 +967,7 @@ def test_subprocess_smoke(tmp_path, wiktionary_server):
         "status": "added",
         "audio": "Hinausgehen.wav",
         "error": None,
+        "tracking_status": None,
     }
     assert "Resolving Hinausgegangen" in result.stderr
     assert (

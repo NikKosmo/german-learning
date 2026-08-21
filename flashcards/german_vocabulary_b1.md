@@ -1,10 +1,10 @@
 # german_vocabulary_b1
 
 **Deck Info:**
-- Total cards: 419
+- Total cards: 428
 - Words: 176
 - Card types: Reverse RU→DE, Reverse DE→RU, Cloze (nouns)
-- Generated: 2026-08-19
+- Generated: 2026-08-21
 - Follows: CARD_CREATION_RULES.md v2.1
 
 ## Cards
@@ -430,3 +430,12 @@
 | 24b36248 | Reverse RU→DE | Noun | танец | der Tanz | die Tänze | Der Tanz war wunderschön. | Танец был великолепен. | der Tanz — мужской род. Происходит от глагола tanzen (танцевать). | Tanz.wav |
 | 2efc1cc5 | Reverse DE→RU | Noun | танец | der Tanz | die Tänze | Der Tanz war wunderschön. | Танец был великолепен. | der Tanz — мужской род. Происходит от глагола tanzen (танцевать). | Tanz.wav |
 | 149ec96e | Cloze | Noun | танец | {{c1::der}} Tanz | die Tänze | {{c1::Der}} Tanz war wunderschön. | Танец был великолепен. | der Tanz — мужской род. Происходит от глагола tanzen (танцевать). | Tanz.wav |
+| a0c6dc86 | Reverse RU→DE | Noun | щель, трещина, столбец, колонка | die Spalte | die Spalten | Die Spalte in der Wand wird immer breiter. | Трещина в стене становится всё шире. | Может означать физическую щель/трещину, а также столбец в таблице или газете. | Spalte.wav |
+| 4e425445 | Reverse DE→RU | Noun | щель, трещина, столбец, колонка | die Spalte | die Spalten | Die Spalte in der Wand wird immer breiter. | Трещина в стене становится всё шире. | Может означать физическую щель/трещину, а также столбец в таблице или газете. | Spalte.wav |
+| 1930fff1 | Cloze | Noun | щель, трещина, столбец, колонка | {{c1::die}} Spalte | die Spalten | Die Daten sind in drei Spalten aufgeteilt. | Данные разделены на три столбца. | Может означать физическую щель/трещину, а также столбец в таблице или газете. | Spalte.wav |
+| 3236c0e7 | Reverse RU→DE | Adjective/Adverb | чёртов, проклятый; чертовски (как усилитель) | verdammt | nicht steigerbar | Das war verdammt schwierig. | Это было чертовски сложно. | Употребляется как прилагательное ('ein verdammter Fehler' — чёртова ошибка) и как наречный усилитель ('verdammt gut' — чертовски хорошо). В разговорной речи — бранное слово. Степени сравнения практически не используются. | Verdammt.wav |
+| 2c83e487 | Reverse DE→RU | Adjective/Adverb | чёртов, проклятый; чертовски (как усилитель) | verdammt | nicht steigerbar | Das war verdammt schwierig. | Это было чертовски сложно. | Употребляется как прилагательное ('ein verdammter Fehler' — чёртова ошибка) и как наречный усилитель ('verdammt gut' — чертовски хорошо). В разговорной речи — бранное слово. Степени сравнения практически не используются. | Verdammt.wav |
+| e7099f7c | Reverse RU→DE | Verb | вести, руководить, управлять | führen | hat geführt | Der Manager führt das Team sehr gut. | Менеджер очень хорошо руководит командой. | Слабый глагол: führen – führte – hat geführt. Употребляется в значении физического ведения (вести за руку) и абстрактного руководства (управлять компанией, страной). | Führen.wav |
+| ed5fc4c8 | Reverse DE→RU | Verb | вести, руководить, управлять | führen | hat geführt | Der Manager führt das Team sehr gut. | Менеджер очень хорошо руководит командой. | Слабый глагол: führen – führte – hat geführt. Употребляется в значении физического ведения (вести за руку) и абстрактного руководства (управлять компанией, страной). | Führen.wav |
+| aff57889 | Reverse RU→DE | Adverb | точно так же, так же (как) | genauso |  | Er läuft genauso schnell wie sein Bruder. | Он бегает точно так же быстро, как его брат. | Употребляется в сравнениях с союзом 'wie': genauso ... wie = так же ... как. Синонимы: ebenso, gleichermaßen. | Genauso.wav |
+| 914e07e5 | Reverse DE→RU | Adverb | точно так же, так же (как) | genauso |  | Er läuft genauso schnell wie sein Bruder. | Он бегает точно так же быстро, как его брат. | Употребляется в сравнениях с союзом 'wie': genauso ... wie = так же ... как. Синонимы: ebenso, gleichermaßen. | Genauso.wav |

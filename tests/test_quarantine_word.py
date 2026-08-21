@@ -251,3 +251,49 @@ def test_the_drip_is_not_widened_by_an_unavailable_request(tracking, monkeypatch
     monkeypatch.setattr(cg, "log", lambda *args, **kwargs: None)
     selected = cg.select_words(["Fenster", "der"], count=3)
     assert len(selected) == 2
+
+
+# --- two verdicts, not one (2026-08-21) ---
+
+
+def test_an_inconclusive_first_attempt_blocks_quarantine(tracking, monkeypatch, tmp_path):
+    """One judged rejection must not park a word whose first attempt never reached a validator.
+
+    `conclusive` used to be read off the retry alone, so an unreachable validator followed by a
+    real verdict parked the word on a single sample of a stochastic judge.
+    """
+    monkeypatch.setattr(cg, "FAILED_WORDS_FILE", tmp_path / "failed.txt")
+    _stub_generation(
+        monkeypatch,
+        [
+            (False, "No validator could check this card — Codex: not installed", False),
+            (False, "translation is wrong", True),
+        ],
+    )
+
+    outcome = cg.process_word({"word": "Spiel", "word_type": "Noun"})
+
+    assert outcome.cards == []
+    assert outcome.quarantined is False
+    assert _row(tracking.read_text(encoding="utf-8"), "Spiel")[2] == "pending"
+
+
+def test_two_judged_rejections_report_the_word_as_parked(tracking, monkeypatch, tmp_path):
+    """The field loom keys its bullet decision on has to be asserted where it is produced."""
+    monkeypatch.setattr(cg, "FAILED_WORDS_FILE", tmp_path / "failed.txt")
+    _stub_generation(monkeypatch, [(False, "bad translation", True), (False, "still bad", True)])
+
+    outcome = cg.process_word({"word": "Spiel", "word_type": "Noun"})
+
+    assert outcome.quarantined is True
+    assert _row(tracking.read_text(encoding="utf-8"), "Spiel")[2] == "error"
+
+
+def test_a_word_that_passes_reports_itself_unparked(tracking, monkeypatch, tmp_path):
+    monkeypatch.setattr(cg, "FAILED_WORDS_FILE", tmp_path / "failed.txt")
+    _stub_generation(monkeypatch, [(True, "", True)])
+
+    outcome = cg.process_word({"word": "Spiel", "word_type": "Noun"})
+
+    assert outcome.cards != []
+    assert outcome.quarantined is False
