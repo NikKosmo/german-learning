@@ -2,58 +2,91 @@
   "cards": [
     {
       "card_type": "Reverse",
+      "word_type": "Particle",
+      "russian": "правда, хотя и (частица уступки, особенно в конструкции «zwar … aber …»)",
+      "german": "zwar",
+      "extra": "",
+      "example_de": "Er ist zwar müde, aber er arbeitet weiter.",
+      "example_ru": "Он, правда, устал, но продолжает работать.",
+      "notes": "Употребляется для введения уступки или оговорки. Типичная конструкция: zwar … aber … (хотя … но …). Само по себе zwar не означает согласия — оно сигнализирует, что за ним последует «но».",
+      "audio": "Zwar.wav"
+    },
+    {
+      "card_type": "Reverse",
       "word_type": "Noun",
-      "russian": "щель, трещина, столбец, колонка",
-      "german": "die Spalte",
-      "extra": "die Spalten",
-      "example_de": "Die Spalte in der Wand wird immer breiter.",
-      "example_ru": "Трещина в стене становится всё шире.",
-      "notes": "Может означать физическую щель/трещину, а также столбец в таблице или газете.",
-      "audio": "Spalte.wav"
+      "russian": "извинение, прощение",
+      "german": "die Entschuldigung",
+      "extra": "die Entschuldigungen",
+      "example_de": "Ich bitte um Entschuldigung für meine Verspätung.",
+      "example_ru": "Я прошу прощения за моё опоздание.",
+      "notes": "Часто используется как вежливое извинение: 'Entschuldigung!' = 'Извините!'. Также используется в значении оправдания или объяснения.",
+      "audio": "Entschuldigung.mp3"
     },
     {
       "card_type": "Cloze",
       "word_type": "Noun",
-      "russian": "щель, трещина, столбец, колонка",
-      "german": "{{c1::die}} Spalte",
-      "extra": "die Spalten",
-      "example_de": "Die Daten sind in drei Spalten aufgeteilt.",
-      "example_ru": "Данные разделены на три столбца.",
-      "notes": "Может означать физическую щель/трещину, а также столбец в таблице или газете.",
-      "audio": "Spalte.wav"
+      "russian": "извинение, прощение",
+      "german": "{{c1::die}} Entschuldigung",
+      "extra": "die Entschuldigungen",
+      "example_de": "{{c1::Die}} Entschuldigung wurde akzeptiert.",
+      "example_ru": "Извинение было принято.",
+      "notes": "Часто используется как вежливое извинение: 'Entschuldigung!' = 'Извините!'. Также используется в значении оправдания или объяснения.",
+      "audio": "Entschuldigung.mp3"
     },
     {
       "card_type": "Reverse",
-      "word_type": "Adjective/Adverb",
-      "russian": "чёртов, проклятый; чертовски (как усилитель)",
-      "german": "verdammt",
-      "extra": "nicht steigerbar",
-      "example_de": "Das war verdammt schwierig.",
-      "example_ru": "Это было чертовски сложно.",
-      "notes": "Употребляется как прилагательное ('ein verdammter Fehler' — чёртова ошибка) и как наречный усилитель ('verdammt gut' — чертовски хорошо). В разговорной речи — бранное слово. Степени сравнения практически не используются.",
-      "audio": "Verdammt.wav"
+      "word_type": "Noun",
+      "russian": "деньги",
+      "german": "das Geld",
+      "extra": "die Gelder",
+      "example_de": "Ich habe kein Geld dabei.",
+      "example_ru": "У меня нет с собой денег.",
+      "notes": "Существительное среднего рода. Множественное число «die Gelder» используется чаще в значении «денежные средства/фонды».",
+      "audio": "Geld.mp3"
     },
     {
-      "card_type": "Reverse",
-      "word_type": "Verb",
-      "russian": "вести, руководить, управлять",
-      "german": "führen",
-      "extra": "hat geführt",
-      "example_de": "Der Manager führt das Team sehr gut.",
-      "example_ru": "Менеджер очень хорошо руководит командой.",
-      "notes": "Слабый глагол: führen – führte – hat geführt. Употребляется в значении физического ведения (вести за руку) и абстрактного руководства (управлять компанией, страной).",
-      "audio": "Führen.wav"
+      "card_type": "Cloze",
+      "word_type": "Noun",
+      "russian": "деньги",
+      "german": "{{c1::das}} Geld",
+      "extra": "die Gelder",
+      "example_de": "{{c1::das}} Geld liegt auf dem Tisch.",
+      "example_ru": "Деньги лежат на столе.",
+      "notes": "Существительное среднего рода. Множественное число «die Gelder» используется чаще в значении «денежные средства/фонды».",
+      "audio": "Geld.mp3"
     },
     {
       "card_type": "Reverse",
       "word_type": "Adverb",
-      "russian": "точно так же, так же (как)",
-      "german": "genauso",
+      "russian": "откуда",
+      "german": "woher",
       "extra": "",
-      "example_de": "Er läuft genauso schnell wie sein Bruder.",
-      "example_ru": "Он бегает точно так же быстро, как его брат.",
-      "notes": "Употребляется в сравнениях с союзом 'wie': genauso ... wie = так же ... как. Синонимы: ebenso, gleichermaßen.",
-      "audio": "Genauso.wav"
+      "example_de": "Woher kommst du?",
+      "example_ru": "Ты откуда?",
+      "notes": "Вопросительное наречие места, обозначающее направление «откуда». Указывает на исходную точку движения или происхождение. Противоположность: wohin (куда).",
+      "audio": "Woher.mp3"
+    },
+    {
+      "card_type": "Reverse",
+      "word_type": "Noun",
+      "russian": "ловкость, умелость, мастерство",
+      "german": "die Geschicklichkeit",
+      "extra": "die Geschicklichkeiten",
+      "example_de": "Die Geschicklichkeit des Chirurgen rettete dem Patienten das Leben.",
+      "example_ru": "Мастерство хирурга спасло пациенту жизнь.",
+      "notes": "Существительное женского рода. Образовано от прилагательного 'geschickt' (ловкий, умелый). Часто используется для описания физической ловкости или профессионального мастерства.",
+      "audio": "Geschicklichkeit.wav"
+    },
+    {
+      "card_type": "Cloze",
+      "word_type": "Noun",
+      "russian": "ловкость, умелость, мастерство",
+      "german": "{{c1::die}} Geschicklichkeit",
+      "extra": "die Geschicklichkeiten",
+      "example_de": "Die Geschicklichkeit des Chirurgen rettete dem Patienten das Leben.",
+      "example_ru": "Мастерство хирурга спасло пациенту жизнь.",
+      "notes": "Существительное женского рода. Образовано от прилагательного 'geschickt' (ловкий, умелый). Часто используется для описания физической ловкости или профессионального мастерства.",
+      "audio": "Geschicklichkeit.wav"
     }
   ]
 }

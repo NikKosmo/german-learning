@@ -137,7 +137,7 @@
 | Kopf | pending | ✅ Kopf.wav | — | Noun | — | — |
 | Schule | pending | ✅ Schule.mp3 | — | Noun | — | — |
 | Traum | pending | ✅ Traum.wav | — | Noun | — | — |
-| Geld | pending | ✅ Geld.mp3 | — | Noun | — | — |
+| Geld | in_deck | ✅ Geld.mp3 | — | Noun | 2026-08-22 | — |
 | Wasser | pending | ✅ Wasser.mp3 | — | Noun | — | — |
 | Katze | pending | ✅ Katze.mp3 | — | Noun | — | — |
 | Straße | pending | ✅ Straße.mp3 | — | Noun | — | — |
@@ -213,7 +213,7 @@
 | sprechen | pending | ✅ Sprechen.mp3 | — | Verb | — | — |
 | sofort | in_deck | ✅ Sofort.wav | — | Adverb | 2026-02-27 | — |
 | niemand | pending | ✅ Niemand.wav | — | Pronoun | — | — |
-| Entschuldigung | pending | ✅ Entschuldigung.mp3 | — | Noun | — | — |
+| Entschuldigung | in_deck | ✅ Entschuldigung.mp3 | — | Noun | 2026-08-22 | — |
 | sorgen | pending | ✅ Sorgen.wav | — | Verb | — | — |
 | natürlich | in_deck | ✅ Natürlich.wav | — | Adjective/Adverb | 2026-02-27 | — |
 | schlecht | pending | ✅ Schlecht.mp3 | — | Adjective | — | — |
@@ -364,7 +364,7 @@
 | verlassen | in_deck | ✅ Verlassen.wav | — | Verb | 2025-12-01 | — |
 | Wort | pending | ✅ Wort.mp3 | — | Noun | — | — |
 | zwischen | pending | ✅ Zwischen.mp3 | — | Preposition | — | — |
-| woher | pending | ✅ Woher.mp3 | — | Adverb | — | — |
+| woher | in_deck | ✅ Woher.mp3 | — | Adverb | 2026-08-22 | — |
 | Schatz | pending | ✅ Schatz.mp3 | — | Noun | — | — |
 | versuchen | in_deck | ✅ Versuchen.wav | — | Verb | 2026-08-17 | — |
 | nett | pending | ✅ Nett.mp3 | — | Adjective | — | — |
@@ -416,7 +416,7 @@
 | Captain | pending | ✅ Captain.wav | — | Noun | — | — |
 | aus | in_deck | ✅ Aus.mp3 | — | Preposition | 2025-11-26 | — |
 | sondern | pending | ✅ Sondern.mp3 | — | Conjunction | — | — |
-| zwar | pending | ✅ Zwar.wav | — | Particle | — | — |
+| zwar | in_deck | ✅ Zwar.wav | — | Particle | 2026-08-22 | — |
 | Körper | pending | ✅ Körper.wav | — | Noun | — | — |
 | Kumpel | pending | ✅ Kumpel.wav | — | Noun | — | — |
 | nochmal | pending | ✅ Nochmal.wav | — | Adverb | — | — |
@@ -504,7 +504,7 @@
 | Sauerstoff | pending | ✅ Sauerstoff.wav | — | Noun | — | — |
 | Satz | pending | ✅ Satz.wav | — | Noun | — | — |
 | Zucker | pending | ✅ Zucker.mp3 | — | Noun | — | — |
-| Geschicklichkeit | pending | ✅ Geschicklichkeit.wav | — | Noun | — | — |
+| Geschicklichkeit | in_deck | ✅ Geschicklichkeit.wav | — | Noun | 2026-08-22 | — |
 | Saison | in_deck | ✅ Saison.wav | — | Noun | 2026-02-27 | — |
 | Lösung | pending | ✅ Lösung.mp3 | — | Noun | — | — |
 | Magnet | pending | ✅ Magnet.wav | — | Noun | — | — |
@@ -604,8 +604,8 @@
 ## Statistics
 
 - **Total words:** 586
-- **In deck:** 190
-- **Pending (with audio):** 393
+- **In deck:** 195
+- **Pending (with audio):** 388
 - **Missing audio:** 0
 - **Error:** 3
-- **Ready to process:** 393
+- **Ready to process:** 388

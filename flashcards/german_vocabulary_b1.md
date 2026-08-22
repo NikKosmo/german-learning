@@ -1,10 +1,10 @@
 # german_vocabulary_b1
 
 **Deck Info:**
-- Total cards: 428
+- Total cards: 441
 - Words: 176
 - Card types: Reverse RU→DE, Reverse DE→RU, Cloze (nouns)
-- Generated: 2026-08-21
+- Generated: 2026-08-22
 - Follows: CARD_CREATION_RULES.md v2.1
 
 ## Cards
@@ -439,3 +439,16 @@
 | ed5fc4c8 | Reverse DE→RU | Verb | вести, руководить, управлять | führen | hat geführt | Der Manager führt das Team sehr gut. | Менеджер очень хорошо руководит командой. | Слабый глагол: führen – führte – hat geführt. Употребляется в значении физического ведения (вести за руку) и абстрактного руководства (управлять компанией, страной). | Führen.wav |
 | aff57889 | Reverse RU→DE | Adverb | точно так же, так же (как) | genauso |  | Er läuft genauso schnell wie sein Bruder. | Он бегает точно так же быстро, как его брат. | Употребляется в сравнениях с союзом 'wie': genauso ... wie = так же ... как. Синонимы: ebenso, gleichermaßen. | Genauso.wav |
 | 914e07e5 | Reverse DE→RU | Adverb | точно так же, так же (как) | genauso |  | Er läuft genauso schnell wie sein Bruder. | Он бегает точно так же быстро, как его брат. | Употребляется в сравнениях с союзом 'wie': genauso ... wie = так же ... как. Синонимы: ebenso, gleichermaßen. | Genauso.wav |
+| 2730de09 | Reverse RU→DE | Particle | правда, хотя и (частица уступки, особенно в конструкции «zwar … aber …») | zwar |  | Er ist zwar müde, aber er arbeitet weiter. | Он, правда, устал, но продолжает работать. | Употребляется для введения уступки или оговорки. Типичная конструкция: zwar … aber … (хотя … но …). Само по себе zwar не означает согласия — оно сигнализирует, что за ним последует «но». | Zwar.wav |
+| 5a6e363b | Reverse DE→RU | Particle | правда, хотя и (частица уступки, особенно в конструкции «zwar … aber …») | zwar |  | Er ist zwar müde, aber er arbeitet weiter. | Он, правда, устал, но продолжает работать. | Употребляется для введения уступки или оговорки. Типичная конструкция: zwar … aber … (хотя … но …). Само по себе zwar не означает согласия — оно сигнализирует, что за ним последует «но». | Zwar.wav |
+| a7990d7a | Reverse RU→DE | Noun | извинение, прощение | die Entschuldigung | die Entschuldigungen | Ich bitte um Entschuldigung für meine Verspätung. | Я прошу прощения за моё опоздание. | Часто используется как вежливое извинение: 'Entschuldigung!' = 'Извините!'. Также используется в значении оправдания или объяснения. | Entschuldigung.mp3 |
+| 0be1ec0e | Reverse DE→RU | Noun | извинение, прощение | die Entschuldigung | die Entschuldigungen | Ich bitte um Entschuldigung für meine Verspätung. | Я прошу прощения за моё опоздание. | Часто используется как вежливое извинение: 'Entschuldigung!' = 'Извините!'. Также используется в значении оправдания или объяснения. | Entschuldigung.mp3 |
+| fad15d0f | Cloze | Noun | извинение, прощение | {{c1::die}} Entschuldigung | die Entschuldigungen | {{c1::Die}} Entschuldigung wurde akzeptiert. | Извинение было принято. | Часто используется как вежливое извинение: 'Entschuldigung!' = 'Извините!'. Также используется в значении оправдания или объяснения. | Entschuldigung.mp3 |
+| 365f0b31 | Reverse RU→DE | Noun | деньги | das Geld | die Gelder | Ich habe kein Geld dabei. | У меня нет с собой денег. | Существительное среднего рода. Множественное число «die Gelder» используется чаще в значении «денежные средства/фонды». | Geld.mp3 |
+| f0276240 | Reverse DE→RU | Noun | деньги | das Geld | die Gelder | Ich habe kein Geld dabei. | У меня нет с собой денег. | Существительное среднего рода. Множественное число «die Gelder» используется чаще в значении «денежные средства/фонды». | Geld.mp3 |
+| d49f5605 | Cloze | Noun | деньги | {{c1::das}} Geld | die Gelder | {{c1::das}} Geld liegt auf dem Tisch. | Деньги лежат на столе. | Существительное среднего рода. Множественное число «die Gelder» используется чаще в значении «денежные средства/фонды». | Geld.mp3 |
+| ae0877a7 | Reverse RU→DE | Adverb | откуда | woher |  | Woher kommst du? | Ты откуда? | Вопросительное наречие места, обозначающее направление «откуда». Указывает на исходную точку движения или происхождение. Противоположность: wohin (куда). | Woher.mp3 |
+| aeb2f7aa | Reverse DE→RU | Adverb | откуда | woher |  | Woher kommst du? | Ты откуда? | Вопросительное наречие места, обозначающее направление «откуда». Указывает на исходную точку движения или происхождение. Противоположность: wohin (куда). | Woher.mp3 |
+| 67f4b522 | Reverse RU→DE | Noun | ловкость, умелость, мастерство | die Geschicklichkeit | die Geschicklichkeiten | Die Geschicklichkeit des Chirurgen rettete dem Patienten das Leben. | Мастерство хирурга спасло пациенту жизнь. | Существительное женского рода. Образовано от прилагательного 'geschickt' (ловкий, умелый). Часто используется для описания физической ловкости или профессионального мастерства. | Geschicklichkeit.wav |
+| 6301eea5 | Reverse DE→RU | Noun | ловкость, умелость, мастерство | die Geschicklichkeit | die Geschicklichkeiten | Die Geschicklichkeit des Chirurgen rettete dem Patienten das Leben. | Мастерство хирурга спасло пациенту жизнь. | Существительное женского рода. Образовано от прилагательного 'geschickt' (ловкий, умелый). Часто используется для описания физической ловкости или профессионального мастерства. | Geschicklichkeit.wav |
+| 2e7a3327 | Cloze | Noun | ловкость, умелость, мастерство | {{c1::die}} Geschicklichkeit | die Geschicklichkeiten | Die Geschicklichkeit des Chirurgen rettete dem Patienten das Leben. | Мастерство хирурга спасло пациенту жизнь. | Существительное женского рода. Образовано от прилагательного 'geschickt' (ловкий, умелый). Часто используется для описания физической ловкости или профессионального мастерства. | Geschicklichkeit.wav |
