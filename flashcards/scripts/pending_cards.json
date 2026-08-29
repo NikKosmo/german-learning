@@ -2,91 +2,58 @@
   "cards": [
     {
       "card_type": "Reverse",
-      "word_type": "Particle",
-      "russian": "правда, хотя и (частица уступки, особенно в конструкции «zwar … aber …»)",
-      "german": "zwar",
-      "extra": "",
-      "example_de": "Er ist zwar müde, aber er arbeitet weiter.",
-      "example_ru": "Он, правда, устал, но продолжает работать.",
-      "notes": "Употребляется для введения уступки или оговорки. Типичная конструкция: zwar … aber … (хотя … но …). Само по себе zwar не означает согласия — оно сигнализирует, что за ним последует «но».",
-      "audio": "Zwar.wav"
+      "word_type": "Verb",
+      "russian": "справляться, успевать; создавать, делать",
+      "german": "schaffen",
+      "extra": "hat geschaffen / hat geschafft",
+      "example_de": "Ich habe es endlich geschafft, die Prüfung zu bestehen.",
+      "example_ru": "Мне наконец удалось сдать экзамен.",
+      "notes": "Два значения: 1) schaffen (слабый) — справляться, успевать (hat geschafft); 2) schaffen (сильный) — создавать, творить (hat geschaffen). Пример творческого значения: Gott schuf die Welt — Бог создал мир.",
+      "audio": "Schaffen.wav"
     },
     {
       "card_type": "Reverse",
       "word_type": "Noun",
-      "russian": "извинение, прощение",
-      "german": "die Entschuldigung",
-      "extra": "die Entschuldigungen",
-      "example_de": "Ich bitte um Entschuldigung für meine Verspätung.",
-      "example_ru": "Я прошу прощения за моё опоздание.",
-      "notes": "Часто используется как вежливое извинение: 'Entschuldigung!' = 'Извините!'. Также используется в значении оправдания или объяснения.",
-      "audio": "Entschuldigung.mp3"
+      "russian": "подруга; девушка (возлюбленная)",
+      "german": "die Freundin",
+      "extra": "die Freundinnen",
+      "example_de": "Meine Freundin kommt heute Abend zu Besuch.",
+      "example_ru": "Моя подруга придёт в гости сегодня вечером.",
+      "notes": "Может означать как подругу, так и девушку (партнёршу). Мужской род: der Freund.",
+      "audio": "Freundin.wav"
     },
     {
       "card_type": "Cloze",
       "word_type": "Noun",
-      "russian": "извинение, прощение",
-      "german": "{{c1::die}} Entschuldigung",
-      "extra": "die Entschuldigungen",
-      "example_de": "{{c1::Die}} Entschuldigung wurde akzeptiert.",
-      "example_ru": "Извинение было принято.",
-      "notes": "Часто используется как вежливое извинение: 'Entschuldigung!' = 'Извините!'. Также используется в значении оправдания или объяснения.",
-      "audio": "Entschuldigung.mp3"
+      "russian": "подруга; девушка (возлюбленная)",
+      "german": "{{c1::die}} Freundin",
+      "extra": "die Freundinnen",
+      "example_de": "Meine Freundin kommt heute Abend zu Besuch.",
+      "example_ru": "Моя подруга придёт в гости сегодня вечером.",
+      "notes": "Может означать как подругу, так и девушку (партнёршу). Мужской род: der Freund.",
+      "audio": "Freundin.wav"
     },
     {
       "card_type": "Reverse",
       "word_type": "Noun",
-      "russian": "деньги",
-      "german": "das Geld",
-      "extra": "die Gelder",
-      "example_de": "Ich habe kein Geld dabei.",
-      "example_ru": "У меня нет с собой денег.",
-      "notes": "Существительное среднего рода. Множественное число «die Gelder» используется чаще в значении «денежные средства/фонды».",
-      "audio": "Geld.mp3"
+      "russian": "работа, должность",
+      "german": "der Job",
+      "extra": "die Jobs",
+      "example_de": "Ich habe endlich einen neuen Job gefunden.",
+      "example_ru": "Я наконец нашёл новую работу.",
+      "notes": "Разговорное слово для обозначения работы или должности. Синоним: die Arbeit, die Stelle. Часто используется в неформальной речи.",
+      "audio": "Job.mp3"
     },
     {
       "card_type": "Cloze",
       "word_type": "Noun",
-      "russian": "деньги",
-      "german": "{{c1::das}} Geld",
-      "extra": "die Gelder",
-      "example_de": "{{c1::das}} Geld liegt auf dem Tisch.",
-      "example_ru": "Деньги лежат на столе.",
-      "notes": "Существительное среднего рода. Множественное число «die Gelder» используется чаще в значении «денежные средства/фонды».",
-      "audio": "Geld.mp3"
-    },
-    {
-      "card_type": "Reverse",
-      "word_type": "Adverb",
-      "russian": "откуда",
-      "german": "woher",
-      "extra": "",
-      "example_de": "Woher kommst du?",
-      "example_ru": "Ты откуда?",
-      "notes": "Вопросительное наречие места, обозначающее направление «откуда». Указывает на исходную точку движения или происхождение. Противоположность: wohin (куда).",
-      "audio": "Woher.mp3"
-    },
-    {
-      "card_type": "Reverse",
-      "word_type": "Noun",
-      "russian": "ловкость, умелость, мастерство",
-      "german": "die Geschicklichkeit",
-      "extra": "die Geschicklichkeiten",
-      "example_de": "Die Geschicklichkeit des Chirurgen rettete dem Patienten das Leben.",
-      "example_ru": "Мастерство хирурга спасло пациенту жизнь.",
-      "notes": "Существительное женского рода. Образовано от прилагательного 'geschickt' (ловкий, умелый). Часто используется для описания физической ловкости или профессионального мастерства.",
-      "audio": "Geschicklichkeit.wav"
-    },
-    {
-      "card_type": "Cloze",
-      "word_type": "Noun",
-      "russian": "ловкость, умелость, мастерство",
-      "german": "{{c1::die}} Geschicklichkeit",
-      "extra": "die Geschicklichkeiten",
-      "example_de": "Die Geschicklichkeit des Chirurgen rettete dem Patienten das Leben.",
-      "example_ru": "Мастерство хирурга спасло пациенту жизнь.",
-      "notes": "Существительное женского рода. Образовано от прилагательного 'geschickt' (ловкий, умелый). Часто используется для описания физической ловкости или профессионального мастерства.",
-      "audio": "Geschicklichkeit.wav"
+      "russian": "работа, должность",
+      "german": "{{c1::der}} Job",
+      "extra": "die Jobs",
+      "example_de": "{{c1::Der}} Job macht mir viel Spaß.",
+      "example_ru": "Эта работа мне очень нравится.",
+      "notes": "Разговорное слово для обозначения работы или должности. Синоним: die Arbeit, die Stelle. Часто используется в неформальной речи.",
+      "audio": "Job.mp3"
     }
   ]
 }
