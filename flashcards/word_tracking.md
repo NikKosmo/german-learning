@@ -19,19 +19,6 @@
 | und | in_deck | ✅ Und.mp3 | — | Conjunction | 2025-11-13 | — |
 | ja | in_deck | ✅ Ja.mp3 | — | Particle | 2025-11-13 | — |
 | nein | in_deck | ✅ Nein.mp3 | — | Particle | 2025-11-13 | — |
-| ich | in_deck | ✅ Ich.mp3 | — | Pronoun | 2025-11-08 | — |
-| du | in_deck | ✅ Du.mp3 | — | Pronoun | 2025-11-08 | — |
-| er | in_deck | ✅ Er.mp3 | — | Pronoun | 2025-11-08 | — |
-| sie | in_deck | ✅ Sie.mp3 | — | Pronoun | 2025-11-08 | — |
-| es | in_deck | ✅ Es.mp3 | — | Pronoun | 2025-11-08 | — |
-| wir | in_deck | ✅ Wir.mp3 | — | Pronoun | 2025-11-08 | — |
-| ihr | in_deck | ✅ Ihr.mp3 | — | Pronoun | 2025-11-08 | — |
-| mein | in_deck | ✅ Mein.mp3 | — | Possessive | 2025-11-08 | — |
-| dein | in_deck | ✅ Dein.mp3 | — | Possessive | 2025-11-08 | — |
-| sein | in_deck | ✅ Sein.mp3 | — | Possessive | 2025-11-08 | — |
-| unser | in_deck | ✅ Unser.mp3 | — | Possessive | 2025-11-08 | — |
-| euer | in_deck | ✅ Euer.mp3 | — | Possessive | 2025-11-08 | — |
-| sich | in_deck | ✅ Sich.wav | — | Pronoun | 2025-11-13 | — |
 | man | in_deck | ✅ Man.wav | — | Pronoun | 2025-11-13 | — |
 | wer | in_deck | ✅ Wer.mp3 | — | Question Word | 2025-11-08 | — |
 | was | in_deck | ✅ Was.mp3 | — | Question Word | 2025-11-08 | — |
@@ -129,12 +116,12 @@
 | Himmel | in_deck | ✅ Himmel.wav | — | Noun | 2025-11-30 | — |
 | Schachtel | pending | ✅ Schachtel.wav | — | Noun | — | — |
 | Person | pending | ✅ Person.wav | — | Noun | — | — |
-| Grund | pending | ✅ Grund.wav | — | Noun | — | — |
+| Grund | error | ✅ Grund.wav | — | Noun | — | 2026-08-29 validation failed: Пример «Aus welchem Grund bist du zu spät?» звучит неестественно по-немецки; обычно говорят «Aus welchem Grund bist du… |
 | Recht | pending | ✅ Recht.mp3 | — | Noun | — | — |
 | Haut | pending | ✅ Haut.wav | — | Noun | — | — |
 | Vater | pending | ✅ Vater.mp3 | — | Noun | — | — |
 | Boden | pending | ✅ Boden.wav | — | Noun | — | — |
-| Kopf | pending | ✅ Kopf.wav | — | Noun | — | — |
+| Kopf | in_deck | ✅ Kopf.wav | — | Noun | 2026-08-24 | — |
 | Schule | pending | ✅ Schule.mp3 | — | Noun | — | — |
 | Traum | pending | ✅ Traum.wav | — | Noun | — | — |
 | Geld | in_deck | ✅ Geld.mp3 | — | Noun | 2026-08-22 | — |
@@ -208,7 +195,7 @@
 | jemand | in_deck | ✅ Jemand.wav | — | Adverb | 2026-02-27 | — |
 | Hilfe | pending | ✅ Hilfe.mp3 | — | Noun | — | — |
 | Baby | pending | ✅ Baby.mp3 | — | Noun | — | — |
-| fertig | pending | ✅ Fertig.mp3 | — | Adjective | — | — |
+| fertig | error | ✅ Fertig.mp3 | — | Adjective | — | 2026-08-26 validation failed: Примечание о `fertig sein` неточно: `fertig` чаще значит «готов» или «закончен(о)», а значение «устал/без сил» относитс… |
 | morgen | pending | ✅ Morgen.mp3 | — | Adverb | — | — |
 | sprechen | pending | ✅ Sprechen.mp3 | — | Verb | — | — |
 | sofort | in_deck | ✅ Sofort.wav | — | Adverb | 2026-02-27 | — |
@@ -223,14 +210,14 @@
 | Team | pending | ✅ Team.mp3 | — | Noun | — | — |
 | kämpfen | pending | ✅ Kämpfen.wav | — | Verb | — | — |
 | heiraten | pending | ✅ Heiraten.wav | — | Verb | — | — |
-| etwas | pending | ✅ Etwas.mp3 | — | Pronoun | — | — |
+| etwas | in_deck | ✅ Etwas.mp3 | — | Pronoun | 2026-08-26 | — |
 | erklären | pending | ✅ Erklären.mp3 | — | Verb | — | — |
 | heute | pending | ✅ Heute.mp3 | — | Adverb | — | — |
 | handeln | pending | ✅ Handeln.wav | — | Verb | — | — |
 | Entwicklung | pending | ✅ Entwicklung.wav | — | Noun | — | — |
 | Monat | pending | ✅ Monat.mp3 | — | Noun | — | — |
 | erreichen | pending | ✅ Erreichen.wav | — | Verb | — | — |
-| anders | pending | ✅ Anders.wav | — | Adverb | — | — |
+| anders | in_deck | ✅ Anders.wav | — | Adverb | 2026-08-24 | — |
 | schließlich | in_deck | ✅ Schließlich.wav | — | Adverb/Particle | 2026-02-27 | — |
 | eher | pending | ✅ Eher.wav | — | Adverb | — | — |
 | Familie | pending | ✅ Familie.mp3 | — | Noun | — | — |
@@ -242,7 +229,7 @@
 | Aufgabe | pending | ✅ Aufgabe.mp3 | — | Noun | — | — |
 | frei | pending | ✅ Frei.wav | — | Adjective | — | — |
 | Universität | pending | ✅ Universität.mp3 | — | Noun | — | — |
-| schaffen | pending | ✅ Schaffen.wav | — | Verb | — | — |
+| schaffen | in_deck | ✅ Schaffen.wav | — | Verb | 2026-08-29 | — |
 | Sinn | pending | ✅ Sinn.wav | — | Noun | — | — |
 | früh | pending | ✅ Früh.mp3 | — | Adjective/Adverb | — | — |
 | lesen | pending | ✅ Lesen.mp3 | — | Verb | — | — |
@@ -259,13 +246,13 @@
 | deutlich | pending | ✅ Deutlich.mp3 | — | Adjective | — | — |
 | allgemein | pending | ✅ Allgemein.wav | — | Adjective | — | — |
 | Raum | pending | ✅ Raum.wav | — | Noun | — | — |
-| Blick | pending | ✅ Blick.wav | — | Noun | — | — |
+| Blick | error | ✅ Blick.wav | — | Noun | — | 2026-08-29 validation failed: Перевод примера на русский неточен: «Er warf einen Blick aus dem Fenster.» означает «Он бросил взгляд в окно/выглянул в… |
 | einzig | pending | ✅ Einzig.wav | — | Adjective | — | — |
 | darstellen | pending | ✅ Darstellen.wav | — | Verb | — | — |
 | Platz | pending | ✅ Platz.wav | — | Noun | — | — |
 | Zahl | pending | ✅ Zahl.wav | — | Noun | — | — |
 | bekommen | pending | ✅ Bekommen.mp3 | — | Verb | — | — |
-| laufen | pending | ✅ Laufen.mp3 | — | Verb | — | — |
+| laufen | in_deck | ✅ Laufen.mp3 | — | Verb | 2026-08-24 | — |
 | ändern | pending | ✅ Ändern.wav | — | Verb | — | — |
 | treffen | pending | ✅ Treffen.mp3 | — | Verb | — | — |
 | schreiben | pending | ✅ Schreiben.mp3 | — | Verb | — | — |
@@ -274,7 +261,7 @@
 | schlafen | pending | ✅ Schlafen.mp3 | — | Verb | — | — |
 | lernen | pending | ✅ Lernen.mp3 | — | Verb | — | — |
 | fahren | pending | ✅ Fahren.mp3 | — | Verb | — | — |
-| kaufen | pending | ✅ Kaufen.mp3 | — | Verb | — | — |
+| kaufen | in_deck | ✅ Kaufen.mp3 | — | Verb | 2026-08-27 | — |
 | verkaufen | in_deck | ✅ Verkaufen.mp3 | — | Verb | 2026-08-17 | — |
 | bauen | in_deck | ✅ Bauen.wav | — | Verb | 2026-02-27 | — |
 | suchen | in_deck | ✅ Suchen.mp3 | — | Verb | 2026-08-17 | — |
@@ -285,7 +272,7 @@
 | tanzen | pending | ✅ Tanzen.mp3 | — | Verb | — | — |
 | singen | pending | ✅ Singen.mp3 | — | Verb | — | — |
 | fühlen | pending | ✅ Fühlen.wav | — | Verb | — | — |
-| zeigen | pending | ✅ Zeigen.mp3 | — | Verb | — | — |
+| zeigen | in_deck | ✅ Zeigen.mp3 | — | Verb | 2026-08-26 | — |
 | bringen | pending | ✅ Bringen.mp3 | — | Verb | — | — |
 | warten | pending | ✅ Warten.mp3 | — | Verb | — | — |
 | hoffen | pending | ✅ Hoffen.wav | — | Verb | — | — |
@@ -312,7 +299,7 @@
 | darauf | in_deck | ✅ Darauf.wav | — | Adverb | 2025-11-29 | — |
 | kein | error | ✅ Kein.mp3 | — | Pronoun | — | 2026-08-21 validation failed: `word_type: "Pronoun"` неточно: `kein` в данном употреблении прежде всего отрицательный артикль/детерминатив (`Negativa… |
 | Kerl | pending | ✅ Kerl.wav | — | Noun | — | — |
-| Job | pending | ✅ Job.mp3 | — | Noun | — | — |
+| Job | in_deck | ✅ Job.mp3 | — | Noun | 2026-08-29 | — |
 | äh | pending | ✅ Äh.wav | — | Particle | — | — |
 | Ahnung | pending | ✅ Ahnung.wav | — | Noun | — | — |
 | bis | pending | ✅ Bis.mp3 | — | Preposition | — | — |
@@ -330,11 +317,11 @@
 | egal | pending | ✅ Egal.wav | — | Adjective | — | — |
 | spät | pending | ✅ Spät.mp3 | — | Adjective | — | — |
 | etwa | pending | ✅ Etwa.wav | — | Adverb/Particle | — | — |
-| jeder | pending | ✅ Jeder.wav | — | Pronoun | — | — |
+| jeder | in_deck | ✅ Jeder.wav | — | Pronoun | 2026-08-27 | — |
 | Schwester | pending | ✅ Schwester.mp3 | — | Noun | — | — |
 | spielen | pending | ✅ Spielen.mp3 | — | Verb | — | — |
 | Geschichte | pending | ✅ Geschichte.mp3 | — | Noun | — | — |
-| Seite | pending | ✅ Seite.mp3 | — | Noun | — | — |
+| Seite | in_deck | ✅ Seite.mp3 | — | Noun | 2026-08-28 | — |
 | ruhig | in_deck | ✅ Ruhig.mp3 | — | Adjective/Adverb | 2026-02-27 | — |
 | wenig | pending | ✅ Wenig.wav | — | Adjective | — | — |
 | Frage | in_deck | ✅ Frage.mp3 | — | Noun | 2025-11-15 | — |
@@ -362,16 +349,16 @@
 | Zimmer | pending | ✅ Zimmer.mp3 | — | Noun | — | — |
 | Teil | pending | ✅ Teil.wav | — | Noun | — | — |
 | verlassen | in_deck | ✅ Verlassen.wav | — | Verb | 2025-12-01 | — |
-| Wort | pending | ✅ Wort.mp3 | — | Noun | — | — |
+| Wort | in_deck | ✅ Wort.mp3 | — | Noun | 2026-08-25 | — |
 | zwischen | pending | ✅ Zwischen.mp3 | — | Preposition | — | — |
 | woher | in_deck | ✅ Woher.mp3 | — | Adverb | 2026-08-22 | — |
 | Schatz | pending | ✅ Schatz.mp3 | — | Noun | — | — |
 | versuchen | in_deck | ✅ Versuchen.wav | — | Verb | 2026-08-17 | — |
 | nett | pending | ✅ Nett.mp3 | — | Adjective | — | — |
 | zu | pending | ✅ Zu.mp3 | — | Preposition | — | — |
-| Arsch | pending | ✅ Arsch.wav | — | Noun | — | — |
+| Arsch | in_deck | ✅ Arsch.wav | — | Noun | 2026-08-27 | — |
 | kriegen | pending | ✅ Kriegen.wav | — | Verb | — | — |
-| Freundin | pending | ✅ Freundin.wav | — | Noun | — | — |
+| Freundin | in_deck | ✅ Freundin.wav | — | Noun | 2026-08-29 | — |
 | endlich | pending | ✅ Endlich.mp3 | — | Adverb | — | — |
 | niemals | in_deck | ✅ Niemals.wav | — | Adverb | 2026-02-27 | — |
 | Waffe | pending | ✅ Waffe.wav | — | Noun | — | — |
@@ -382,7 +369,7 @@
 | unten | pending | ✅ Unten.wav | — | Adverb | — | — |
 | Wagen | pending | ✅ Wagen.wav | — | Noun | — | — |
 | wichtig | in_deck | ✅ Wichtig.mp3 | — | Adjective | 2026-02-27 | — |
-| erzählen | pending | ✅ Erzählen.wav | — | Verb | — | — |
+| erzählen | in_deck | ✅ Erzählen.wav | — | Verb | 2026-08-26 | — |
 | bloß | pending | ✅ Bloß.wav | — | Particle | — | — |
 | recht | pending | ✅ Recht.mp3 | — | Adjective/Adverb | — | — |
 | Eltern | pending | ✅ Eltern.mp3 | — | Noun | — | — |
@@ -392,12 +379,12 @@
 | retten | pending | ✅ Retten.wav | — | Verb | — | — |
 | während | in_deck | ✅ Während.wav | — | Preposition | 2025-11-26 | — |
 | Fehler | pending | ✅ Fehler.mp3 | — | Noun | — | — |
-| glücklich | pending | ✅ Glücklich.mp3 | — | Adjective | — | — |
+| glücklich | in_deck | ✅ Glücklich.mp3 | — | Adjective | 2026-08-25 | — |
 | darum | in_deck | ✅ Darum.wav | — | Adverb | 2025-11-30 | — |
 | falsch | pending | ✅ Falsch.mp3 | — | Adjective | — | — |
 | Sorge | pending | ✅ Sorge.wav | — | Noun | — | — |
 | fest | pending | ✅ Fest.wav | — | Adjective | — | — |
-| bereits | pending | ✅ Bereits.wav | — | Adverb | — | — |
+| bereits | in_deck | ✅ Bereits.wav | — | Adverb | 2026-08-24 | — |
 | alleine | pending | ✅ Alleine.wav | — | Adjective | — | — |
 | denn | pending | ✅ Denn.wav | — | Conjunction | — | — |
 | irgendwie | pending | ✅ Irgendwie.wav | — | Adverb | — | — |
@@ -412,7 +399,7 @@
 | Szene | pending | ✅ Szene.wav | — | Noun | — | — |
 | einige | error | ✅ Einige.wav | — | Pronoun | — | 2026-08-20 validation failed: В грамматических примечаниях, вероятно, неверно указана форма Gen. Sg. Neut.: для 'einiges' не следует давать 'Gen. — e… |
 | deshalb | in_deck | ✅ Deshalb.wav | — | Adverb | 2025-12-01 | — |
-| Telefon | pending | ✅ Telefon.mp3 | — | Noun | — | — |
+| Telefon | in_deck | ✅ Telefon.mp3 | — | Noun | 2026-08-28 | — |
 | Captain | pending | ✅ Captain.wav | — | Noun | — | — |
 | aus | in_deck | ✅ Aus.mp3 | — | Preposition | 2025-11-26 | — |
 | sondern | pending | ✅ Sondern.mp3 | — | Conjunction | — | — |
@@ -438,7 +425,7 @@
 | Tja | pending | ✅ Tja.wav | — | Particle | — | — |
 | Boss | in_deck | ✅ Boss.wav | — | Noun | 2026-02-27 | — |
 | überall | in_deck | ✅ Überall.wav | — | Adverb | 2026-02-27 | — |
-| passieren | pending | ✅ Passieren.wav | — | Verb | — | — |
+| passieren | in_deck | ✅ Passieren.wav | — | Verb | 2026-08-28 | — |
 | lustig | pending | ✅ Lustig.mp3 | — | Adjective | — | — |
 | Folge | pending | ✅ Folge.wav | — | Noun | — | — |
 | nennen | pending | ✅ Nennen.wav | — | Verb | — | — |
@@ -453,7 +440,7 @@
 | froh | pending | ✅ Froh.wav | — | Adjective | — | — |
 | Arschloch | pending | ✅ Arschloch.wav | — | Noun | — | — |
 | leicht | pending | ✅ Leicht.wav | — | Adjective | — | — |
-| direkt | pending | ✅ Direkt.wav | — | Adjective | — | — |
+| direkt | in_deck | ✅ Direkt.wav | — | Adjective | 2026-08-26 | — |
 | langsam | in_deck | ✅ Langsam.mp3 | — | Adjective/Adverb | 2026-02-27 | — |
 | erinnern | pending | ✅ Erinnern.wav | — | Verb | — | — |
 | zuerst | pending | ✅ Zuerst.mp3 | — | Adverb | — | — |
@@ -462,16 +449,16 @@
 | Idiot | pending | ✅ Idiot.wav | — | Noun | — | — |
 | ohne | pending | ✅ Ohne.mp3 | — | Preposition | — | — |
 | Rest | pending | ✅ Rest.wav | — | Noun | — | — |
-| entschuldigen | pending | ✅ Entschuldigen.wav | — | Verb | — | — |
+| entschuldigen | in_deck | ✅ Entschuldigen.wav | — | Verb | 2026-08-25 | — |
 | Doktor | in_deck | ✅ Doktor.wav | — | Noun | 2026-08-17 | — |
 | Mist | in_deck | ✅ Mist.wav | — | Noun | 2026-02-27 | — |
 | König | pending | ✅ König.wav | — | Noun | — | — |
 | Wiedersehen | pending | ✅ Wiedersehen.wav | — | Noun | — | — |
 | Onkel | pending | ✅ Onkel.wav | — | Noun | — | — |
-| dies | pending | ✅ Dies.wav | — | Pronoun | — | — |
+| dies | error | ✅ Dies.wav | — | Pronoun | — | 2026-08-27 validation failed: Перевод примера неточен: «Hinweis» — это «указание», «намек», «подсказка», а не «замечание». «Dies ist ein wichtiger Hi… |
 | Kaffee | pending | ✅ Kaffee.mp3 | — | Noun | — | — |
 | ernst | pending | ✅ Ernst.wav | — | Adjective | — | — |
-| Zeug | pending | ✅ Zeug.wav | — | Noun | — | — |
+| Zeug | in_deck | ✅ Zeug.wav | — | Noun | 2026-08-25 | — |
 | trotzdem | in_deck | ✅ Trotzdem.wav | — | Adverb | 2025-12-01 | — |
 | Liste | pending | ✅ Liste.wav | — | Noun | — | — |
 | Kampf | pending | ✅ Kampf.wav | — | Noun | — | — |
@@ -534,7 +521,7 @@
 | gewinnen | pending | ✅ Gewinnen.mp3 | — | Verb | — | — |
 | träumen | pending | ✅ Träumen.wav | — | Verb | — | — |
 | Zustand | pending | ✅ Zustand.wav | — | Noun | — | — |
-| Futtermittel | pending | ✅ Futtermittel.wav | — | Noun | — | — |
+| Futtermittel | in_deck | ✅ Futtermittel.wav | — | Noun | 2026-08-25 | — |
 | Werkzeug | pending | ✅ Werkzeug.wav | — | Noun | — | — |
 | gesamt | pending | ✅ Gesamt.wav | — | Adjective | — | — |
 | Basis | pending | ✅ Basis.wav | — | Noun | — | — |
@@ -556,7 +543,7 @@
 | Gegenteil | pending | ✅ Gegenteil.wav | — | Noun | — | — |
 | Schuh | pending | ✅ Schuh.wav | — | Noun | — | — |
 | Schulter | in_deck | ✅ Schulter.wav | — | Noun | 2026-02-27 | — |
-| Verbreitung | pending | ✅ Verbreitung.wav | — | Noun | — | — |
+| Verbreitung | in_deck | ✅ Verbreitung.wav | — | Noun | 2026-08-27 | — |
 | arrangieren | pending | ✅ Arrangieren.wav | — | Verb | — | — |
 | Lager | pending | ✅ Lager.wav | — | Noun | — | — |
 | erfinden | pending | ✅ Erfinden.wav | — | Verb | — | — |
@@ -604,8 +591,8 @@
 ## Statistics
 
 - **Total words:** 586
-- **In deck:** 195
-- **Pending (with audio):** 388
+- **In deck:** 218
+- **Pending (with audio):** 361
 - **Missing audio:** 0
-- **Error:** 3
-- **Ready to process:** 388
+- **Error:** 7
+- **Ready to process:** 361
