@@ -88,3 +88,12 @@ study_plan/
 # =============================================================================
 # Uncomment if you want to exclude pending cards from commits:
 # flashcards/scripts/pending_cards.json
+
+# =============================================================================
+# Validator failure log (runtime state, not source)
+# =============================================================================
+# Appended to on every failed word, one line per attempt, and during the 2026-09
+# validator outage each line carried the ENTIRE validation prompt — 248 KB of noise
+# in german, in a PUBLIC repo. It is a local diagnostic scratchpad that the script
+# recreates on demand, not something a clone needs. Tracked until 2026-09-20.
+flashcards/scripts/failed_words.txt
