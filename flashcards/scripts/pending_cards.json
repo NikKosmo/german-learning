@@ -2,58 +2,25 @@
   "cards": [
     {
       "card_type": "Reverse",
-      "word_type": "Verb",
-      "russian": "справляться, успевать; создавать, делать",
-      "german": "schaffen",
-      "extra": "hat geschaffen / hat geschafft",
-      "example_de": "Ich habe es endlich geschafft, die Prüfung zu bestehen.",
-      "example_ru": "Мне наконец удалось сдать экзамен.",
-      "notes": "Два значения: 1) schaffen (слабый) — справляться, успевать (hat geschafft); 2) schaffen (сильный) — создавать, творить (hat geschaffen). Пример творческого значения: Gott schuf die Welt — Бог создал мир.",
-      "audio": "Schaffen.wav"
-    },
-    {
-      "card_type": "Reverse",
       "word_type": "Noun",
-      "russian": "подруга; девушка (возлюбленная)",
-      "german": "die Freundin",
-      "extra": "die Freundinnen",
-      "example_de": "Meine Freundin kommt heute Abend zu Besuch.",
-      "example_ru": "Моя подруга придёт в гости сегодня вечером.",
-      "notes": "Может означать как подругу, так и девушку (партнёршу). Мужской род: der Freund.",
-      "audio": "Freundin.wav"
+      "russian": "фирма, компания",
+      "german": "die Firma",
+      "extra": "die Firmen",
+      "example_de": "Er arbeitet seit zehn Jahren in einer großen Firma.",
+      "example_ru": "Он уже десять лет работает в большой фирме.",
+      "notes": "Женский род. Обычно означает предприятие или компанию. Во множественном числе: die Firmen. Не путать с русским «фирма» в значении «бренд» — для бренда чаще используют die Marke.",
+      "audio": "Firma.wav"
     },
     {
       "card_type": "Cloze",
       "word_type": "Noun",
-      "russian": "подруга; девушка (возлюбленная)",
-      "german": "{{c1::die}} Freundin",
-      "extra": "die Freundinnen",
-      "example_de": "Meine Freundin kommt heute Abend zu Besuch.",
-      "example_ru": "Моя подруга придёт в гости сегодня вечером.",
-      "notes": "Может означать как подругу, так и девушку (партнёршу). Мужской род: der Freund.",
-      "audio": "Freundin.wav"
-    },
-    {
-      "card_type": "Reverse",
-      "word_type": "Noun",
-      "russian": "работа, должность",
-      "german": "der Job",
-      "extra": "die Jobs",
-      "example_de": "Ich habe endlich einen neuen Job gefunden.",
-      "example_ru": "Я наконец нашёл новую работу.",
-      "notes": "Разговорное слово для обозначения работы или должности. Синоним: die Arbeit, die Stelle. Часто используется в неформальной речи.",
-      "audio": "Job.mp3"
-    },
-    {
-      "card_type": "Cloze",
-      "word_type": "Noun",
-      "russian": "работа, должность",
-      "german": "{{c1::der}} Job",
-      "extra": "die Jobs",
-      "example_de": "{{c1::Der}} Job macht mir viel Spaß.",
-      "example_ru": "Эта работа мне очень нравится.",
-      "notes": "Разговорное слово для обозначения работы или должности. Синоним: die Arbeit, die Stelle. Часто используется в неформальной речи.",
-      "audio": "Job.mp3"
+      "russian": "фирма, компания",
+      "german": "{{c1::die}} Firma",
+      "extra": "die Firmen",
+      "example_de": "Er arbeitet seit zehn Jahren in {{c1::einer}} großen Firma.",
+      "example_ru": "Он уже десять лет работает в большой фирме.",
+      "notes": "Женский род. Обычно означает предприятие или компанию. Во множественном числе: die Firmen. Не путать с русским «фирма» в значении «бренд» — для бренда чаще используют die Marke.",
+      "audio": "Firma.wav"
     }
   ]
 }
