@@ -16,6 +16,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import time
 from datetime import datetime
 from pathlib import Path
 from typing import Any, NamedTuple
@@ -83,12 +84,116 @@ import paths
 PENDING_CARDS_JSON = paths.FLASHCARDS_SCRIPTS / "pending_cards.json"
 PENDING_CARDS_SCHEMA = paths.FLASHCARDS_SCRIPTS / "pending_cards_schema.json"
 FAILED_WORDS_FILE = paths.FLASHCARDS_SCRIPTS / "failed_words.txt"
-GENERATION_MODEL = "claude-sonnet-4-6"
+GENERATION_MODEL = "claude-sonnet-5"
 CODEX_PATH = "/usr/local/bin/codex"
-# Codex rejects retired model ids with a 400 that the fallback only surfaces as
-# "Both Gemini and Codex failed to validate". Bump this when the account's Codex
-# lineup moves; gpt-5.2 was rejected outright from 2026.
-CODEX_MODEL = "gpt-5.4"
+
+# No Codex model id is pinned here, deliberately. Pinning one has now killed this
+# validator twice: gpt-5.2 was rejected outright in 2026, and gpt-5.4 returned
+# HTTP 400 every morning from 2026-09-04 to 09-19 — fifteen runs, no cards, and a
+# morning message that blamed the vocabulary. `codex exec` with no `-m` resolves
+# its own model: from ~/.codex/config.toml when that file sets one, otherwise from
+# the CLI's built-in default.
+#
+# That is not self-healing and must not be sold as such: ~/.codex/config.toml can
+# itself hold a retired id (it did, for the whole outage). What makes the next
+# lineup move survivable is not a cleverer id, it is that check_prerequisites()
+# refuses to start and says exactly what to do — see VALIDATOR_REMEDY.
+
+# Measured healthy latency is 4.0s (probe, 2026-09-20). loom caps this whole script
+# at 300s (`card_generator_timeout_seconds`), and a run can process several words,
+# each of which may call a validator twice. At 180s a single hung call ate the entire
+# script budget, so the outer timeout fired first and the non-conclusive path below —
+# the one that keeps a word out of quarantine — never executed. 60s is ~15x healthy
+# latency and leaves the fallback backend and the rest of the run reachable.
+VALIDATOR_TIMEOUT_SECONDS = 60
+GENERATION_TIMEOUT_SECONDS = 120
+
+# What one word can cost when everything degrades: two generations (the retry) and two
+# validations. loom caps this whole script, and the arithmetic never fitted — a single
+# degraded word needs 420s against a 300s cap, so the outer timeout fired, SIGKILLed the
+# process, and took the summary line with it. That is the worst possible failure: the
+# words that HAD succeeded were thrown away too, because loom learns per-word outcomes
+# only from a summary that never got printed.
+WORST_CASE_WORD_SECONDS = 2 * GENERATION_TIMEOUT_SECONDS + 2 * VALIDATOR_TIMEOUT_SECONDS
+
+VALIDATOR_REMEDY = (
+    "If the failure above mentions a model that is 'not supported', then "
+    "~/.codex/config.toml pins a retired model id. Either run `codex` once "
+    "interactively to accept the migration prompt, or delete its `model = ...` "
+    "line so codex resolves its own current default."
+)
+
+
+# --- Why a run produced nothing, as structured data rather than log prose ----------
+#
+# loom used to answer that question by grepping this script's whole stdout, which
+# cannot distinguish "the primary backend timed out and the fallback then judged the
+# word" from "nobody answered", and read a CLAUDE GENERATION timeout as a validator
+# timeout. The script knows the answer exactly; it should say so once, in a field.
+FAILURE_NONE = "none"
+FAILURE_NO_VALIDATOR = "no_validator"  # preflight: nothing could answer at all
+FAILURE_VALIDATOR_UNREACHABLE = "validator_unreachable"  # a word got no verdict
+FAILURE_GENERATION_ERROR = "generation_error"  # an exception while generating
+FAILURE_REJECTED = "rejected"  # a validator genuinely judged the word
+FAILURE_PIPELINE_ERROR = "pipeline_error"  # insert/apkg/tracking step failed
+
+# Most actionable first: infrastructure outranks a content verdict, because a verdict
+# reached while the machine was healthy is information and a verdict attributed to a
+# dead machine is a lie about Nik's vocabulary.
+FAILURE_PRECEDENCE = (
+    FAILURE_NO_VALIDATOR,
+    FAILURE_VALIDATOR_UNREACHABLE,
+    FAILURE_PIPELINE_ERROR,
+    FAILURE_GENERATION_ERROR,
+    FAILURE_REJECTED,
+)
+
+
+def print_summary(
+    *,
+    status: str,
+    failure_kind: str,
+    words_requested: int,
+    generated=(),
+    failed=(),
+    quarantined=(),
+    deferred=(),
+    cards_inserted: int = 0,
+) -> None:
+    """The one line loom parses. Printed on EVERY exit path, without exception.
+
+    Three exits used to print nothing: the pending_cards write failure, the
+    insert/apkg pipeline failure, and (until this session) the preflight abort. With
+    no summary line loom has no structured answer and falls back to reading the
+    transcript, which is how a dead Anki got reported as a validator problem. A
+    script that exits silently forces the reader to guess, and the guess is what this
+    whole subsystem keeps getting wrong.
+    """
+    print(
+        json.dumps(
+            {
+                "status": status,
+                "failure_kind": failure_kind,
+                "words_requested": words_requested,
+                "words_generated": len(generated),
+                "cards_inserted": cards_inserted,
+                "generated": list(generated),
+                "failed": list(failed),
+                "quarantined": list(quarantined),
+                "deferred": list(deferred),
+            },
+            ensure_ascii=False,
+        )
+    )
+
+
+def worst_failure_kind(kinds) -> str:
+    """The most actionable failure kind present, or FAILURE_NONE."""
+    present = {k for k in kinds if k}
+    for kind in FAILURE_PRECEDENCE:
+        if kind in present:
+            return kind
+    return FAILURE_NONE
 
 
 def log(message: str) -> None:
@@ -115,12 +220,23 @@ def check_prerequisites() -> None:
             "git+https://github.com/NikKosmo/claude-runner.git@main"
         )
         sys.exit(1)
-    # Validation needs at least one validator, not specifically Gemini — its free
-    # individual tier is decommissioned, so hard-requiring it here would block
-    # every run on a tool that can no longer answer.
-    if not Path(CODEX_PATH).exists() and not shutil.which("codex") and not shutil.which("gemini"):
-        log("ERROR: no validation backend available — need codex or gemini on PATH.")
+    # Validation needs at least one validator that can actually ANSWER. Checking
+    # that a binary is on PATH is not that check: through the whole 2026-09 outage
+    # the codex binary was present and every call 400'd. So ask it one real
+    # question, through the same argv builder and the same parser production uses,
+    # and require a real verdict back.
+    backend, failures = probe_validator()
+    if backend is None:
+        log("ERROR: no validator could answer, so no card could be checked.")
+        for failure in failures:
+            log(f"  - {failure}")
+        log(VALIDATOR_REMEDY)
+        # The summary line is part of the contract with loom, so it is printed on THIS
+        # exit path too. Without it a preflight abort was the one failure loom could
+        # only diagnose by reading prose.
+        print_summary(status="failed", failure_kind=FAILURE_NO_VALIDATOR, words_requested=0)
         sys.exit(1)
+    log(f"Validator preflight OK ({backend}).")
 
 
 def run_command(
@@ -128,8 +244,14 @@ def run_command(
     cwd: Path | str | None = None,
     unset_claudecode: bool = False,
     extra_env: dict[str, str] | None = None,
+    timeout: float | None = None,
 ) -> subprocess.CompletedProcess[str]:
-    """Run a shell command and return the result"""
+    """Run a shell command and return the result.
+
+    ``timeout`` is not optional in spirit: a validator call with no bound can hang
+    the whole morning job behind an expired login or a stalled network, and the
+    generation leg has always been bounded while the validation leg was not.
+    """
     env: dict[str, str] | None = None
     if unset_claudecode or extra_env:
         env = dict(os.environ)
@@ -138,11 +260,32 @@ def run_command(
         if extra_env:
             env.update(extra_env)
     try:
-        return subprocess.run(cmd, capture_output=True, text=True, check=True, cwd=cwd, env=env)
+        return subprocess.run(
+            cmd,
+            capture_output=True,
+            text=True,
+            check=True,
+            cwd=cwd,
+            env=env,
+            timeout=timeout,
+            # `capture_output` redirects stdout and stderr but NOT stdin, so a child
+            # inherits ours. `codex exec` reads stdin when it is not a TTY ("Reading
+            # additional input from stdin..."), and under the loom service that is a
+            # pipe which never reaches EOF — so it blocks until the timeout, on every
+            # single word. Caught by the end-to-end run on 2026-09-20: identical calls
+            # answered in 4s from a shell and hit the 180s cap under the service.
+            stdin=subprocess.DEVNULL,
+        )
+    except subprocess.TimeoutExpired:
+        # Never echo the command: argv carries the whole validation prompt, and
+        # dumping it here is how a one-line failure became an unreadable wall in
+        # failed_words.txt and in the morning message.
+        log(f"ERROR: {_describe_cmd(cmd)} timed out after {timeout}s")
+        raise
     except subprocess.CalledProcessError as e:
-        log(f"ERROR: Command failed: {' '.join(cmd)}")
-        log(f"STDOUT: {e.stdout}")
-        log(f"STDERR: {e.stderr}")
+        log(f"ERROR: {_describe_cmd(cmd)} failed with exit {e.returncode}")
+        log(f"STDOUT: {_tail(e.stdout)}")
+        log(f"STDERR: {_tail(e.stderr)}")
         raise
 
 
@@ -152,6 +295,194 @@ def _strip_fences(text: str) -> str:
         text = text.split("\n", 1)[1] if "\n" in text else text
         text = text.rsplit("```", 1)[0].strip()
     return text
+
+
+CMD_OUTPUT_TAIL = 500
+
+
+def _describe_cmd(cmd: list[str]) -> str:
+    """Name a command without reprinting its arguments.
+
+    The validator's argv contains the entire prompt — schema, card JSON, the lot.
+    Logging `' '.join(cmd)` put several kilobytes of prompt into failed_words.txt
+    and, through loom, into the morning message.
+    """
+    return f"{Path(cmd[0]).name} ({len(cmd) - 1} args)"
+
+
+def _tail(text: str | None) -> str:
+    """Last part of a captured stream — where a provider's error actually lands."""
+    if not text:
+        return ""
+    text = text.strip()
+    return text if len(text) <= CMD_OUTPUT_TAIL else "…" + text[-CMD_OUTPUT_TAIL:]
+
+
+def _reject_duplicate_keys(pairs):
+    """Refuse an object that answers twice.
+
+    `json.loads` is last-wins, so `{"valid": false, "valid": true}` quietly becomes a
+    PASS. Two different answers in one payload is not a verdict, whichever one the
+    decoder happens to keep.
+    """
+    seen: set[str] = set()
+    for key, _value in pairs:
+        if key in seen:
+            raise ValueError(f"duplicate key {key!r} in validator reply")
+        seen.add(key)
+    return dict(pairs)
+
+
+class VerdictError(Exception):
+    """A validator replied, but not with a verdict."""
+
+
+def parse_verdict(raw: str) -> tuple[bool, list[str]]:
+    """Turn a validator's raw reply into ``(valid, issues)``.
+
+    Raises :class:`VerdictError` for anything that is not an unambiguous verdict.
+    That line is the whole point of this function. An outage and a verdict must
+    never share a representation, and "it parsed as JSON" is not the same fact as
+    "a model judged this word":
+
+    * ``{"valid": "false"}`` is a string, and truthiness would have ADMITTED the
+      card. So would ``{"valid": 1}``, ``{"valid": "no"}`` and ``{"valid": "0"}``.
+    * ``{}``, ``{"valid": null}`` and ``{"error": "rate limited"}`` are a provider
+      envelope, not a judgement — treating them as one is what can quarantine a
+      perfectly good word on the vendor's schedule.
+    * ``json.loads('"invalid"')`` is a bare string; a substring test for "valid"
+      passes on it while it means the opposite.
+
+    Both the preflight probe and per-word validation go through here, so the probe
+    cannot be green while production fails on the same payload.
+    """
+    try:
+        data = json.loads(_strip_fences(raw), object_pairs_hook=_reject_duplicate_keys)
+    except json.JSONDecodeError as exc:
+        raise VerdictError(f"reply is not JSON ({exc})") from exc
+    except ValueError as exc:
+        # Not redundant with JSONDecodeError: an integer past Python's str->int
+        # conversion limit raises a plain ValueError from inside the decoder, which
+        # would otherwise escape _ask_validators entirely and skip the fallback.
+        raise VerdictError(f"reply could not be decoded ({exc})") from exc
+    if not isinstance(data, dict):
+        raise VerdictError(f"reply is a JSON {type(data).__name__}, not an object")
+    valid = data.get("valid")
+    # `is` rather than `==`: in Python `1 == True`, and a validator answering `1`
+    # has not answered.
+    if valid is not True and valid is not False:
+        raise VerdictError(f"'valid' is {valid!r}, not a boolean")
+    raw_issues = data.get("issues", [])
+    if isinstance(raw_issues, str):
+        issues = [raw_issues]
+    elif isinstance(raw_issues, list):
+        # str() each one: "\n".join over a bare string char-splits it, and a
+        # non-string member raises out of a function whose caller only catches
+        # JSONDecodeError.
+        issues = [str(issue) for issue in raw_issues]
+    elif raw_issues is None:
+        # `null` genuinely means "no issues" and must not become the string "None".
+        issues = []
+    else:
+        # A dict- or scalar-shaped `issues` used to be discarded silently: the verdict
+        # survived and the REASON did not, so the retry got no feedback and the
+        # quarantine note degraded to a bare date. Keep whatever was sent.
+        issues = [str(raw_issues)]
+    return valid, issues
+
+
+def _validator_commands(prompt: str) -> list[tuple[str, list[str], dict[str, str] | None]]:
+    """Validator backends in priority order, as (name, argv, extra_env).
+
+    Codex leads. Gemini's free individual tier is decommissioned (IneligibleTierError
+    / UNSUPPORTED_CLIENT), so leading with it cost a failed round-trip on every word;
+    it stays last so that restoring auth needs no code change.
+
+    One builder, used by both the preflight probe and per-word validation — sharing
+    the argv is necessary but not sufficient, which is why they share the parser too.
+    """
+    return [
+        (
+            "Codex",
+            [CODEX_PATH, "exec", "--skip-git-repo-check", "-s", "read-only", "--", prompt],
+            None,
+        ),
+        ("Gemini", ["gemini", "-p", prompt], {"GEMINI_CLI_TRUST_WORKSPACE": "true"}),
+    ]
+
+
+def _ask_validators(prompt: str) -> tuple[str | None, tuple[bool, list[str]] | None, list[str]]:
+    """Ask each backend in turn and return the first genuine verdict.
+
+    Returns ``(backend_name, (valid, issues), failures)``, or ``(None, None, failures)``
+    when nobody answered usably.
+
+    Exit code 0 is not an answer. A backend that exits clean with prose, an error
+    envelope or a truncated payload has failed to answer, and the next backend must
+    still be tried — otherwise "backends in priority order" only means "in order of
+    who crashes first".
+    """
+    failures: list[str] = []
+    for name, cmd, extra_env in _validator_commands(prompt):
+        if not shutil.which(cmd[0]) and not Path(cmd[0]).exists():
+            failures.append(f"{name}: not installed")
+            continue
+        log(f"Asking {name} for a verdict...")
+        try:
+            raw_output = run_command(
+                cmd, cwd=_NOHOOKS_DIR, extra_env=extra_env, timeout=VALIDATOR_TIMEOUT_SECONDS
+            ).stdout
+        except Exception as exc:
+            reason = _describe_failure(exc)
+            # "Validator backend" is load-bearing: it is how loom's fallback matcher
+            # tells this apart from a Claude GENERATION timeout, which also contains
+            # the words "timed out after".
+            log(f"Validator backend {name} failed: {reason}")
+            failures.append(f"{name}: {reason}")
+            continue
+        try:
+            return name, parse_verdict(raw_output), failures
+        except VerdictError as exc:
+            log(f"Validator backend {name} answered but not with a verdict: {exc}")
+            failures.append(f"{name}: {exc}")
+    return None, None, failures
+
+
+def _describe_failure(exc: Exception) -> str:
+    """A backend failure in one readable clause.
+
+    `str(TimeoutExpired)` and `str(CalledProcessError)` both embed the full argv, and
+    argv carries the entire validation prompt. Left raw, these strings land in
+    failed_words.txt, in a quarantine note, and in the morning message.
+    """
+    if isinstance(exc, subprocess.TimeoutExpired):
+        return f"timed out after {exc.timeout}s"
+    if isinstance(exc, subprocess.CalledProcessError):
+        detail = _tail(exc.stderr) or _tail(exc.stdout)
+        return f"exit {exc.returncode}{f' — {detail}' if detail else ''}"
+    return f"{type(exc).__name__}: {exc}"
+
+
+PROBE_PROMPT = """You are validating German vocabulary card data.
+
+Word: Haus
+Generated data:
+{"cards": [{"german": "das Haus", "russian": "дом"}]}
+
+Respond with ONLY valid JSON, no other text, in exactly this shape:
+{"valid": true, "issues": [], "suggestions": []}"""
+
+
+def probe_validator() -> tuple[str | None, list[str]]:
+    """Preflight: which backend can answer right now, if any.
+
+    Deliberately routed through :func:`_ask_validators`, so the probe runs the same
+    argv and the same acceptance rule as every real validation. A preflight that
+    parses more leniently than production is worse than no preflight — it reports
+    all-clear over the exact failure it was added to catch.
+    """
+    name, verdict, failures = _ask_validators(PROBE_PROMPT)
+    return (name if verdict is not None else None), failures
 
 
 def get_pending_words() -> list[dict[str, str]]:
@@ -292,10 +623,14 @@ JSON Schema:
             model=GENERATION_MODEL,
             max_tokens=2048,
             messages=[{"role": "user", "content": prompt}],
+            # The run_claude branch has always passed timeout=120; this one passed
+            # nothing, so the SDK path could hang the morning job exactly the way the
+            # validator did before it was bounded.
+            timeout=GENERATION_TIMEOUT_SECONDS,
         )
         raw_output = message.content[0].text  # type: ignore[union-attr]
     else:
-        raw_output = run_claude(prompt, model=GENERATION_MODEL, timeout=120)
+        raw_output = run_claude(prompt, model=GENERATION_MODEL, timeout=GENERATION_TIMEOUT_SECONDS)
 
     cleaned = _strip_fences(raw_output)
     try:
@@ -350,55 +685,14 @@ Or if invalid:
   "suggestions": ["suggestion 1"]
 }}"""
 
-    # Codex leads. Gemini's free individual tier was decommissioned (it now fails
-    # with IneligibleTierError / UNSUPPORTED_CLIENT), so leaving it first cost a
-    # full failed prompt round-trip on every single word before Codex picked up.
-    # It stays as a fallback so that restoring Gemini auth needs no code change.
-    validators: list[tuple[str, list[str], dict[str, str] | None]] = [
-        (
-            "Codex",
-            [
-                CODEX_PATH,
-                "exec",
-                "--skip-git-repo-check",
-                "-m",
-                CODEX_MODEL,
-                "-s",
-                "read-only",
-                "--",
-                prompt,
-            ],
-            None,
-        ),
-        ("Gemini", ["gemini", "-p", prompt], {"GEMINI_CLI_TRUST_WORKSPACE": "true"}),
-    ]
+    log(f"Validating '{word}'...")
+    _, verdict, failures = _ask_validators(prompt)
 
-    raw_output = None
-    failures: list[str] = []
-    for name, cmd, extra_env in validators:
-        if not shutil.which(cmd[0]) and not Path(cmd[0]).exists():
-            failures.append(f"{name}: not installed")
-            continue
-        log(f"Calling {name} to validate '{word}'...")
-        try:
-            raw_output = run_command(cmd, cwd=_NOHOOKS_DIR, extra_env=extra_env).stdout
-            break
-        except Exception as exc:
-            log(f"{name} failed: {exc}")
-            failures.append(f"{name}: {exc}")
-
-    if raw_output is None:
+    if verdict is None:
         return False, f"No validator could check this card — {'; '.join(failures)}", False
 
-    try:
-        val_data = json.loads(raw_output.strip())
-        is_valid = val_data.get("valid", False)
-        issues = val_data.get("issues", [])
-        feedback = "\n".join(issues)
-        return is_valid, feedback, True
-    except json.JSONDecodeError as e:
-        log(f"Failed to parse validation response: {e}\nRaw output: {raw_output}")
-        return False, f"Validation returned invalid JSON: {raw_output[:100]}...", False
+    is_valid, issues = verdict
+    return is_valid, "\n".join(issues), True
 
 
 QUARANTINE_STATUS = "error"
@@ -478,6 +772,9 @@ class WordOutcome(NamedTuple):
 
     cards: list[dict[str, Any]]
     quarantined: bool = False
+    # Why this word produced nothing, when it produced nothing. Carried as data so the
+    # run summary can state the reason instead of loom grepping for it.
+    failure_kind: str | None = None
 
 
 def process_word(word_info: dict[str, str]) -> WordOutcome:
@@ -488,7 +785,12 @@ def process_word(word_info: dict[str, str]) -> WordOutcome:
         is_valid, feedback, first_conclusive = validate_card_data(word, cards)
         conclusive = first_conclusive
 
-        if not is_valid:
+        # A retry is a second full Claude generation. It is worth spending only when the
+        # first attempt produced a real verdict to act on: regenerating a card because
+        # the validator was unreachable asks a question nobody is there to answer, and
+        # on a five-word run it doubles generation cost inside loom's 300s cap for
+        # nothing. An unreachable validator now costs one generation, not two.
+        if not is_valid and first_conclusive:
             log(f"Validation failed for '{word}'. Retrying once... Feedback: {feedback}")
             cards = generate_card_data(word_info, retry_feedback=feedback)
             is_valid, feedback, retry_conclusive = validate_card_data(word, cards)
@@ -502,30 +804,45 @@ def process_word(word_info: dict[str, str]) -> WordOutcome:
             log(f"✅ Successfully generated and validated cards for '{word}'")
             return WordOutcome(cards)
         else:
-            log(f"❌ Failed to validate cards for '{word}' after retry. Feedback: {feedback}")
+            log(f"❌ Failed to validate cards for '{word}'. Feedback: {feedback}")
             with open(FAILED_WORDS_FILE, "a", encoding="utf-8") as f:
                 f.write(f"{word}: {feedback}\n")
             if conclusive:
-                # The validator judged the word itself, twice. Take it out of the draw so one
+                # The validator judged the word itself. Take it out of the draw so one
                 # unwinnable word cannot keep zeroing whole runs.
                 parked = quarantine_word(word, word_info.get("word_type", "—"), feedback)
-                return WordOutcome([], quarantined=parked)
+                return WordOutcome([], quarantined=parked, failure_kind=FAILURE_REJECTED)
             log(f"'{word}' stays pending: no validator verdict, so this is not its fault.")
-            return WordOutcome([])
+            return WordOutcome([], failure_kind=FAILURE_VALIDATOR_UNREACHABLE)
 
     except Exception as e:
         msg = f"exception during processing: {e}"
         log(f"ERROR processing '{word}': {msg}")
-        with open(FAILED_WORDS_FILE, "a", encoding="utf-8") as f:
-            f.write(f"{word}: {msg}\n")
-        return WordOutcome([])
+        # Guarded: if the original exception WAS this append failing (disk full,
+        # permissions), retrying it unguarded raises out of process_word and kills
+        # the whole run instead of costing one word.
+        try:
+            with open(FAILED_WORDS_FILE, "a", encoding="utf-8") as f:
+                f.write(f"{word}: {msg}\n")
+        except OSError as log_exc:
+            log(f"WARNING: could not record '{word}' in {FAILED_WORDS_FILE}: {log_exc}")
+        return WordOutcome([], failure_kind=FAILURE_GENERATION_ERROR)
 
 
 def main():
     parser = argparse.ArgumentParser(description="Automated Flashcard Generator")
     parser.add_argument("--words", type=str, help="Comma-separated list of words")
     parser.add_argument("--count", type=int, default=10, help="Total number of words to process")
+    parser.add_argument(
+        "--deadline-seconds",
+        type=float,
+        default=None,
+        help="Stop starting new words once one more could overrun this budget, and "
+        "report what was finished. Prevents the caller's own timeout from killing the "
+        "run before it can say what happened.",
+    )
     args = parser.parse_args()
+    started_at = time.monotonic()
 
     check_prerequisites()
 
@@ -549,15 +866,33 @@ def main():
     generated_words: list[str] = []
     failed_words: list[str] = []
     quarantined_words: list[str] = []
-    for word_info in selected_words:
+    failure_kinds: list[str | None] = []
+    deferred_words: list[str] = []
+    for index, word_info in enumerate(selected_words):
+        # Stop BEFORE starting a word that could overrun, not after being killed during
+        # one. Deferred words are untouched: still pending, redrawn tomorrow, and
+        # deliberately not counted as failures, because nothing was attempted.
+        if args.deadline_seconds is not None and index > 0:
+            spent = time.monotonic() - started_at
+            if spent + WORST_CASE_WORD_SECONDS > args.deadline_seconds:
+                deferred_words = [w["word"] for w in selected_words[index:]]
+                log(
+                    f"⏳ Stopping after {index} of {len(selected_words)} words: "
+                    f"{spent:.0f}s spent of a {args.deadline_seconds:.0f}s budget, and one "
+                    f"more word could need {WORST_CASE_WORD_SECONDS}s. "
+                    f"Deferred to the next run: {', '.join(deferred_words)}"
+                )
+                break
         outcome = process_word(word_info)
         if outcome.cards:
             all_cards.extend(outcome.cards)
             generated_words.append(word_info["word"])
         else:
             failed_words.append(word_info["word"])
+            failure_kinds.append(outcome.failure_kind)
             if outcome.quarantined:
                 quarantined_words.append(word_info["word"])
+    failure_kind = worst_failure_kind(failure_kinds)
 
     # A failed word costs its own slot and nothing else. The predecessor of this block discarded
     # the whole batch on any failure, which zeroed ten of eleven drip runs in August; it existed
@@ -572,18 +907,13 @@ def main():
 
     if not all_cards:
         log("No cards were successfully generated. Exiting.")
-        print(
-            json.dumps(
-                {
-                    "status": "failed",
-                    "words_requested": len(selected_words),
-                    "words_generated": 0,
-                    "cards_inserted": 0,
-                    "generated": [],
-                    "failed": failed_words,
-                    "quarantined": quarantined_words,
-                }
-            )
+        print_summary(
+            status="failed",
+            failure_kind=failure_kind,
+            words_requested=len(selected_words),
+            failed=failed_words,
+            quarantined=quarantined_words,
+            deferred=deferred_words,
         )
         sys.exit(1)
 
@@ -595,6 +925,15 @@ def main():
     # Verification of written file
     if not PENDING_CARDS_JSON.exists():
         log(f"ERROR: Failed to write {PENDING_CARDS_JSON}")
+        print_summary(
+            status="failed",
+            failure_kind=FAILURE_PIPELINE_ERROR,
+            words_requested=len(selected_words),
+            generated=generated_words,
+            failed=failed_words,
+            quarantined=quarantined_words,
+            deferred=deferred_words,
+        )
         sys.exit(1)
 
     # Run pipeline
@@ -607,6 +946,19 @@ def main():
         run_command([sys.executable, "generate_deck_from_md.py"], cwd=paths.FLASHCARDS_SCRIPTS)
     except Exception as e:
         log(f"ERROR: Pipeline failed: {e}")
+        # Anki being down lands here. Without this line loom saw no structured
+        # answer, fell back to the transcript, and named the validator — a
+        # subsystem that had in fact answered every word correctly.
+        print_summary(
+            status="failed",
+            failure_kind=FAILURE_PIPELINE_ERROR,
+            words_requested=len(selected_words),
+            generated=generated_words,
+            failed=failed_words,
+            quarantined=quarantined_words,
+            deferred=deferred_words,
+            cards_inserted=len(all_cards),
+        )
         sys.exit(1)
 
     try:
@@ -618,16 +970,16 @@ def main():
     log("✅ Pipeline completed successfully!")
 
     # Final output
-    output = {
-        "status": "partial" if failed_words else "success",
-        "words_requested": len(selected_words),
-        "words_generated": len(generated_words),
-        "cards_inserted": len(all_cards),
-        "generated": generated_words,
-        "failed": failed_words,
-        "quarantined": quarantined_words,
-    }
-    print(json.dumps(output, ensure_ascii=False))
+    print_summary(
+        status="partial" if (failed_words or deferred_words) else "success",
+        failure_kind=failure_kind,
+        words_requested=len(selected_words),
+        generated=generated_words,
+        failed=failed_words,
+        quarantined=quarantined_words,
+        deferred=deferred_words,
+        cards_inserted=len(all_cards),
+    )
 
 
 if __name__ == "__main__":
