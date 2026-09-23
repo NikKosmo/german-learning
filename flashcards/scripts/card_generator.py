@@ -201,6 +201,41 @@ def log(message: str) -> None:
     print(message)
 
 
+def clear_gatekeeper_quarantine(binary: str = CODEX_PATH) -> None:
+    """Strip com.apple.quarantine from the codex binary if macOS put it back.
+
+    codex is a Homebrew *cask*, so every `brew upgrade` writes a fresh copy carrying
+    a fresh quarantine stamp. The first run after an upgrade then waits on a
+    Gatekeeper dialog. Interactively you click through it once; under the loom
+    service nobody does, and the validator call simply burns its timeout
+    (2026-09-23: "Validator backend Codex failed: timed out after 60s", every word,
+    the morning after a brew upgrade).
+
+    Stripping the attribute needs no privileges and touches only this one binary,
+    so the fix stays here instead of turning Gatekeeper off machine-wide with
+    HOMEBREW_CASK_OPTS=--no-quarantine. Best-effort by design: if it cannot be
+    removed, say so and carry on — probe_validator() below is what actually decides
+    whether the validator can answer.
+    """
+    if sys.platform != "darwin":
+        return
+    real = os.path.realpath(binary)
+    try:
+        listed = subprocess.run(["xattr", real], capture_output=True, text=True, timeout=5)
+        if "com.apple.quarantine" not in listed.stdout:
+            return
+        subprocess.run(
+            ["xattr", "-d", "com.apple.quarantine", real],
+            capture_output=True,
+            text=True,
+            timeout=5,
+            check=True,
+        )
+        log(f"Cleared com.apple.quarantine from {real} (Homebrew Cask sets it on every install).")
+    except (OSError, subprocess.SubprocessError) as exc:
+        log(f"WARNING: could not clear com.apple.quarantine from {real}: {exc}")
+
+
 def check_prerequisites() -> None:
     """Verify required CLI tools are available before starting"""
     api_key = os.environ.get("ANTHROPIC_API_KEY")
@@ -225,6 +260,8 @@ def check_prerequisites() -> None:
     # the codex binary was present and every call 400'd. So ask it one real
     # question, through the same argv builder and the same parser production uses,
     # and require a real verdict back.
+    # A quarantined binary answers nothing; clear it before asking it a question.
+    clear_gatekeeper_quarantine()
     backend, failures = probe_validator()
     if backend is None:
         log("ERROR: no validator could answer, so no card could be checked.")
