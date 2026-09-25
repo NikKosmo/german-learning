@@ -188,7 +188,7 @@
 | Ordnung | pending | ✅ Ordnung.wav | — | Noun | — | — |
 | klar | in_deck | ✅ Klar.mp3 | — | Adjective | 2026-06-08 | — |
 | los | pending | ✅ Los.wav | — | Adjective/Adverb | — | — |
-| helfen | pending | ✅ Helfen.mp3 | — | Verb | — | — |
+| helfen | in_deck | ✅ Helfen.mp3 | — | Verb | 2026-09-25 | — |
 | Weg | pending | ✅ Weg.mp3 | — | Noun | — | — |
 | selbst | in_deck | ✅ Selbst.wav | — | Adverb | 2026-02-27 | — |
 | mal | in_deck | ✅ Mal.mp3 | — | Adverb | 2026-02-27 | — |
@@ -206,7 +206,7 @@
 | schlecht | pending | ✅ Schlecht.mp3 | — | Adjective | — | — |
 | verstehen | pending | ✅ Verstehen.mp3 | — | Verb | — | — |
 | ah | pending | ✅ Ah.wav | — | Particle | — | — |
-| hoch | pending | ✅ Hoch.mp3 | — | Adjective/Adverb | — | — |
+| hoch | in_deck | ✅ Hoch.mp3 | — | Adjective/Adverb | 2026-09-25 | — |
 | Team | in_deck | ✅ Team.mp3 | — | Noun | 2026-08-31 | — |
 | kämpfen | pending | ✅ Kämpfen.wav | — | Verb | — | — |
 | heiraten | in_deck | ✅ Heiraten.wav | — | Verb | 2026-09-03 | — |
@@ -256,7 +256,7 @@
 | ändern | pending | ✅ Ändern.wav | — | Verb | — | — |
 | treffen | pending | ✅ Treffen.mp3 | — | Verb | — | — |
 | schreiben | pending | ✅ Schreiben.mp3 | — | Verb | — | — |
-| essen | pending | ✅ Essen.mp3 | — | Verb | — | — |
+| essen | in_deck | ✅ Essen.mp3 | — | Verb | 2026-09-25 | — |
 | trinken | pending | ✅ Trinken.mp3 | — | Verb | — | — |
 | schlafen | pending | ✅ Schlafen.mp3 | — | Verb | — | — |
 | lernen | pending | ✅ Lernen.mp3 | — | Verb | — | — |
@@ -383,7 +383,7 @@
 | darum | in_deck | ✅ Darum.wav | — | Adverb | 2025-11-30 | — |
 | falsch | pending | ✅ Falsch.mp3 | — | Adjective | — | — |
 | Sorge | pending | ✅ Sorge.wav | — | Noun | — | — |
-| fest | pending | ✅ Fest.wav | — | Adjective | — | — |
+| fest | in_deck | ✅ Fest.wav | — | Adjective | 2026-09-21 | — |
 | bereits | in_deck | ✅ Bereits.wav | — | Adverb | 2026-08-24 | — |
 | alleine | pending | ✅ Alleine.wav | — | Adjective | — | — |
 | denn | pending | ✅ Denn.wav | — | Conjunction | — | — |
@@ -411,7 +411,7 @@
 | Luft | in_deck | ✅ Luft.wav | — | Noun | 2026-06-13 | — |
 | Meister | pending | ✅ Meister.wav | — | Noun | — | — |
 | Erde | pending | ✅ Erde.wav | — | Noun | — | — |
-| seit | pending | ✅ Seit.wav | — | Preposition | — | — |
+| seit | in_deck | ✅ Seit.wav | — | Preposition | 2026-09-25 | — |
 | Antwort | pending | ✅ Antwort.wav | — | Noun | — | — |
 | sicher | in_deck | ✅ Sicher.mp3 | — | Adjective | 2026-06-07 | — |
 | Zukunft | pending | ✅ Zukunft.wav | — | Noun | — | — |
@@ -588,20 +588,20 @@
 | wirken | in_deck | ✅ Wirken.wav | — | Verb | 2026-09-03 | — |
 | aufschreiben | in_deck | ✅ Aufschreiben.wav | — | Verb | 2026-09-03 | — |
 | nötig | in_deck | ✅ Nötig.wav | — | Adjective | 2026-09-03 | — |
-| verhalten | pending | ✅ Verhalten.wav | — | Verb | — | — |
+| verhalten | in_deck | ✅ Verhalten.wav | — | Verb | 2026-09-21 | — |
 | verhalten | pending | ✅ Verhalten.wav | — | Adjective | — | — |
-| Zeichnen | pending | ✅ Zeichnen.wav | — | Noun | — | — |
-| scheitern | pending | ✅ Scheitern.wav | — | Verb | — | — |
-| Entscheidung | pending | ✅ Entscheidung.wav | — | Noun | — | — |
-| sonst | pending | ✅ Sonst.wav | — | Adverb | — | — |
+| Zeichnen | in_deck | ✅ Zeichnen.wav | — | Noun | 2026-09-21 | — |
+| scheitern | in_deck | ✅ Scheitern.wav | — | Verb | 2026-09-21 | — |
+| Entscheidung | in_deck | ✅ Entscheidung.wav | — | Noun | 2026-09-21 | — |
+| sonst | in_deck | ✅ Sonst.wav | — | Adverb | 2026-09-21 | — |
 
 ---
 
 ## Statistics
 
 - **Total words:** 582
-- **In deck:** 282
-- **Pending (with audio):** 292
+- **In deck:** 292
+- **Pending (with audio):** 282
 - **Missing audio:** 0
 - **Error:** 8
-- **Ready to process:** 292
+- **Ready to process:** 282

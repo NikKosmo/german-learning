@@ -2,25 +2,47 @@
   "cards": [
     {
       "card_type": "Reverse",
-      "word_type": "Noun",
-      "russian": "фирма, компания",
-      "german": "die Firma",
-      "extra": "die Firmen",
-      "example_de": "Er arbeitet seit zehn Jahren in einer großen Firma.",
-      "example_ru": "Он уже десять лет работает в большой фирме.",
-      "notes": "Женский род. Обычно означает предприятие или компанию. Во множественном числе: die Firmen. Не путать с русским «фирма» в значении «бренд» — для бренда чаще используют die Marke.",
-      "audio": "Firma.wav"
+      "word_type": "Verb",
+      "russian": "помогать",
+      "german": "helfen",
+      "extra": "hat geholfen",
+      "example_de": "Kannst du mir bitte helfen?",
+      "example_ru": "Ты можешь мне помочь, пожалуйста?",
+      "notes": "Управляет дательным падежом (Dativ): helfen + jemandem",
+      "audio": "[sound:Helfen.mp3]"
     },
     {
-      "card_type": "Cloze",
-      "word_type": "Noun",
-      "russian": "фирма, компания",
-      "german": "{{c1::die}} Firma",
-      "extra": "die Firmen",
-      "example_de": "Er arbeitet seit zehn Jahren in {{c1::einer}} großen Firma.",
-      "example_ru": "Он уже десять лет работает в большой фирме.",
-      "notes": "Женский род. Обычно означает предприятие или компанию. Во множественном числе: die Firmen. Не путать с русским «фирма» в значении «бренд» — для бренда чаще используют die Marke.",
-      "audio": "Firma.wav"
+      "card_type": "Reverse",
+      "word_type": "Adjective/Adverb",
+      "russian": "высокий; высоко",
+      "german": "hoch",
+      "extra": "höher - am höchsten",
+      "example_de": "Der Berg ist sehr hoch.",
+      "example_ru": "Эта гора очень высокая.",
+      "notes": "Перед существительным склоняется как 'hoh-': ein hohes Haus.",
+      "audio": "Hoch.mp3"
+    },
+    {
+      "card_type": "Reverse",
+      "word_type": "Verb",
+      "russian": "есть, кушать",
+      "german": "essen",
+      "extra": "hat gegessen",
+      "example_de": "Ich esse jeden Morgen ein Brötchen zum Frühstück.",
+      "example_ru": "Я каждое утро ем булочку на завтрак.",
+      "notes": "Неправильный глагол, корневая гласная меняется: ich esse, du isst, er/sie/es isst",
+      "audio": "[sound:Essen.mp3]"
+    },
+    {
+      "card_type": "Reverse",
+      "word_type": "Preposition",
+      "russian": "с (какого-то момента времени), уже (в течение)",
+      "german": "seit",
+      "extra": "+ Dativ",
+      "example_de": "Ich wohne seit zwei Jahren in Berlin.",
+      "example_ru": "Я живу в Берлине уже два года.",
+      "notes": "Указывает на момент начала действия, которое продолжается до сих пор. Употребляется с Präsens, если действие ещё длится (в отличие от русского прошедшего времени). Не путать с 'vor' (указывает на завершённое время в прошлом).",
+      "audio": "[sound:Seit.wav]"
     }
   ]
 }
