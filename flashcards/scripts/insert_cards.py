@@ -59,6 +59,10 @@ def validate_json_structure(data):
         for field in REQUIRED_FIELDS:
             if field not in card:
                 return False, f"Card {i} missing required field: {field}"
+            if not isinstance(card[field], str):
+                return False, f"Card {i} field {field} must be text"
+            if "|" in card[field] or "\n" in card[field] or "\r" in card[field]:
+                return False, f"Card {i} field {field} contains a table-breaking character"
 
     return True, "Valid"
 
@@ -121,6 +125,10 @@ def expand_reverse_card(card):
 
 def card_to_markdown_row(card):
     """Transform card JSON to markdown table row with generated ID"""
+    for field in REQUIRED_FIELDS:
+        value = card[field]
+        if "|" in value or "\n" in value or "\r" in value:
+            raise ValueError(f"field {field} contains a table-breaking character")
     # Generate unique ID based on German word and card type
     card_id = generate_card_id(card["german"], card["card_type"])
 
@@ -176,6 +184,17 @@ def update_deck_metadata(card_count):
         if line.startswith("|") and not line.startswith("| ID |") and not line.startswith("|-"):
             actual_count += 1
 
+    headwords: set[str] = set()
+    for line in lines:
+        if not line.startswith("|") or line.startswith("| ID |") or line.startswith("|-"):
+            continue
+        parts = [part.strip() for part in line.split("|")]
+        if len(parts) < 6:
+            continue
+        german = parts[5].replace("{{c1::", "").replace("{{c2::", "").replace("}}", "")
+        if german.split():
+            headwords.add(german.split()[-1].lower())
+
     # Update "Total cards" line
     for i, line in enumerate(lines):
         if line.startswith("- Total cards:"):
@@ -185,6 +204,12 @@ def update_deck_metadata(card_count):
                 f"✅ Updated card count: {old_metadata_count} (old metadata) → {actual_count} (actual cards in file)"
             )
             print(f"   Added this session: {card_count} cards")
+            break
+
+    for i, line in enumerate(lines):
+        if line.startswith("- Words:"):
+            lines[i] = f"- Words: {len(headwords)}"
+            print(f"✅ Updated word count: {len(headwords)}")
             break
 
     # Update "Generated" date

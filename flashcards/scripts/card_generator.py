@@ -12,11 +12,14 @@ import contextlib
 import json
 import os
 import random
+import re
+import reprlib
 import shutil
 import subprocess
 import sys
 import tempfile
 import time
+import unicodedata
 from datetime import datetime
 from pathlib import Path
 from typing import Any, NamedTuple
@@ -79,11 +82,14 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
 import paths
+from flashcards.scripts import add_words
+from flashcards.scripts.word_types import WordType
 
 # Constants
 PENDING_CARDS_JSON = paths.FLASHCARDS_SCRIPTS / "pending_cards.json"
 PENDING_CARDS_SCHEMA = paths.FLASHCARDS_SCRIPTS / "pending_cards_schema.json"
 FAILED_WORDS_FILE = paths.FLASHCARDS_SCRIPTS / "failed_words.txt"
+VALIDATOR_VERDICTS_FILE = paths.FLASHCARDS_SCRIPTS / "validator_verdicts.jsonl"
 GENERATION_MODEL = "claude-sonnet-5"
 CODEX_PATH = "/usr/local/bin/codex"
 
@@ -107,6 +113,7 @@ CODEX_PATH = "/usr/local/bin/codex"
 # latency and leaves the fallback backend and the rest of the run reachable.
 VALIDATOR_TIMEOUT_SECONDS = 60
 GENERATION_TIMEOUT_SECONDS = 120
+WIKTIONARY_TIMEOUT_SECONDS = 10
 
 # What one word can cost when everything degrades: two generations (the retry) and two
 # validations. loom caps this whole script, and the arithmetic never fitted — a single
@@ -114,7 +121,9 @@ GENERATION_TIMEOUT_SECONDS = 120
 # process, and took the summary line with it. That is the worst possible failure: the
 # words that HAD succeeded were thrown away too, because loom learns per-word outcomes
 # only from a summary that never got printed.
-WORST_CASE_WORD_SECONDS = 2 * GENERATION_TIMEOUT_SECONDS + 2 * VALIDATOR_TIMEOUT_SECONDS
+WORST_CASE_WORD_SECONDS = (
+    2 * GENERATION_TIMEOUT_SECONDS + 2 * VALIDATOR_TIMEOUT_SECONDS + 2 * WIKTIONARY_TIMEOUT_SECONDS
+)
 
 VALIDATOR_REMEDY = (
     "If the failure above mentions a model that is 'not supported', then "
@@ -157,6 +166,7 @@ def print_summary(
     generated=(),
     failed=(),
     quarantined=(),
+    retried_parked=(),
     deferred=(),
     cards_inserted: int = 0,
 ) -> None:
@@ -180,6 +190,7 @@ def print_summary(
                 "generated": list(generated),
                 "failed": list(failed),
                 "quarantined": list(quarantined),
+                "retried_parked": list(retried_parked),
                 "deferred": list(deferred),
             },
             ensure_ascii=False,
@@ -337,7 +348,40 @@ class VerdictError(Exception):
     """A validator replied, but not with a verdict."""
 
 
-def parse_verdict(raw: str) -> tuple[bool, list[str]]:
+VERDICT_ERROR_VALUE_REPR_LIMIT = 160
+VERDICT_ERROR_MESSAGE_LIMIT = 240
+VALIDATOR_ISSUE_PROBLEM_LIMIT = 240
+MAX_VALIDATOR_ISSUES = 10
+
+
+def _short_verdict_repr(value: object) -> str:
+    """Represent validator-supplied values without letting them become log payloads."""
+    rendered = reprlib.repr(value)
+    if len(rendered) <= VERDICT_ERROR_VALUE_REPR_LIMIT:
+        return rendered
+    return rendered[: VERDICT_ERROR_VALUE_REPR_LIMIT - 1] + "…"
+
+
+def _verdict_error(message: str) -> VerdictError:
+    """Build a log-safe parser error at the only source of validator reply details."""
+    if len(message) > VERDICT_ERROR_MESSAGE_LIMIT:
+        message = message[: VERDICT_ERROR_MESSAGE_LIMIT - 1] + "…"
+    return VerdictError(message)
+
+
+def _truncate_validator_problem(problem: str) -> str:
+    """Keep accepted validator feedback safe for every downstream consumer."""
+    problem = problem.strip()
+    if len(problem) > VALIDATOR_ISSUE_PROBLEM_LIMIT:
+        return problem[: VALIDATOR_ISSUE_PROBLEM_LIMIT - 1] + "…"
+    return problem
+
+
+VALIDATOR_CARD_FIELDS = ("russian", "german", "extra", "example_de", "example_ru", "notes")
+VALIDATOR_ISSUE_FIELDS = frozenset((*VALIDATOR_CARD_FIELDS, "general"))
+
+
+def parse_verdict(raw: str) -> tuple[bool, list[dict[str, str]]]:
     """Turn a validator's raw reply into ``(valid, issues)``.
 
     Raises :class:`VerdictError` for anything that is not an unambiguous verdict.
@@ -359,35 +403,55 @@ def parse_verdict(raw: str) -> tuple[bool, list[str]]:
     try:
         data = json.loads(_strip_fences(raw), object_pairs_hook=_reject_duplicate_keys)
     except json.JSONDecodeError as exc:
-        raise VerdictError(f"reply is not JSON ({exc})") from exc
+        raise _verdict_error(f"reply is not JSON ({_short_verdict_repr(str(exc))})") from exc
     except ValueError as exc:
         # Not redundant with JSONDecodeError: an integer past Python's str->int
         # conversion limit raises a plain ValueError from inside the decoder, which
         # would otherwise escape _ask_validators entirely and skip the fallback.
-        raise VerdictError(f"reply could not be decoded ({exc})") from exc
+        raise _verdict_error(
+            f"reply could not be decoded ({_short_verdict_repr(str(exc))})"
+        ) from exc
     if not isinstance(data, dict):
-        raise VerdictError(f"reply is a JSON {type(data).__name__}, not an object")
+        raise _verdict_error(f"reply is a JSON {type(data).__name__}, not an object")
     valid = data.get("valid")
     # `is` rather than `==`: in Python `1 == True`, and a validator answering `1`
     # has not answered.
     if valid is not True and valid is not False:
-        raise VerdictError(f"'valid' is {valid!r}, not a boolean")
-    raw_issues = data.get("issues", [])
-    if isinstance(raw_issues, str):
-        issues = [raw_issues]
-    elif isinstance(raw_issues, list):
-        # str() each one: "\n".join over a bare string char-splits it, and a
-        # non-string member raises out of a function whose caller only catches
-        # JSONDecodeError.
-        issues = [str(issue) for issue in raw_issues]
-    elif raw_issues is None:
-        # `null` genuinely means "no issues" and must not become the string "None".
-        issues = []
-    else:
-        # A dict- or scalar-shaped `issues` used to be discarded silently: the verdict
-        # survived and the REASON did not, so the retry got no feedback and the
-        # quarantine note degraded to a bare date. Keep whatever was sent.
-        issues = [str(raw_issues)]
+        raise _verdict_error(f"'valid' is {_short_verdict_repr(valid)}, not a boolean")
+    raw_issues = data.get("issues")
+    # A true verdict is unambiguous even when a backend omits its empty optional
+    # list, or serializes it as null. A rejection still has to explain itself.
+    if raw_issues is None and valid is True:
+        raw_issues = []
+    elif "issues" not in data:
+        raise _verdict_error("verdict has no 'issues' array")
+    if not isinstance(raw_issues, list):
+        raise _verdict_error("'issues' is not an array")
+
+    issues: list[dict[str, str]] = []
+    for index, issue in enumerate(raw_issues, start=1):
+        if not isinstance(issue, dict):
+            raise _verdict_error(f"issue {index} is not an object")
+        field = issue.get("field")
+        if not isinstance(field, str) or field not in VALIDATOR_ISSUE_FIELDS:
+            raise _verdict_error(
+                f"issue {index} has unknown or missing field {_short_verdict_repr(field)}"
+            )
+        problem = issue.get("problem")
+        if not isinstance(problem, str) or not problem.strip():
+            raise _verdict_error(f"issue {index} has an empty or missing problem")
+        issues.append({"field": field, "problem": _truncate_validator_problem(problem)})
+    if valid is False and not issues:
+        raise _verdict_error("an invalid verdict needs at least one issue")
+    if len(issues) > MAX_VALIDATOR_ISSUES:
+        dropped_count = len(issues) - (MAX_VALIDATOR_ISSUES - 1)
+        issues = issues[: MAX_VALIDATOR_ISSUES - 1]
+        issues.append(
+            {
+                "field": "general",
+                "problem": f"{dropped_count} additional validator issues were dropped.",
+            }
+        )
     return valid, issues
 
 
@@ -411,7 +475,9 @@ def _validator_commands(prompt: str) -> list[tuple[str, list[str], dict[str, str
     ]
 
 
-def _ask_validators(prompt: str) -> tuple[str | None, tuple[bool, list[str]] | None, list[str]]:
+def _ask_validators(
+    prompt: str,
+) -> tuple[str | None, tuple[bool, list[dict[str, str]]] | None, list[str]]:
     """Ask each backend in turn and return the first genuine verdict.
 
     Returns ``(backend_name, (valid, issues), failures)``, or ``(None, None, failures)``
@@ -444,6 +510,7 @@ def _ask_validators(prompt: str) -> tuple[str | None, tuple[bool, list[str]] | N
             return name, parse_verdict(raw_output), failures
         except VerdictError as exc:
             log(f"Validator backend {name} answered but not with a verdict: {exc}")
+            _record_validator_contract_breach(name, raw_output, str(exc))
             failures.append(f"{name}: {exc}")
     return None, None, failures
 
@@ -470,7 +537,13 @@ Generated data:
 {"cards": [{"german": "das Haus", "russian": "дом"}]}
 
 Respond with ONLY valid JSON, no other text, in exactly this shape:
-{"valid": true, "issues": [], "suggestions": []}"""
+{"valid": true, "issues": [], "suggestions": []}
+
+For an invalid result, use:
+{"valid": false, "issues": [{"field": "german", "problem": "..."}], "suggestions": []}
+
+Every issue must be an object with field and problem. For this data, field must be
+russian or german; use general only when no one field is responsible."""
 
 
 def probe_validator() -> tuple[str | None, list[str]]:
@@ -520,13 +593,15 @@ def get_pending_words() -> list[dict[str, str]]:
         audio = parts[3]
         word_type = parts[5]
 
-        if status == "pending" and "✅" in audio:
+        retrying_parked = status == QUARANTINE_STATUS and _is_retryable_parked_note(parts[7])
+        if (status == "pending" or retrying_parked) and "✅" in audio:
             words.append(
                 {
                     "word": word,
                     "status": status,
                     "audio": audio.replace("✅", "").strip(),
                     "word_type": word_type,
+                    "parked_retry": retrying_parked,
                 }
             )
 
@@ -581,15 +656,24 @@ def generate_card_data(
     """Generate card data using Claude CLI"""
     word = word_info["word"]
     word_type = word_info["word_type"]
-    audio = word_info["audio"]
-
     with open(PENDING_CARDS_SCHEMA, encoding="utf-8") as f:
         schema = json.load(f)
     schema_str = json.dumps(schema, ensure_ascii=False, indent=2)
+    language_rule = (
+        "5. russian is Cyrillic without Latin; example_ru has no Latin word; "
+        "German fields lack Cyrillic; notes have Cyrillic."
+    )
+    forms_rule = (
+        '6. Forms (extra): Noun: "die <Plural>" or "— (kein Plural)". '
+        'Verb: "hat [sich] <Partizip II>" or "ist [sich] <Partizip II>", '
+        'and two auxiliaries are written "hat geschwommen / ist geschwommen". '
+        'Preposition: "+ Akkusativ", "+ Dativ", "+ Genitiv", or a two-case form '
+        'such as "+ Akkusativ / + Dativ". All remaining types except Adjective and '
+        'Adjective/Adverb: "—".'
+    )
 
     prompt = f"""Generate German flashcard data for the word: "{word}"
 Word type: {word_type}
-Audio file: {audio}
 
 CRITICAL: Output ONLY a single raw JSON object. No preamble, no explanation, no markdown
 code fences, no templates, no frameworks, no wrappers. Do not read any files. Do not use
@@ -597,14 +681,16 @@ any tools. Your entire response must be parseable by json.loads() with nothing s
 
 Rules for the JSON content:
 1. Conform to the schema below exactly.
-2. For Nouns: Create 2 entries (one "Reverse" and one "Cloze").
-3. For others: Create 1 entry with "Reverse".
-4. Use Russian for translations and notes.
-5. For Nouns: "german" must include article (e.g. "der Tisch"), "extra" is plural.
-   "Cloze" must use {{{{c1::article}}}} (e.g. "{{{{c1::der}}}} Tisch").
-6. For Verbs: "extra" is Perfekt (e.g. "hat gearbeitet").
-7. For Adjectives: "extra" is Comparative - Superlative.
-8. For Prepositions: "extra" is Case (e.g. "+ Dativ").
+2. Make exactly one Reverse and one Cloze for a Noun; make exactly one Reverse for every other type.
+3. Noun Reverse german is exactly article + "{word}"; Cloze is exactly "{{{{c1::article}}}} {word}".
+4. Cloze markup {{{{...}}}} appears only in the german field of the Cloze card.
+{language_rule}
+{forms_rule}
+7. Adjective and Adjective/Adverb extra: "<Komparativ> — am <Superlativ>",
+   or "— (keine Steigerung)" if not gradable.
+8. No field may contain a pipe character or a newline, and notes are at most 200 characters.
+9. The returned word_type must be exactly "{word_type}". Every german value must end
+   with the tracking word "{word}". Do not include audio; code supplies it.
 
 JSON Schema:
 {schema_str}
@@ -636,19 +722,69 @@ JSON Schema:
     try:
         data = json.loads(cleaned)
     except json.JSONDecodeError as err:
-        raise ValueError(f"Claude returned non-JSON output for '{word}':\n{raw_output}") from err
+        raise MalformedModelOutputError(
+            f"Claude returned non-JSON output for '{word}':\n{raw_output}"
+        ) from err
 
     try:
         jsonschema.validate(instance=data, schema=schema)
     except jsonschema.ValidationError as err:
-        raise ValueError(
+        raise MalformedModelOutputError(
             f"Claude output for '{word}' failed schema validation: {err.message}"
         ) from err
 
     return data.get("cards", [])
 
 
-def validate_card_data(word: str, cards: list[dict[str, Any]]) -> tuple[bool, str, bool]:
+def _record_validator_verdict(
+    word: str,
+    attempt: int,
+    valid: bool,
+    issues: list[dict[str, str]],
+    dropped_issues: list[dict[str, str]],
+) -> None:
+    """Append one compact, machine-readable record for a validator judgement."""
+    record: dict[str, Any] = {
+        "word": word,
+        "attempt": attempt,
+        "valid": valid,
+        "issues": issues,
+        "dropped_issues": dropped_issues,
+    }
+    try:
+        with open(VALIDATOR_VERDICTS_FILE, "a", encoding="utf-8") as f:
+            f.write(json.dumps(record, ensure_ascii=False) + "\n")
+    except OSError as exc:
+        log(
+            f"WARNING: could not record validator verdict for '{word}' "
+            f"in {VALIDATOR_VERDICTS_FILE}: {exc}"
+        )
+
+
+def _record_validator_contract_breach(backend: str, raw_reply: str, parse_error: str) -> None:
+    """Record an unusable validator reply without turning it into a verdict."""
+    record = {
+        "not_a_verdict": True,
+        "backend": backend,
+        "parse_error": _tail(parse_error),
+        "raw_reply": _tail(raw_reply),
+    }
+    try:
+        with open(VALIDATOR_VERDICTS_FILE, "a", encoding="utf-8") as f:
+            f.write(json.dumps(record, ensure_ascii=False) + "\n")
+    except OSError as exc:
+        log(
+            f"WARNING: could not record validator contract breach from {backend} "
+            f"in {VALIDATOR_VERDICTS_FILE}: {exc}"
+        )
+
+
+def validate_card_data(
+    word: str,
+    cards: list[dict[str, Any]],
+    wiktionary_extra_authoritative: bool = False,
+    attempt: int | None = None,
+) -> tuple[bool, str, bool]:
     """Validate card data using Codex (fallback to Gemini).
 
     Returns (is_valid, feedback, conclusive). ``conclusive`` is True only when a validator
@@ -656,7 +792,20 @@ def validate_card_data(word: str, cards: list[dict[str, Any]]) -> tuple[bool, st
     infrastructure failure, not a judgement about the word, and must never quarantine it —
     that class of failure is what silently drained the deck for two months.
     """
-    cards_json = json.dumps({"cards": cards}, ensure_ascii=False, indent=2)
+    hidden_fields = {"extra"} if wiktionary_extra_authoritative else set()
+    validator_cards = [
+        {
+            key: value
+            for key, value in card.items()
+            if key not in {"word_type", "audio", "card_type", *hidden_fields}
+        }
+        for card in cards
+    ]
+    sent_fields = [
+        field for field in VALIDATOR_CARD_FIELDS if any(field in card for card in validator_cards)
+    ]
+    allowed_fields_text = ", ".join([*sent_fields, "general"])
+    cards_json = json.dumps({"cards": validator_cards}, ensure_ascii=False, indent=2)
     prompt = f"""You are validating German vocabulary card data
 for a Russian native speaker learning German.
 
@@ -671,7 +820,10 @@ Validate:
 4. Russian translations of examples are accurate
 5. Grammatical notes are helpful and in Russian
 
-IMPORTANT: Respond with ONLY valid JSON, no other text. Format:
+IMPORTANT: Respond with ONLY valid JSON, no other text. Every issue must be an object
+with a field and problem. field must be one of the fields actually sent above:
+{allowed_fields_text}. Use general only for an issue that does not belong to one field.
+Format:
 {{
   "valid": true,
   "issues": [],
@@ -681,7 +833,10 @@ IMPORTANT: Respond with ONLY valid JSON, no other text. Format:
 Or if invalid:
 {{
   "valid": false,
-  "issues": ["issue 1", "issue 2"],
+  "issues": [
+    {{"field": "german", "problem": "issue 1"}},
+    {{"field": "general", "problem": "issue 2"}}
+  ],
   "suggestions": ["suggestion 1"]
 }}"""
 
@@ -692,7 +847,383 @@ Or if invalid:
         return False, f"No validator could check this card — {'; '.join(failures)}", False
 
     is_valid, issues = verdict
-    return is_valid, "\n".join(issues), True
+    dropped_issues: list[dict[str, str]] = []
+    if "extra" in hidden_fields:
+        for issue in issues:
+            if issue["field"] == "extra":
+                reason = "extra was omitted because Wiktionary supplied or confirmed it"
+                dropped_issues.append({**issue, "reason": reason})
+                log(f"Validator contract breach for '{word}': {reason}; dropping issue.")
+        issues = [issue for issue in issues if issue["field"] != "extra"]
+
+    # An invalid reply whose only objections are about a field it was not sent is a pass.
+    if not is_valid and not issues:
+        is_valid = True
+    if attempt is not None:
+        _record_validator_verdict(word, attempt, is_valid, issues, dropped_issues)
+    feedback = "\n".join(f"{issue['field']}: {issue['problem']}" for issue in issues)
+    return is_valid, feedback, True
+
+
+class NounLookupError(Exception):
+    """Wiktionary could not be reached while checking a noun."""
+
+
+class MalformedModelOutputError(ValueError):
+    """The model reply was not JSON or did not satisfy the card schema.
+
+    This is the only generation failure that is safe to retry with feedback.
+    Other ValueErrors can originate in provider or local configuration code and
+    must be reported after a single generation attempt.
+    """
+
+
+def _template_parts(template) -> dict[str, list[str]]:
+    """Return named values from a Wiktionary template in its parsetree XML."""
+    result: dict[str, list[str]] = {}
+    for part in template.findall("part"):
+        name = part.findtext("name")
+        value = part.findtext("value")
+        if name is None or value is None:
+            continue
+        result.setdefault(name.strip(), []).append(value.strip())
+    return result
+
+
+class NounInflectionEntry(NamedTuple):
+    """One German Wiktionary noun entry, retaining its gender/plural pairing."""
+
+    gender: str
+    plurals: tuple[str, ...]
+
+
+def _german_section_children(root):
+    """Yield only direct parsetree children in the Deutsch language section."""
+    children = list(root)
+    start: int | None = None
+    for index, child in enumerate(children):
+        if (
+            child.tag == "h"
+            and child.get("level") == "2"
+            and add_words._h_contains_sprache(child, add_words.GERMAN_LANGUAGE_NAME)
+        ):
+            start = index
+            break
+    if start is None:
+        return []
+    end = len(children)
+    for index in range(start + 1, len(children)):
+        child = children[index]
+        if child.tag == "h" and child.get("level") == "2":
+            end = index
+            break
+    return children[start + 1 : end]
+
+
+def lookup_noun_inflection(word: str) -> list[NounInflectionEntry] | None:
+    """Read paired plural alternatives and gender from German noun overviews.
+
+    A missing page or overview is deliberately not a failure: Wiktionary is useful
+    corroboration, not a reason to discard a card for a word it does not cover.
+    Transport failures are different, because silently accepting data after a
+    failed lookup would claim the lookup had checked it.
+    """
+    try:
+        payload = add_words.fetch_parse_payload(word, WIKTIONARY_TIMEOUT_SECONDS)
+        parse_block = add_words._validate_parse_payload(payload)
+        xml = add_words._extract_parsetree_xml(parse_block)
+        root = add_words.ET.fromstring(xml)
+    except add_words.LookupErrorResult as exc:
+        if exc.message.startswith("Wiktionary unreachable"):
+            raise NounLookupError(exc.message) from exc
+        return None
+    except add_words.ET.ParseError:
+        return None
+
+    entries: list[NounInflectionEntry] = []
+    for child in _german_section_children(root):
+        if child.tag != "template":
+            continue
+        template = child
+        title = add_words._template_title(template)
+        if title != "Deutsch Substantiv Übersicht":
+            continue
+        parts = _template_parts(template)
+        for name, values in parts.items():
+            match = re.fullmatch(r"Genus(?: (\d+))?", name)
+            if match is None:
+                continue
+            suffix = f" {match.group(1)}" if match.group(1) else ""
+            plural_name = f"Nominativ Plural{suffix}"
+            plural_values = parts.get(plural_name)
+            if plural_values is None:
+                plural_values = parts.get("Nominativ Plural")
+            if plural_values is None:
+                plural_values = [
+                    value
+                    for plural_key, values_for_key in parts.items()
+                    if re.fullmatch(r"Nominativ Plural \d+", plural_key)
+                    for value in values_for_key
+                ]
+            plurals = tuple(value for value in plural_values if value)
+            for value in values:
+                for gender in value.split(","):
+                    gender = gender.strip()
+                    if gender:
+                        entries.append(NounInflectionEntry(gender, plurals))
+    return entries or None
+
+
+def _noun_article(german: str) -> str | None:
+    match = re.fullmatch(r"(der|die|das) .+", german)
+    return match.group(1) if match else None
+
+
+def _noun_gender(article: str) -> str:
+    return {"der": "m", "die": "f", "das": "n"}[article]
+
+
+def _allowed_noun_genders(entries: list[NounInflectionEntry]) -> str:
+    labels = {"m": "der (m)", "f": "die (f)", "n": "das (n)", "0": "die (plural-only)"}
+    return " or ".join(
+        labels[gender]
+        for gender in ("f", "m", "n", "0")
+        if any(entry.gender == gender for entry in entries)
+    )
+
+
+def _noun_extra(plural: str) -> str:
+    return "— (kein Plural)" if plural == "—" else f"die {plural}"
+
+
+class GenerationCheckResult(list[str]):
+    """Deterministic complaints plus whether Wiktionary owns the noun plural."""
+
+    def __init__(self, complaints: list[str], wiktionary_extra_authoritative: bool):
+        super().__init__(complaints)
+        self.wiktionary_extra_authoritative = wiktionary_extra_authoritative
+
+
+def _noun_allowed_extras(
+    noun_lookup: list[NounInflectionEntry], cards: list[dict[str, Any]]
+) -> set[str]:
+    articles = {
+        article
+        for card in cards
+        if (article := _noun_article(str(card.get("german", "")))) is not None
+    }
+    matching_entries = [
+        entry
+        for entry in noun_lookup
+        if any(
+            entry.gender == _noun_gender(article) or (entry.gender == "0" and article == "die")
+            for article in articles
+        )
+    ]
+    return {_noun_extra(plural) for entry in matching_entries for plural in entry.plurals}
+
+
+def _wiktionary_extra_is_authoritative(
+    noun_lookup: list[NounInflectionEntry] | None, cards: list[dict[str, Any]]
+) -> bool:
+    """Whether the current noun extra was written or confirmed from Wiktionary."""
+    if noun_lookup is None or not cards:
+        return False
+    allowed = _noun_allowed_extras(noun_lookup, cards)
+    return bool(allowed) and (
+        len(allowed) == 1 or all(str(card.get("extra")) in allowed for card in cards)
+    )
+
+
+def _expected_forms_format(word_type: object) -> str:
+    if not isinstance(word_type, str):
+        return "`—`"
+    formats = {
+        WordType.NOUN.value: "`die <Plural>` or `— (kein Plural)`",
+        WordType.VERB.value: (
+            "`hat [sich] <Partizip II>` or `ist [sich] <Partizip II>`; two forms use ` / `"
+        ),
+        WordType.PREPOSITION.value: (
+            "`+ Akkusativ`, `+ Dativ`, `+ Genitiv`, or `+ Akkusativ / + Dativ`"
+        ),
+        WordType.ADJECTIVE.value: ("`<Komparativ> — am <Superlativ>` or `— (keine Steigerung)`"),
+        WordType.ADJECTIVE_ADVERB.value: (
+            "`<Komparativ> — am <Superlativ>` or `— (keine Steigerung)`"
+        ),
+    }
+    return formats.get(word_type, "`—`")
+
+
+def _forms_are_valid(card: dict[str, Any]) -> bool:
+    word_type = card.get("word_type")
+    extra = card.get("extra")
+    if not isinstance(extra, str):
+        return False
+    if word_type == WordType.NOUN.value:
+        return extra == "— (kein Plural)" or bool(re.fullmatch(r"die [^\s—][^—]*", extra))
+    if word_type in {WordType.ADJECTIVE.value, WordType.ADJECTIVE_ADVERB.value}:
+        match = re.fullmatch(r"(.+) — am (.+)", extra)
+        return extra == "— (keine Steigerung)" or bool(
+            match and "—" not in match.group(1) and "—" not in match.group(2)
+        )
+    if word_type == WordType.VERB.value:
+        forms = extra.split(" / ")
+        form = r"(?:hat|ist) (?:sich )?[^\s—][^—]*"
+        return len(forms) in {1, 2} and all(re.fullmatch(form, value) for value in forms)
+    if word_type == WordType.PREPOSITION.value:
+        case = r"\+ (?:Akkusativ|Dativ|Genitiv)"
+        return bool(re.fullmatch(case + r"(?: / " + case + r")?", extra))
+    return extra == "—"
+
+
+REQUIRED_CARD_FIELDS = {
+    "card_type",
+    "word_type",
+    "russian",
+    "german",
+    "extra",
+    "example_de",
+    "example_ru",
+    "notes",
+}
+
+
+def _is_latin_letter(char: str) -> bool:
+    """Whether ``char`` is a Unicode letter from the Latin script."""
+    return unicodedata.category(char).startswith("L") and "LATIN" in unicodedata.name(char, "")
+
+
+def _contains_latin(text: str) -> bool:
+    return any(_is_latin_letter(char) for char in text)
+
+
+def _has_latin_run(text: str) -> bool:
+    run_length = 0
+    for char in text:
+        run_length = run_length + 1 if _is_latin_letter(char) else 0
+        if run_length >= 2:
+            return True
+    return False
+
+
+def check_generated_cards(
+    word_info: dict[str, str], cards: list[dict[str, Any]]
+) -> GenerationCheckResult:
+    """Return every deterministic generation complaint without repairing a card."""
+    word = word_info["word"]
+    expected_type = word_info["word_type"]
+    complaints: list[str] = []
+    if expected_type == WordType.NOUN.value:
+        reverse = [card for card in cards if card.get("card_type") == "Reverse"]
+        cloze = [card for card in cards if card.get("card_type") == "Cloze"]
+        if len(cards) != 2 or len(reverse) != 1 or len(cloze) != 1:
+            complaints.append("a noun needs exactly one Reverse and one Cloze card")
+        elif reverse[0].get("german") not in {f"der {word}", f"die {word}", f"das {word}"}:
+            complaints.append("noun Reverse german must be article plus the tracking word")
+        elif cloze[0].get("german") != "{{c1::" + reverse[0]["german"].split()[0] + "}} " + word:
+            complaints.append(
+                "noun Cloze german must hide the Reverse article and use the tracking word"
+            )
+    elif len(cards) != 1 or cards[0].get("card_type") != "Reverse":
+        complaints.append("a non-noun needs exactly one Reverse card")
+
+    noun_lookup: list[NounInflectionEntry] | None = None
+    if expected_type == WordType.NOUN.value:
+        noun_lookup = lookup_noun_inflection(word)
+
+    # A single Wiktionary-supported plural is authoritative and must be repaired
+    # before the general Forms check evaluates it.
+    if noun_lookup is not None and cards:
+        allowed = _noun_allowed_extras(noun_lookup, cards)
+        if len(allowed) == 1:
+            extra = next(iter(allowed))
+            for card in cards:
+                card["extra"] = extra
+
+    for index, card in enumerate(cards, start=1):
+        missing = REQUIRED_CARD_FIELDS - card.keys()
+        if missing:
+            complaints.append(
+                f"card {index} is missing required fields: {', '.join(sorted(missing))}"
+            )
+        if card.get("word_type") != expected_type:
+            complaints.append(
+                f"card {index} has word_type {card.get('word_type')!r}; expected {expected_type!r}"
+            )
+        for field, value in card.items():
+            if not isinstance(value, str):
+                complaints.append(f"card {index} field {field} is not text")
+                continue
+            if "|" in value or "\n" in value or "\r" in value:
+                complaints.append(f"card {index} field {field} contains a table-breaking character")
+            if (field != "german" or card.get("card_type") != "Cloze") and (
+                "{{" in value or "}}" in value
+            ):
+                complaints.append(f"card {index} has cloze markup outside Cloze german")
+        russian = str(card.get("russian", ""))
+        example_ru = str(card.get("example_ru", ""))
+        german = str(card.get("german", ""))
+        example_de = str(card.get("example_de", ""))
+        notes = str(card.get("notes", ""))
+        if not re.search(r"[\u0400-\u052f]", russian) or _contains_latin(russian):
+            complaints.append(f"card {index} russian must be Cyrillic without Latin")
+        if _has_latin_run(example_ru):
+            complaints.append(f"card {index} example_ru has a Latin word")
+        if re.search(r"[\u0400-\u052f]", german + example_de):
+            complaints.append(f"card {index} German fields contain Cyrillic")
+        if not re.search(r"[\u0400-\u052f]", notes):
+            complaints.append(f"card {index} notes need Cyrillic")
+        if len(notes) > 200:
+            complaints.append(f"card {index} notes exceed 200 characters")
+        if not _forms_are_valid(card):
+            complaints.append(
+                f"card {index} extra has the wrong format for {card.get('word_type')}; "
+                f"expected {_expected_forms_format(card.get('word_type'))}"
+            )
+        if expected_type != WordType.NOUN.value and (
+            not german.split() or german.split()[-1].lower() != word.lower()
+        ):
+            complaints.append(f"card {index} german does not end with the tracking word")
+
+    if noun_lookup is not None and cards:
+        articles = {
+            article
+            for card in cards
+            if (article := _noun_article(str(card.get("german", "")))) is not None
+        }
+        matching_entries = [
+            entry
+            for entry in noun_lookup
+            if any(
+                entry.gender == _noun_gender(article) or (entry.gender == "0" and article == "die")
+                for article in articles
+            )
+        ]
+        if articles and not matching_entries:
+            complaints.append(
+                "noun article disagrees with Wiktionary Genus; "
+                f"Wiktionary gives {word} as {_allowed_noun_genders(noun_lookup)}"
+            )
+        elif matching_entries:
+            allowed = {
+                _noun_extra(plural) for entry in matching_entries for plural in entry.plurals
+            }
+            if len(allowed) == 1:
+                extra = next(iter(allowed))
+                for card in cards:
+                    card["extra"] = extra
+            elif len(allowed) > 1 and any(str(card.get("extra")) not in allowed for card in cards):
+                complaints.append(
+                    "noun plural is not one of Wiktionary's alternatives; "
+                    f"expected one of {', '.join(sorted(allowed))}"
+                )
+    return GenerationCheckResult(complaints, _wiktionary_extra_is_authoritative(noun_lookup, cards))
+
+
+def _attach_audio(cards: list[dict[str, Any]], audio: str) -> list[dict[str, Any]]:
+    for card in cards:
+        card["audio"] = audio
+    return cards
 
 
 QUARANTINE_STATUS = "error"
@@ -700,13 +1231,30 @@ QUARANTINE_NOTE_LIMIT = 120
 QUARANTINE_MARKER = "QUARANTINED:"
 
 
-def _quarantine_note(reason: str, today: str) -> str:
+def _park_count(note: str) -> int:
+    match = re.search(r"validation failed \((\d+)\):", note)
+    return int(match.group(1)) if match else 1
+
+
+def _is_retryable_parked_note(note: str) -> bool:
+    match = re.match(r"(\d{4}-\d{2}-\d{2}) validation failed", note)
+    if match is None or _park_count(note) >= 2:
+        return False
+    try:
+        parked_on = datetime.strptime(match.group(1), "%Y-%m-%d").date()
+    except ValueError:
+        return False
+    return (datetime.now().date() - parked_on).days >= 30
+
+
+def _quarantine_note(reason: str, today: str, count: int) -> str:
     """A one-line note that cannot break the markdown table it lives in."""
     flattened = " ".join(reason.split())
     flattened = flattened.replace("|", "/")
     if len(flattened) > QUARANTINE_NOTE_LIMIT:
         flattened = flattened[: QUARANTINE_NOTE_LIMIT - 1].rstrip() + "…"
-    return f"{today} validation failed: {flattened}" if flattened else f"{today} validation failed"
+    prefix = f"{today} validation failed ({count}):"
+    return f"{prefix} {flattened}" if flattened else prefix
 
 
 def quarantine_word(word: str, word_type: str, reason: str) -> bool:
@@ -738,10 +1286,11 @@ def quarantine_word(word: str, word_type: str, reason: str) -> bool:
         # Match the type too, so a homonym pair is not quarantined wholesale.
         if word_type not in ("—", "", None) and cells[5] not in (word_type, "—", ""):
             continue
-        if cells[2] == QUARANTINE_STATUS:
+        if cells[2] == QUARANTINE_STATUS and not _is_retryable_parked_note(cells[7]):
             return True
+        count = _park_count(cells[7]) + 1 if cells[2] == QUARANTINE_STATUS else 1
         cells[2] = QUARANTINE_STATUS
-        cells[7] = _quarantine_note(reason, today)
+        cells[7] = _quarantine_note(reason, today, count)
         lines[index] = "| " + " | ".join(cells[1:8]) + " |"
         updated = True
         break
@@ -780,53 +1329,94 @@ class WordOutcome(NamedTuple):
 def process_word(word_info: dict[str, str]) -> WordOutcome:
     """Generate and validate cards for a single word, with one retry"""
     word = word_info["word"]
-    try:
-        cards = generate_card_data(word_info)
-        is_valid, feedback, first_conclusive = validate_card_data(word, cards)
-        conclusive = first_conclusive
-
-        # A retry is a second full Claude generation. It is worth spending only when the
-        # first attempt produced a real verdict to act on: regenerating a card because
-        # the validator was unreachable asks a question nobody is there to answer, and
-        # on a five-word run it doubles generation cost inside loom's 300s cap for
-        # nothing. An unreachable validator now costs one generation, not two.
-        if not is_valid and first_conclusive:
-            log(f"Validation failed for '{word}'. Retrying once... Feedback: {feedback}")
-            cards = generate_card_data(word_info, retry_feedback=feedback)
-            is_valid, feedback, retry_conclusive = validate_card_data(word, cards)
-            # Both attempts must have produced a real verdict. Reading `conclusive` off the
-            # retry alone let one judged rejection park a word whose first attempt had merely
-            # failed to reach the validator, which is the infrastructure failure that must
-            # never quarantine.
-            conclusive = first_conclusive and retry_conclusive
-
-        if is_valid:
-            log(f"✅ Successfully generated and validated cards for '{word}'")
-            return WordOutcome(cards)
-        else:
-            log(f"❌ Failed to validate cards for '{word}'. Feedback: {feedback}")
-            with open(FAILED_WORDS_FILE, "a", encoding="utf-8") as f:
-                f.write(f"{word}: {feedback}\n")
-            if conclusive:
-                # The validator judged the word itself. Take it out of the draw so one
-                # unwinnable word cannot keep zeroing whole runs.
-                parked = quarantine_word(word, word_info.get("word_type", "—"), feedback)
-                return WordOutcome([], quarantined=parked, failure_kind=FAILURE_REJECTED)
-            log(f"'{word}' stays pending: no validator verdict, so this is not its fault.")
-            return WordOutcome([], failure_kind=FAILURE_VALIDATOR_UNREACHABLE)
-
-    except Exception as e:
-        msg = f"exception during processing: {e}"
-        log(f"ERROR processing '{word}': {msg}")
-        # Guarded: if the original exception WAS this append failing (disk full,
-        # permissions), retrying it unguarded raises out of process_word and kills
-        # the whole run instead of costing one word.
+    feedback = ""
+    had_deterministic_failure = False
+    for attempt in range(2):
+        complaints = ["no cards generated"]
+        wiktionary_extra_authoritative = False
         try:
-            with open(FAILED_WORDS_FILE, "a", encoding="utf-8") as f:
-                f.write(f"{word}: {msg}\n")
-        except OSError as log_exc:
-            log(f"WARNING: could not record '{word}' in {FAILED_WORDS_FILE}: {log_exc}")
-        return WordOutcome([], failure_kind=FAILURE_GENERATION_ERROR)
+            cards = generate_card_data(word_info, retry_feedback=feedback or None)
+        except MalformedModelOutputError as exc:
+            cards = []
+            complaints = [f"generation output is invalid: {exc}"]
+        except Exception as exc:
+            reason = f"generation failed: {_describe_failure(exc)}"
+            log(f"Generation failed for '{word}': {reason}")
+            _record_failed_word(word, reason)
+            return WordOutcome([], failure_kind=FAILURE_GENERATION_ERROR)
+
+        if cards:
+            try:
+                check_result = check_generated_cards(word_info, cards)
+                complaints = check_result
+                wiktionary_extra_authoritative = getattr(
+                    check_result, "wiktionary_extra_authoritative", False
+                )
+            except NounLookupError as exc:
+                reason = f"generation check could not complete: {exc}"
+                log(f"Generation check failed for '{word}': {reason}")
+                _record_failed_word(word, reason)
+                return WordOutcome([], failure_kind=FAILURE_GENERATION_ERROR)
+            except Exception as exc:
+                reason = f"generation check could not complete: {_describe_failure(exc)}"
+                log(f"Generation check failed for '{word}': {reason}")
+                _record_failed_word(word, reason)
+                return WordOutcome([], failure_kind=FAILURE_GENERATION_ERROR)
+        if complaints:
+            feedback = "\n".join(complaints)
+            had_deterministic_failure = True
+            if attempt == 0:
+                log(f"Generation check failed for '{word}'. Retrying once... Feedback: {feedback}")
+                continue
+            log(f"Generation check failed for '{word}' on retry: {feedback}")
+            _record_failed_word(word, feedback)
+            return WordOutcome([], failure_kind=FAILURE_GENERATION_ERROR)
+        try:
+            is_valid, feedback, conclusive = validate_card_data(
+                word, cards, wiktionary_extra_authoritative, attempt + 1
+            )
+        except Exception as exc:
+            reason = f"validation could not complete: {_describe_failure(exc)}"
+            log(f"Validation failed for '{word}': {reason}")
+            _record_failed_word(word, reason)
+            return WordOutcome([], failure_kind=FAILURE_GENERATION_ERROR)
+        if is_valid:
+            try:
+                return WordOutcome(_attach_audio(cards, word_info.get("audio", "—")))
+            except Exception as exc:
+                reason = f"could not finish generated cards: {_describe_failure(exc)}"
+                log(f"Generation failed for '{word}': {reason}")
+                _record_failed_word(word, reason)
+                return WordOutcome([], failure_kind=FAILURE_GENERATION_ERROR)
+        if not conclusive:
+            _record_failed_word(word, feedback)
+            return WordOutcome([], failure_kind=FAILURE_VALIDATOR_UNREACHABLE)
+        if attempt == 0:
+            continue
+        if had_deterministic_failure:
+            log(
+                f"Validator rejected '{word}' after a generation check failure; leaving it pending."
+            )
+            _record_failed_word(word, feedback)
+            return WordOutcome([], failure_kind=FAILURE_GENERATION_ERROR)
+        _record_failed_word(word, feedback)
+        try:
+            parked = quarantine_word(word, word_info.get("word_type", "—"), feedback)
+        except Exception as exc:
+            reason = f"could not quarantine rejected word: {_describe_failure(exc)}"
+            log(f"Validation failed for '{word}': {reason}")
+            _record_failed_word(word, reason)
+            return WordOutcome([], failure_kind=FAILURE_GENERATION_ERROR)
+        return WordOutcome([], quarantined=parked, failure_kind=FAILURE_REJECTED)
+    raise AssertionError("unreachable")
+
+
+def _record_failed_word(word: str, feedback: str) -> None:
+    try:
+        with open(FAILED_WORDS_FILE, "a", encoding="utf-8") as f:
+            f.write(f"{word}: {feedback}\n")
+    except OSError as exc:
+        log(f"WARNING: could not record '{word}' in {FAILED_WORDS_FILE}: {exc}")
 
 
 def main():
@@ -866,6 +1456,7 @@ def main():
     generated_words: list[str] = []
     failed_words: list[str] = []
     quarantined_words: list[str] = []
+    retried_parked_words: list[str] = []
     failure_kinds: list[str | None] = []
     deferred_words: list[str] = []
     for index, word_info in enumerate(selected_words):
@@ -884,6 +1475,8 @@ def main():
                 )
                 break
         outcome = process_word(word_info)
+        if word_info.get("parked_retry"):
+            retried_parked_words.append(word_info["word"])
         if outcome.cards:
             all_cards.extend(outcome.cards)
             generated_words.append(word_info["word"])
@@ -913,6 +1506,7 @@ def main():
             words_requested=len(selected_words),
             failed=failed_words,
             quarantined=quarantined_words,
+            retried_parked=retried_parked_words,
             deferred=deferred_words,
         )
         sys.exit(1)
@@ -932,6 +1526,7 @@ def main():
             generated=generated_words,
             failed=failed_words,
             quarantined=quarantined_words,
+            retried_parked=retried_parked_words,
             deferred=deferred_words,
         )
         sys.exit(1)
@@ -956,6 +1551,7 @@ def main():
             generated=generated_words,
             failed=failed_words,
             quarantined=quarantined_words,
+            retried_parked=retried_parked_words,
             deferred=deferred_words,
             cards_inserted=len(all_cards),
         )
@@ -977,6 +1573,7 @@ def main():
         generated=generated_words,
         failed=failed_words,
         quarantined=quarantined_words,
+        retried_parked=retried_parked_words,
         deferred=deferred_words,
         cards_inserted=len(all_cards),
     )

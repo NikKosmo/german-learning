@@ -16,8 +16,7 @@
           "extra",
           "example_de",
           "example_ru",
-          "notes",
-          "audio"
+          "notes"
         ],
         "properties": {
           "card_type": {
@@ -47,8 +46,7 @@
           "extra": { "type": "string" },
           "example_de": { "type": "string" },
           "example_ru": { "type": "string" },
-          "notes": { "type": "string" },
-          "audio": { "type": "string" }
+          "notes": { "type": "string" }
         },
         "additionalProperties": false
       }

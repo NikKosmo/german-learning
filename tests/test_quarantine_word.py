@@ -149,6 +149,10 @@ def _stub_generation(monkeypatch, verdicts):
     """Feed process_word a fixed sequence of (is_valid, feedback, conclusive) verdicts."""
     calls = iter(verdicts)
     monkeypatch.setattr(cg, "generate_card_data", lambda *args, **kwargs: [{"front": "x"}])
+    # The fake payload is intentionally schema-incomplete; this test is about
+    # validator quarantine routing, so make that bypass explicit rather than
+    # relying on process_word silently skipping deterministic checks.
+    monkeypatch.setattr(cg, "check_generated_cards", lambda *args, **kwargs: [])
     monkeypatch.setattr(cg, "validate_card_data", lambda *args, **kwargs: next(calls))
     monkeypatch.setattr(cg, "log", lambda *args, **kwargs: None)
 
@@ -194,7 +198,9 @@ def test_a_word_that_passes_on_retry_is_not_quarantined(tracking, monkeypatch, t
     monkeypatch.setattr(cg, "FAILED_WORDS_FILE", tmp_path / "failed.txt")
     _stub_generation(monkeypatch, [(False, "first attempt off", True), (True, "", True)])
 
-    assert cg.process_word({"word": "Spiel", "word_type": "Noun"}).cards == [{"front": "x"}]
+    assert cg.process_word({"word": "Spiel", "word_type": "Noun"}).cards == [
+        {"front": "x", "audio": "—"}
+    ]
     assert _row(tracking.read_text(encoding="utf-8"), "Spiel")[2] == "pending"
 
 
