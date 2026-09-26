@@ -2,47 +2,91 @@
   "cards": [
     {
       "card_type": "Reverse",
+      "word_type": "Noun",
+      "russian": "доска (школьная, грифельная)",
+      "german": "die Tafel",
+      "extra": "die Tafeln",
+      "example_de": "Der Lehrer schreibt das neue Wort an die Tafel.",
+      "example_ru": "Учитель пишет новое слово на доске.",
+      "notes": "Женский род. Также означает 'плитка' (die Tafel Schokolade — плитка шоколада) и 'табличка/панель'.",
+      "audio": "Tafel.wav"
+    },
+    {
+      "card_type": "Cloze",
+      "word_type": "Noun",
+      "russian": "доска (школьная, грифельная)",
+      "german": "{{c1::die}} Tafel",
+      "extra": "die Tafeln",
+      "example_de": "Der Lehrer schreibt das neue Wort an {{c1::die}} Tafel.",
+      "example_ru": "Учитель пишет новое слово на доске.",
+      "notes": "Женский род. Также означает 'плитка' (die Tafel Schokolade — плитка шоколада) и 'табличка/панель'.",
+      "audio": "Tafel.wav"
+    },
+    {
+      "card_type": "Reverse",
+      "word_type": "Noun",
+      "russian": "дочь",
+      "german": "die Tochter",
+      "extra": "die Töchter",
+      "example_de": "Meine Tochter geht schon in die Schule.",
+      "example_ru": "Моя дочь уже ходит в школу.",
+      "notes": "Женский род. Мн. число с умлаутом: die Tochter → die Töchter.",
+      "audio": "[sound:Tochter.mp3]"
+    },
+    {
+      "card_type": "Cloze",
+      "word_type": "Noun",
+      "russian": "дочь",
+      "german": "{{c1::die}} Tochter",
+      "extra": "die Töchter",
+      "example_de": "Er hat zwei Söhne und eine Tochter.",
+      "example_ru": "У него два сына и одна дочь.",
+      "notes": "Артикль женского рода: die.",
+      "audio": "[sound:Tochter.mp3]"
+    },
+    {
+      "card_type": "Reverse",
+      "word_type": "Noun",
+      "russian": "магнит",
+      "german": "der Magnet",
+      "extra": "die Magnete",
+      "example_de": "Der Magnet zieht das Eisen an.",
+      "example_ru": "Магнит притягивает железо.",
+      "notes": "Слабое склонение (n-Deklination): des Magneten, dem Magneten, den Magneten.",
+      "audio": "[sound:Magnet.wav]"
+    },
+    {
+      "card_type": "Cloze",
+      "word_type": "Noun",
+      "russian": "магнит",
+      "german": "{{c1::Der}} Magnet zieht Eisen an.",
+      "extra": "die Magnete",
+      "example_de": "Die Kraft des Magneten ist sehr stark.",
+      "example_ru": "Сила магнита очень велика.",
+      "notes": "Родительный падеж: des Magneten (не des Magnets), т.к. это слабое существительное.",
+      "audio": "[sound:Magnet.wav]"
+    },
+    {
+      "card_type": "Reverse",
       "word_type": "Verb",
-      "russian": "помогать",
-      "german": "helfen",
-      "extra": "hat geholfen",
-      "example_de": "Kannst du mir bitte helfen?",
-      "example_ru": "Ты можешь мне помочь, пожалуйста?",
-      "notes": "Управляет дательным падежом (Dativ): helfen + jemandem",
-      "audio": "[sound:Helfen.mp3]"
+      "russian": "плавать",
+      "german": "schwimmen",
+      "extra": "ist/hat geschwommen",
+      "example_de": "Er ist über den Fluss geschwommen.",
+      "example_ru": "Он переплыл через реку.",
+      "notes": "Perfekt образуется с 'sein', если речь идёт о направленном движении (например, переплыть куда-то), и с 'haben', если акцент на самом процессе плавания без указания направления (например, заниматься плаванием).",
+      "audio": "[sound:Schwimmen.mp3]"
     },
     {
       "card_type": "Reverse",
       "word_type": "Adjective/Adverb",
-      "russian": "высокий; высоко",
-      "german": "hoch",
-      "extra": "höher - am höchsten",
-      "example_de": "Der Berg ist sehr hoch.",
-      "example_ru": "Эта гора очень высокая.",
-      "notes": "Перед существительным склоняется как 'hoh-': ein hohes Haus.",
-      "audio": "Hoch.mp3"
-    },
-    {
-      "card_type": "Reverse",
-      "word_type": "Verb",
-      "russian": "есть, кушать",
-      "german": "essen",
-      "extra": "hat gegessen",
-      "example_de": "Ich esse jeden Morgen ein Brötchen zum Frühstück.",
-      "example_ru": "Я каждое утро ем булочку на завтрак.",
-      "notes": "Неправильный глагол, корневая гласная меняется: ich esse, du isst, er/sie/es isst",
-      "audio": "[sound:Essen.mp3]"
-    },
-    {
-      "card_type": "Reverse",
-      "word_type": "Preposition",
-      "russian": "с (какого-то момента времени), уже (в течение)",
-      "german": "seit",
-      "extra": "+ Dativ",
-      "example_de": "Ich wohne seit zwei Jahren in Berlin.",
-      "example_ru": "Я живу в Берлине уже два года.",
-      "notes": "Указывает на момент начала действия, которое продолжается до сих пор. Употребляется с Präsens, если действие ещё длится (в отличие от русского прошедшего времени). Не путать с 'vor' (указывает на завершённое время в прошлом).",
-      "audio": "[sound:Seit.wav]"
+      "russian": "много",
+      "german": "viel",
+      "extra": "mehr - am meisten",
+      "example_de": "Ich habe heute viel Arbeit.",
+      "example_ru": "У меня сегодня много работы.",
+      "notes": "Перед неисчисляемыми существительными не склоняется (viel Geld), перед исчисляемыми во мн. числе может склоняться (viele Bücher).",
+      "audio": "[sound:Viel.mp3]"
     }
   ]
 }
