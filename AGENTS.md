@@ -84,7 +84,6 @@ Based on B1 test performance gaps. When generating materials or explanations, pr
 
 **Key workflow files:**
 - `flashcards/WORKFLOW.md` - Complete card generation process (7 steps)
-- `flashcards/CARD_CREATION_RULES.md` - Card formatting standards
 - `flashcards/word_tracking.md` - Word status tracking
 
 **Study resources:**
