@@ -5,7 +5,6 @@
 - Words: 253
 - Card types: Reverse RU→DE, Reverse DE→RU, Cloze (nouns)
 - Generated: 2026-09-26
-- Follows: CARD_CREATION_RULES.md v2.1
 
 ## Cards
 
@@ -99,8 +98,8 @@
 | 8af380af | Reverse DE→RU | Verb | говорить, сказать | sagen | hat gesagt | Was sagst du? Er hat mir die Wahrheit gesagt. | Что ты говоришь? Он сказал мне правду. | Регулярный глагол • haben + Partizip II | Sagen.wav |
 | 026bbf7b | Reverse RU→DE | Verb | приходить, приезжать | kommen | ist gekommen | Ich komme aus Russland. Er ist gestern gekommen. | Я из России. Он пришёл вчера. | Сильный глагол • ВАЖНО: sein + Partizip II (глагол движения) • Präteritum: kam | Kommen.mp3 |
 | e7eb9423 | Reverse DE→RU | Verb | приходить, приезжать | kommen | ist gekommen | Ich komme aus Russland. Er ist gestern gekommen. | Я из России. Он пришёл вчера. | Сильный глагол • ВАЖНО: sein + Partizip II (глагол движения) • Präteritum: kam | Kommen.mp3 |
-| cc552785 | Reverse RU→DE | Verb | хотеть | wollen | hat gewollt / hat ... wollen | Ich will nach Berlin fahren. Was willst du machen? | Я хочу поехать в Берлин. Что ты хочешь делать? | Модальный глагол (15% приоритет по CLAUDE.md) • изменение корня: ich will, du willst, er will • Perfekt редко используется • выражает волю, намерение | Wollen.mp3 |
-| 8d07bfeb | Reverse DE→RU | Verb | хотеть | wollen | hat gewollt / hat ... wollen | Ich will nach Berlin fahren. Was willst du machen? | Я хочу поехать в Берлин. Что ты хочешь делать? | Модальный глагол (15% приоритет по CLAUDE.md) • изменение корня: ich will, du willst, er will • Perfekt редко используется • выражает волю, намерение | Wollen.mp3 |
+| cc552785 | Reverse RU→DE | Verb | хотеть | wollen | hat gewollt / hat ... wollen | Ich will nach Berlin fahren. Was willst du machen? | Я хочу поехать в Берлин. Что ты хочешь делать? | Модальный глагол • изменение корня: ich will, du willst, er will • Perfekt редко используется • выражает волю, намерение | Wollen.mp3 |
+| 8d07bfeb | Reverse DE→RU | Verb | хотеть | wollen | hat gewollt / hat ... wollen | Ich will nach Berlin fahren. Was willst du machen? | Я хочу поехать в Берлин. Что ты хочешь делать? | Модальный глагол • изменение корня: ich will, du willst, er will • Perfekt редко используется • выражает волю, намерение | Wollen.mp3 |
 | e6a36496 | Reverse RU→DE | Verb | уметь, быть способным (физическая/приобретённая способность) | können | hat gekonnt / können | Ich kann gut Deutsch sprechen. | Я могу хорошо говорить по-немецки. | Модальный глагол • Perfekt: hat gekonnt (самостоятельно), können (с другим глаголом) | Können.mp3 |
 | db4fb493 | Reverse DE→RU | Verb | уметь, быть способным (физическая/приобретённая способность) | können | hat gekonnt / können | Kannst du mir helfen? | Ты можешь мне помочь? | Модальный глагол • Perfekt: hat gekonnt (самостоятельно), können (с другим глаголом) | Können.mp3 |
 | 8ff7b43a | Reverse RU→DE | Verb | быть обязанным (объективная необходимость) | müssen | hat gemusst / müssen | Ich muss heute arbeiten. | Я должен сегодня работать. | Модальный глагол • ВАЖНО: nicht müssen = не обязательно (отличается от nicht dürfen = нельзя) | Müssen.mp3 |

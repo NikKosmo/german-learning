@@ -78,7 +78,6 @@ Anki deck generation system with automated workflow.
 
 **Complete workflow documentation:**
 - `flashcards/WORKFLOW.md` - Full 7-step card generation process
-- `flashcards/CARD_CREATION_RULES.md` - Card formatting standards
 
 **Key scripts:**
 - `flashcards/scripts/generate_deck_from_md.py` - Generate .apkg from markdown source
