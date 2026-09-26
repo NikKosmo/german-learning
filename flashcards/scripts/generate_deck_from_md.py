@@ -56,6 +56,46 @@ class Logger:
 
 logger = Logger(LOG_FILE)
 
+
+def _source_row_count(md_file: Path) -> int:
+    """Count well-formed card starts independently of table parsing."""
+    return sum(
+        1
+        for line in md_file.read_text(encoding="utf-8").splitlines()
+        if re.match(r"^\| [0-9a-f]{8} \|", line)
+    )
+
+
+def _first_mismatched_row(md_file: Path, cards: list[dict]) -> str:
+    """Identify the first unparsed or parsed-but-uncounted source row."""
+    parsed_ids = {card["ID"] for card in cards}
+    lines = md_file.read_text(encoding="utf-8").splitlines()
+    for line_number, line in enumerate(lines, start=1):
+        match = re.match(r"^\| ([0-9a-f]{8}) \|", line)
+        if match and match.group(1) not in parsed_ids:
+            return f"unparsed row {match.group(1)} at line {line_number}"
+    counted_ids = {
+        match.group(1) for line in lines if (match := re.match(r"^\| ([0-9a-f]{8}) \|", line))
+    }
+    for card in cards:
+        card_id = card["ID"]
+        if card_id in counted_ids:
+            continue
+        for line_number, line in enumerate(lines, start=1):
+            if line.startswith(f"| {card_id} |"):
+                return f"parsed-but-uncounted row {card_id} at line {line_number}"
+        return f"parsed-but-uncounted row {card_id}"
+    return "a mismatched source row"
+
+
+def _abort_build(message: str, temp_dir: Path | None = None) -> None:
+    logger.log(f"ERROR: {message}")
+    if temp_dir is not None:
+        shutil.rmtree(temp_dir, ignore_errors=True)
+    logger.write_log()
+    raise SystemExit(1)
+
+
 # Shared CSS for all card types
 SHARED_CSS = """
     .card {
@@ -804,6 +844,12 @@ def main():
 
     # Parse MD file
     cards = parse_md_table(MD_FILE)
+    expected_rows = _source_row_count(MD_FILE)
+    if len(cards) != expected_rows:
+        _abort_build(
+            f"Parsed {len(cards)} cards but found {expected_rows} card rows; "
+            f"first {_first_mismatched_row(MD_FILE, cards)}; refusing to replace package"
+        )
     logger.log("")
 
     # Create deck
@@ -826,6 +872,7 @@ def main():
     logger.log(f"Successfully processed: {successful} cards")
     if skipped > 0:
         logger.log(f"Skipped: {skipped} cards (see warnings above)")
+        _abort_build("One or more card rows could not become notes; refusing to replace package")
     logger.log("")
 
     # Collect media files (audio) with language prefix
@@ -864,7 +911,7 @@ def main():
                 break
 
         if not found:
-            logger.log(f"  ⚠️  {audio_file} (not found)")
+            _abort_build(f"Referenced audio file is missing: {audio_file}", temp_dir)
 
     logger.log(f"Found {len(media_files)} audio files")
     logger.log("")

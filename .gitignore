@@ -97,3 +97,4 @@ study_plan/
 # in german, in a PUBLIC repo. It is a local diagnostic scratchpad that the script
 # recreates on demand, not something a clone needs. Tracked until 2026-09-20.
 flashcards/scripts/failed_words.txt
+flashcards/scripts/validator_verdicts.jsonl
