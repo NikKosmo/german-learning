@@ -255,7 +255,7 @@
 | essen | in_deck | ✅ Essen.mp3 | — | Verb | 2026-09-25 | — |
 | trinken | pending | ✅ Trinken.mp3 | — | Verb | — | — |
 | schlafen | pending | ✅ Schlafen.mp3 | — | Verb | — | — |
-| lernen | pending | ✅ Lernen.mp3 | — | Verb | — | — |
+| lernen | in_deck | ✅ Lernen.mp3 | — | Verb | 2026-09-27 | — |
 | fahren | pending | ✅ Fahren.mp3 | — | Verb | — | — |
 | kaufen | in_deck | ✅ Kaufen.mp3 | — | Verb | 2026-08-27 | — |
 | verkaufen | in_deck | ✅ Verkaufen.mp3 | — | Verb | 2026-08-17 | — |
@@ -413,7 +413,7 @@
 | Zukunft | pending | ✅ Zukunft.wav | — | Noun | — | — |
 | kaum | pending | ✅ Kaum.wav | — | Adverb | — | — |
 | voll | in_deck | ✅ Voll.mp3 | — | Adjective | 2026-06-14 | — |
-| weh | pending | ✅ Weh.wav | — | Adjective | — | — |
+| weh | in_deck | ✅ Weh.wav | — | Adjective | 2026-09-27 | — |
 | stellen | pending | ✅ Stellen.wav | — | Verb | — | — |
 | Büro | pending | ✅ Büro.mp3 | — | Noun | — | — |
 | Wahl | pending | ✅ Wahl.mp3 | — | Noun | — | — |
@@ -432,7 +432,7 @@
 | wieso | pending | ✅ Wieso.wav | — | Adverb | — | — |
 | früher | pending | ✅ Früher.mp3 | — | Adverb | — | — |
 | krank | pending | ✅ Krank.mp3 | — | Adjective | — | — |
-| Pass | pending | ✅ Pass.mp3 | — | Noun | — | — |
+| Pass | in_deck | ✅ Pass.mp3 | — | Noun | 2026-09-27 | — |
 | froh | pending | ✅ Froh.wav | — | Adjective | — | — |
 | Arschloch | pending | ✅ Arschloch.wav | — | Noun | — | — |
 | leicht | pending | ✅ Leicht.wav | — | Adjective | — | — |
@@ -443,7 +443,7 @@
 | Krankenhaus | pending | ✅ Krankenhaus.mp3 | — | Noun | — | — |
 | Arzt | pending | ✅ Arzt.mp3 | — | Noun | — | — |
 | Idiot | pending | ✅ Idiot.wav | — | Noun | — | — |
-| ohne | pending | ✅ Ohne.mp3 | — | Preposition | — | — |
+| ohne | in_deck | ✅ Ohne.mp3 | — | Preposition | 2026-09-27 | — |
 | Rest | pending | ✅ Rest.wav | — | Noun | — | — |
 | entschuldigen | in_deck | ✅ Entschuldigen.wav | — | Verb | 2026-08-25 | — |
 | Doktor | in_deck | ✅ Doktor.wav | — | Noun | 2026-08-17 | — |
@@ -488,7 +488,7 @@
 | Zucker | in_deck | ✅ Zucker.mp3 | — | Noun | 2026-06-15 | — |
 | Geschicklichkeit | in_deck | ✅ Geschicklichkeit.wav | — | Noun | 2026-08-22 | — |
 | Saison | in_deck | ✅ Saison.wav | — | Noun | 2026-02-27 | — |
-| Lösung | pending | ✅ Lösung.mp3 | — | Noun | — | — |
+| Lösung | in_deck | ✅ Lösung.mp3 | — | Noun | 2026-09-27 | — |
 | Magnet | in_deck | ✅ Magnet.wav | — | Noun | 2026-09-26 | — |
 | Silber | pending | ✅ Silber.wav | — | Noun | — | — |
 | danken | pending | ✅ Danken.wav | — | Verb | — | — |
@@ -597,8 +597,8 @@
 ## Statistics
 
 - **Total words:** 579
-- **In deck:** 297
-- **Pending (with audio):** 274
+- **In deck:** 302
+- **Pending (with audio):** 269
 - **Missing audio:** 0
 - **Error:** 8
-- **Ready to process:** 274
+- **Ready to process:** 269
