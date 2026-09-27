@@ -1,10 +1,10 @@
 # german_vocabulary_b1
 
 **Deck Info:**
-- Total cards: 700
-- Words: 253
+- Total cards: 712
+- Words: 301
 - Card types: Reverse RU→DE, Reverse DE→RU, Cloze (nouns)
-- Generated: 2026-09-26
+- Generated: 2026-09-27
 
 ## Cards
 
@@ -710,3 +710,15 @@
 | 26e83acc | Reverse DE→RU | Verb | плавать | schwimmen | ist/hat geschwommen | Er ist über den Fluss geschwommen. | Он переплыл через реку. | Perfekt образуется с 'sein', если речь идёт о направленном движении (например, переплыть куда-то), и с 'haben', если акцент на самом процессе плавания без указания направления (например, заниматься плаванием). | Schwimmen.mp3 |
 | d044ca04 | Reverse RU→DE | Adjective/Adverb | много | viel | mehr - am meisten | Ich habe heute viel Arbeit. | У меня сегодня много работы. | Перед неисчисляемыми существительными не склоняется (viel Geld), перед исчисляемыми во мн. числе может склоняться (viele Bücher). | Viel.mp3 |
 | e3b1710b | Reverse DE→RU | Adjective/Adverb | много | viel | mehr - am meisten | Ich habe heute viel Arbeit. | У меня сегодня много работы. | Перед неисчисляемыми существительными не склоняется (viel Geld), перед исчисляемыми во мн. числе может склоняться (viele Bücher). | Viel.mp3 |
+| bd514705 | Reverse RU→DE | Noun | решение | die Lösung | die Lösungen | Ich habe endlich eine Lösung für das Problem gefunden. | Я наконец нашёл решение проблемы. | Женский род (die). Множественное число: die Lösungen. | Lösung.mp3 |
+| 9872431a | Reverse DE→RU | Noun | решение | die Lösung | die Lösungen | Ich habe endlich eine Lösung für das Problem gefunden. | Я наконец нашёл решение проблемы. | Женский род (die). Множественное число: die Lösungen. | Lösung.mp3 |
+| 66716696 | Cloze | Noun | решение | {{c1::die}} Lösung | die Lösungen | Die Lösung des Rätsels war einfacher als erwartet. | Решение загадки оказалось проще, чем ожидалось. | Клоуз-карта для отработки артикля die. | Lösung.mp3 |
+| 01ef365f | Reverse RU→DE | Preposition | без | ohne | + Akkusativ | Ich trinke Kaffee ohne Zucker. | Я пью кофе без сахара. | Предлог «без», всегда требует Akkusativ | Ohne.mp3 |
+| 0dd93483 | Reverse DE→RU | Preposition | без | ohne | + Akkusativ | Ich trinke Kaffee ohne Zucker. | Я пью кофе без сахара. | Предлог «без», всегда требует Akkusativ | Ohne.mp3 |
+| 146ec1c9 | Reverse RU→DE | Adjective | больно; причиняющий боль (о физической или душевной боли) | weh | — (keine Steigerung) | Mir tut der Kopf weh. | У меня болит голова. | Слово продуктивно, не устарело: чаще всего встречается в «wehtun» — причинять боль, и в конструкциях типа «mir tut etwas weh» — у меня что-то болит. | Weh.wav |
+| ef776177 | Reverse DE→RU | Adjective | больно; причиняющий боль (о физической или душевной боли) | weh | — (keine Steigerung) | Mir tut der Kopf weh. | У меня болит голова. | Слово продуктивно, не устарело: чаще всего встречается в «wehtun» — причинять боль, и в конструкциях типа «mir tut etwas weh» — у меня что-то болит. | Weh.wav |
+| e9c785e5 | Reverse RU→DE | Verb | учить, учиться, изучать | lernen | hat gelernt | Ich möchte eine neue Sprache lernen. | Я хочу выучить новый язык. | Регулярный глагол; часто с Akkusativ (etwas lernen) | Lernen.mp3 |
+| 6936d70c | Reverse DE→RU | Verb | учить, учиться, изучать | lernen | hat gelernt | Ich möchte eine neue Sprache lernen. | Я хочу выучить новый язык. | Регулярный глагол; часто с Akkusativ (etwas lernen) | Lernen.mp3 |
+| 74d5b94f | Reverse RU→DE | Noun | паспорт | der Pass | die Pässe | Ich habe meinen Pass für die Reise ins Ausland verlängern lassen. | Я продлил свой паспорт для поездки за границу. | Может также означать «горный перевал» в зависимости от контекста | Pass.mp3 |
+| a7516ea9 | Reverse DE→RU | Noun | паспорт | der Pass | die Pässe | Ich habe meinen Pass für die Reise ins Ausland verlängern lassen. | Я продлил свой паспорт для поездки за границу. | Может также означать «горный перевал» в зависимости от контекста | Pass.mp3 |
+| db59a085 | Cloze | Noun | паспорт | {{c1::der}} Pass | die Pässe | An der Grenze musste sie ihren Pass vorzeigen. | На границе ей пришлось показать свой паспорт. | Мужской род, множественное число с умлаутом: die Pässe | Pass.mp3 |
