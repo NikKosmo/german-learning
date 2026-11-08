@@ -5,18 +5,16 @@ to the shared practice log, so voice sessions are counted the same way writing s
 
 ## Links
 
-| What | Link |
-|------|------|
-| Project (opens the iOS app, e.g. from Notes) | `claude://claude.ai/project/01977cbb-36c2-777c-8f32-83025beb4ec5` |
-| Project (browser) | https://claude.ai/project/01977cbb-36c2-777c-8f32-83025beb4ec5 |
-| Practice log (Claude Docs) | https://claude.ai/artifact/7BAiAbNAPXkPNXMMtD3kWf |
+The real links (Project, practice log doc and its id) live in `.local/practice_links.md`, which is
+gitignored: this repo is public. Below, `<LOG_DOC_URL>` stands for the practice log's link.
 
-## One-time app settings
+- The Project opens the iOS app from a link of the form `claude://claude.ai/project/<project-id>`
+  (e.g. tapped in Notes).
 
-- **Voice language: German.** Settings > Capabilities (Settings > General on some screens). The app
-  display language does not change it.
-- **Claude Docs connector on** for chats in this Project (the tools menu of the chat). Without it the
-  chat cannot write its log row.
+## App settings
+
+None needed: the Claude Docs connector is available in Project chats by default, and each chat
+follows the language you speak in it.
 
 ## Project instructions (paste into the Project's custom instructions)
 
@@ -60,7 +58,7 @@ Speak German in both modes, and keep your turns short so that I do most of the t
 
 When I end the conversation ("fertig", "Schluss", "tschüss", "das war's", or similar), or whenever I
 say "log it", write to the Claude Docs doc "Deutsch log":
-https://claude.ai/artifact/7BAiAbNAPXkPNXMMtD3kWf
+<LOG_DOC_URL>
 
 **1. One row at the bottom of the first table (the session table):**
 

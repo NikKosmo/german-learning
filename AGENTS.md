@@ -148,8 +148,9 @@ When suggesting study materials or exercises:
 
 ## Practice Log
 
-All speaking and writing practice is logged as rows in one Claude Docs doc, **"Deutsch log"**:
-https://claude.ai/artifact/7BAiAbNAPXkPNXMMtD3kWf (doc id `320240e5-b09d-4a11-af5c-a070cee55ab4`).
+All speaking and writing practice is logged as rows in one Claude Docs doc, **"Deutsch log"**.
+Its link and doc id are in `.local/practice_links.md` (gitignored; this repo is public, so never
+write them into tracked files).
 It has two tables. The session table: Date · Track · Topic · Mistake count · New words · Synced.
 The "Mistakes" table, one row per mistake: Date · Track · Wrong · Right · Type · Why. Track is
 `gespräch` or `training` for the two voice modes (`voice` on rows from before the split), or
