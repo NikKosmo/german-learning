@@ -87,6 +87,7 @@ Based on B1 test performance gaps. When generating materials or explanations, pr
 - `flashcards/word_tracking.md` - Word status tracking
 
 **Study resources:**
+- `speaking/claude_project.md` - Claude iOS Project for voice practice: links, settings, paste-ready instructions
 - `resources/voice_language_practice_guide.md` - AI voice conversation setup (EN)
 - `resources/voice_language_practice_guide_ru.md` - AI voice conversation setup (RU)
 - `resources/das_leben_book_analysis.md` - Textbook chapter-by-chapter analysis mapped to exam gaps
@@ -144,6 +145,58 @@ When suggesting study materials or exercises:
 **Target:** 75%+ on practice tests by December 2025.
 
 **Study plan reference:** See `study_plan/das_leben_study_plan.md` for detailed 4-week plan and `resources/das_leben_book_analysis.md` for complete chapter analysis.
+
+## Practice Log
+
+All speaking and writing practice is logged as rows in one Claude Docs doc, **"Deutsch log"**:
+https://claude.ai/artifact/7BAiAbNAPXkPNXMMtD3kWf (doc id `320240e5-b09d-4a11-af5c-a070cee55ab4`).
+It has two tables. The session table: Date · Track · Topic · Mistake count · New words · Synced.
+The "Mistakes" table, one row per mistake: Date · Track · Wrong · Right · Type · Why. Track is
+`gespräch` or `training` for the two voice modes (`voice` on rows from before the split), or
+`writing`. Voice rows are
+written by the Claude iOS Project (`speaking/claude_project.md`); writing rows are written by you at
+the end of a writing session. Only Claude sessions with the Claude Docs connector can reach the doc;
+scripts and loom cannot, so everything below runs inside a session.
+
+### Writing session
+
+Nik writes a German text (his topic, or one he asks for); you correct it.
+
+1. Save `writing/sessions/YYYY-MM-DD.md` (`YYYY-MM-DD-2.md` for a second session that day) with:
+   - `## Topic` — one line.
+   - `## Original` — Nik's text exactly as typed. Never edit it.
+   - `## Corrected` — the full corrected text.
+   - `## Mistakes` — a table: `wrong | right | tag | why` (why = one short line).
+   - `## New words` — single words, no articles, or `—`.
+2. Tag each mistake with one of: `Kasus`, `Genus`, `Adjektivendung`, `Wortstellung`, `Verbform`,
+   `Präposition`, `Wortwahl`, `Rechtschreibung`, `Sonstiges`. This starter set gets revised once the
+   first sessions show which mistakes actually come up.
+3. Add one row to the log's session table (Track `writing`, Topic, Mistake count, New words, Synced
+   `no`) and one row per mistake to its Mistakes table, same tags as in step 2.
+
+### Mistake tally
+
+"What should I work on?" → read the Mistakes table and count rows per Type (optionally per Track or
+date range). The Type tags are the same list in voice and writing, so both tracks add up.
+
+### Weekly count
+
+"How was my week?" → read the log table and count rows per Track for the ISO week (Monday–Sunday,
+Europe/Berlin). Rows with Track `setup` don't count. Anki is counted separately by loom's streak.
+Reading is counted from loom's log: `frank_render` events (component `frank`) in
+`~/projects/loom/logs/loom.jsonl` for the same week, dated by their `timestamp` field (UTC). A render means a Frank file was produced, not
+that it was read.
+
+During the diagnosis phase (first two weeks), writing sessions use telc B1 *Schreiben* tasks:
+write them in that format when Nik asks for a task, unless he brings his own.
+
+### New words → Anki drip
+
+Rows with Synced `no` carry new words for the deck. Collect them, drop words already in
+`flashcards/word_tracking.md`, and **show Nik the list before writing anything**. On his go, append
+them to the Obsidian capture note `Deutsche_Worte.md` (vault root; loom `deck_update.capture_file`)
+as `- Wort` bullets, one word per bullet: loom's parser rejects multi-word bullets. Then set those
+rows' Synced to `yes`.
 
 ## Gotchas
 
